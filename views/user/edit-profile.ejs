@@ -201,9 +201,14 @@
 
                  <!-- 3.Email section -->
 
-                <p><strong>Email:</strong> <%= user.email %>
-                <button type="button" class="btn btn-sm btn-primary" onclick="openEmailModal()">Change</button>
-                </p>
+              <p>
+    <strong>Email:</strong>
+    <span id="userEmail"><%= user.email %></span>
+
+    <button type="button" class="btn btn-sm btn-primary" onclick="openEmailModal()">
+        Change
+    </button>
+</p>
 
              <!-- Email Change Modal -->
                 <div id="emailModal" class="modal" tabindex="-1" style="display:none;">
@@ -226,7 +231,8 @@
      </div>
                 <!-- 4.password                           -->
                                
-                <form id="changePasswordForm" method="POST">
+                
+            <form id="changePasswordForm" action="/change-password" method="POST">
                     <div class="form-group mt-4">
                         <label for="currentPassword">Current Password</label>
                         <input type="password" id="currentPassword" name="currentPassword" class="form-control" required>
@@ -382,7 +388,23 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     
     document.getElementById('updateNameBtn').addEventListener('click', async (e) => {
         e.preventDefault();
-        const name = document.getElementById('name').value;
+  
+const name = document.getElementById('name').value.trim();
+
+const regex = /^[A-Za-z ]+$/;
+
+if (!name) {
+    return Swal.fire("Error", "Name is required", "error");
+}
+
+if (name.length < 3 || name.length > 30) {
+    return Swal.fire("Error", "Name must be between 3 and 30 characters", "error");
+}
+
+if (!regex.test(name)) {
+    return Swal.fire("Error", "Only letters and spaces are allowed", "error");
+}
+
     
         const response = await fetch('/update-name', {
             method: 'POST',
@@ -426,6 +448,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         if (data.success) {
             Swal.fire('Success', 'OTP sent!', 'success');
             document.getElementById('otpSection').style.display = 'block';
+             startTimer();
         } else {
             Swal.fire('Error', data.message || 'Failed to send OTP', 'error');
         }
@@ -447,11 +470,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         Swal.fire('Success', 'Email updated successfully!', 'success');
         
         // Update email in the visible DOM
-        const emailText = document.querySelector('p strong');
-        if (emailText) {
-            emailText.textContent = data.updatedEmail; // assuming backend returns updated email
-        }
-    
+        document.getElementById("userEmail").innerText = data.updatedEmail;
         closeEmailModal();
     }
     
@@ -460,7 +479,29 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     
     
     
-    
+    let timerInterval;
+
+function startTimer() {
+    let timeLeft = 60;
+
+    const timer = document.getElementById("timer");
+
+    clearInterval(timerInterval);
+
+    timer.innerText = timeLeft;
+
+    timerInterval = setInterval(() => {
+        timeLeft--;
+
+        timer.innerText = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            timer.innerText = "Expired";
+        }
+
+    }, 1000);
+}
     
     
         // password
@@ -526,15 +567,50 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         confirmPass.addEventListener("input", validateConfirmPassword);
     
         // Final check on submit
-        form.addEventListener("submit", function (e) {
-            validateCurrentPassword();
-            validateNewPassword();
-            validateConfirmPassword();
-    
-            if (errorCurrent.innerHTML || errorNew.innerHTML || errorConfirm.innerHTML) {
-                e.preventDefault();
-            }
-        });
+       form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    validateCurrentPassword();
+    validateNewPassword();
+    validateConfirmPassword();
+
+    if (errorCurrent.innerHTML || errorNew.innerHTML || errorConfirm.innerHTML) {
+        return;
+    }
+const response = await fetch("/change-password", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        currentPassword: currentPass.value,
+        newPassword: newPass.value
+    })
+});
+
+const data = await response.json();
+
+if (data.success) {
+
+    Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: data.message
+    });
+
+    form.reset();
+
+} else {
+
+    Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: data.message
+    });
+
+}
+  
+});
     });
     
     

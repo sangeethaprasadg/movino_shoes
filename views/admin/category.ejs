@@ -7,7 +7,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Category Management</h2>
         <div>
-            <a href="/admin/categories/recovery" class="btn btn-outline-secondary me-2">Deleted Categories</a>
+           
             <a href="/admin/categories/add" class="btn btn-success">+ Add Category</a>
         </div>
     </div>
@@ -51,22 +51,24 @@
                             </td>
                             <td><%= cat.categoryName %></td>
                             <td><%= cat.subCategory %></td>
-                            <td><%= cat.isBlocked ? "Blocked" : "Active" %></td>
+                           <td>
+    <%= cat.isListed ? "Listed" : "Unlisted" %>
+</td>
                             <td>
                                 
                                  
 
-                                    <a href="/admin/categories/edit/<%= cat._id %>" class="btn btn-warning btn-sm mb-1">Edit</a>
+                             <a href="/admin/categories/edit/<%= cat._id %>" class="btn btn-warning btn-sm mb-1">
+    Edit
+</a>
+             <% const isListed = cat.isListed; %>
 
-                                    
-                                  
-                                    <% if (!cat.isDeleted) { %>
-                                    
-                                  
-                                    
-                                  
-                                      <button class="btn btn-danger btn-sm mb-1" onclick="deleteCategory('<%= cat._id %>')">Delete</button>
-                                    <% } %>
+<button
+    class="btn <%= isListed ? 'btn-danger' : 'btn-success' %> btn-sm mb-1"
+    onclick="toggleCategoryListing('<%= cat._id %>', '<%= isListed %>')">
+    <%= isListed ? "Unlist" : "List" %>
+</button>                      
+                                 
                                 
                                   
                             </td>
@@ -109,19 +111,28 @@
     }
 
  
-function deleteCategory(id) {
+function toggleCategoryListing(id,isListed) {
+
+
+
+
+
+      isListed = isListed === "true";
+
+    const action = isListed ? "Unlist" : "List";
     Swal.fire({
-        title: 'Are you sure?',
-        text: "This category and its products will be deleted!",
+     title: `Are you sure you want to ${action}?`,
+text: `This category and its products will be ${action.toLowerCase()}ed.`,
+confirmButtonText: `Yes, ${action} it!`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!',
+      
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/admin/categories/delete/${id}`, {
+            fetch(`/admin/categories/toggle-list/${id}`, {
                 method: "POST"
             })
             .then(res => res.json())
@@ -129,15 +140,20 @@ function deleteCategory(id) {
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Deleted!',
-                        text: 'The category has been deleted.',
+                     title: `${action}ed!`,
+text: `Category ${action.toLowerCase()}ed successfully.`,
+                      
                         timer: 1500,
                         showConfirmButton: false
                     }).then(() => {
                         location.reload();
                     });
                 } else {
-                    Swal.fire('Failed!', 'Failed to delete category.', 'error');
+                    Swal.fire(
+    "Failed!",
+    "Unable to update category status.",
+    "error"
+);
                 }
             });
         }

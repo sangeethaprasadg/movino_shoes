@@ -17,10 +17,14 @@ const getAllProducts = async (req, res) => {
     const limit = 3;
     const searchQuery = req.query.search || '';
 
-    const query = {
-      isDeleted: false,
-      name: { $regex: searchQuery, $options: 'i' }
-    };
+   // Fetch all products (listed and unlisted)
+// Apply search filter only on product name.
+const query = {
+  name: {
+    $regex: searchQuery,
+    $options: "i",
+  },
+};
 
     const totalProducts = await Product.countDocuments(query);
     const totalPages = Math.ceil(totalProducts / limit);
@@ -86,7 +90,9 @@ const postAddProduct = async (req, res) => {
       return res.redirect('/admin/products/add?error=minimumImages');
     }
 
-    const images = req.body.images;
+    // const images = req.body.images;
+    const images = req.files.map(file => file.filename);
+
  
 
     const newProduct = new Product({
@@ -236,16 +242,21 @@ const updateProduct = async (req, res) => {
 
 
 
-const softDeleteProduct = async (req, res) => {
+// Unlist product (Soft Delete)
+// Product is hidden from users but remains in the database.
+
+const unlistProduct = async (req, res) => {
   try {
     const productId = req.params.id;
 
-    await Product.findByIdAndUpdate(productId, { isDeleted: true });
+    await Product.findByIdAndUpdate(productId, {
+      isListed: false,
+    });
 
-    res.redirect('/admin/products'); // reloads page and product will disappear
+    res.redirect("/admin/products");
   } catch (error) {
-    console.log('Error deleting product:', error);
-    res.status(500).send('Internal Server Error');
+    console.error("Error unlisting product:", error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -264,16 +275,20 @@ const viewDeletedProducts = async (req, res) => {
 
 // 8. GET recover soft-deleted product
 
-const recoverProduct = async (req, res) => {
+// List Product
+// Makes an unlisted product visible again on the user side.
+const listProduct = async (req, res) => {
   try {
     const productId = req.params.id;
 
-    await Product.findByIdAndUpdate(productId, { isDeleted: false });
+    await Product.findByIdAndUpdate(productId, {
+      isListed: true,
+    });
 
-    res.redirect('/admin/products/deleted'); // or wherever you want to redirect
+    res.redirect("/admin/products");
   } catch (error) {
-    console.log('Error recovering product:', error);
-    res.status(500).send('Internal Server Error');
+    console.error("Error listing product:", error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -301,55 +316,55 @@ const searchProducts = async (req, res) => {
 
 
 
-const getVariantForm = async (req, res) => {
-  const productId = req.params.id;
-  try {
-    const product = await Product.findById(productId);
-    if (!product) {
-      return res.status(404).send('Product not found');
-    }
-    res.render('products/variants', { product });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server error');
-  }
-};
+// const getVariantForm = async (req, res) => {
+//   const productId = req.params.id;
+//   try {
+//     const product = await Product.findById(productId);
+//     if (!product) {
+//       return res.status(404).send('Product not found');
+//     }
+//     res.render('products/variants', { product });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send('Server error');
+//   }
+// };
 
 
 
 
-const addVariants = async (req, res) => {
-  const productId = req.params.id;
-  const { sizes, prices, quantities } = req.body;
+// const addVariants = async (req, res) => {
+//   const productId = req.params.id;
+//   const { sizes, prices, quantities } = req.body;
 
-  if (!sizes || !prices || !quantities || !Array.isArray(sizes)) {
-    return res.status(400).send('Invalid input');
-  }
+//   if (!sizes || !prices || !quantities || !Array.isArray(sizes)) {
+//     return res.status(400).send('Invalid input');
+//   }
 
-  try {
-    const product = await Product.findById(productId);
-    if (!product) return res.status(404).send('Product not found');
+//   try {
+//     const product = await Product.findById(productId);
+//     if (!product) return res.status(404).send('Product not found');
 
-    // Build variants array from input arrays
-    const variants = sizes.map((size, index) => ({
-      size,
-      price: parseFloat(prices[index]),
-      quantity: parseInt(quantities[index], 10),
-    }));
+//     // Build variants array from input arrays
+//     const variants = sizes.map((size, index) => ({
+//       size,
+//       price: parseFloat(prices[index]),
+//       quantity: parseInt(quantities[index], 10),
+//     }));
 
-    product.variants = variants;
+//     product.variants = variants;
 
-    // Update total stock as sum of all variant quantities
-    product.stock = variants.reduce((acc, v) => acc + v.quantity, 0);
+//     // Update total stock as sum of all variant quantities
+//     product.stock = variants.reduce((acc, v) => acc + v.quantity, 0);
 
-    await product.save();
+//     await product.save();
 
-    res.redirect('/admin/products');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server error');
-  }
-};
+//     res.redirect('/admin/products');
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send('Server error');
+//   }
+// };
 
    
 
@@ -360,12 +375,12 @@ module.exports = {
   postAddProduct,
   editProductForm,
   updateProduct,
-  softDeleteProduct,
+  unlistProduct,
   viewDeletedProducts,
-  recoverProduct,
+  listProduct,
   searchProducts,
-  getVariantForm,
-  addVariants
+  // getVariantForm,
+  // addVariants
 
   
 };

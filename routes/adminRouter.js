@@ -72,43 +72,26 @@ router.get("/categories/edit/:id", adminAuth,categoryController.editCategoryPage
 router.post("/categories/edit/:id", adminAuth, uploadCategory.single("image"), categoryController.editCategory);
 
 // Soft delete
-router.post("/categories/delete/:id",adminAuth, categoryController.softDeleteCategory);
+router.post(
+  "/categories/toggle-list/:id",
+  adminAuth,
+  categoryController.toggleCategoryListing
+);
 
-// Recovery list
-router.get("/categories/recovery",adminAuth, categoryController.recoveryPage);
+
 
 
 
 // Fetch deleted categories
-router.get('/categories/deleted',adminAuth, async (req, res) => {
-    const deletedCategories = await Category.find({ isDeleted: true });
-    res.render('deletedCategories', { deletedCategories });
-  });
+// router.get('/categories/deleted',adminAuth, async (req, res) => {
+//     const deletedCategories = await Category.find({ isDeleted: true });
+//     res.render('deletedCategories', { deletedCategories });
+//   });
   
 
 
 
-router.get('/categories/recover/:id', adminAuth, async (req, res) => {
-  try {
-    // Recover the category
-    const category = await Category.findByIdAndUpdate(req.params.id, { isDeleted: false }, { new: true });
 
-    if (!category) {
-      return res.status(404).json({ success: false, message: "Category not found" });
-    }
-
-    // Recover related products
-    await Product.updateMany(
-      { category: category._id },
-      { $set: { isDeleted: false } }
-    );
-
-    res.redirect('/admin/categories/deleted');
-  } catch (error) {
-    console.error("Error recovering category:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
 
 
 
@@ -129,7 +112,7 @@ router.post('/products/add', adminAuth, uploadProduct.array('images', 5), resize
 router.get('/products', adminAuth, productController.getAllProducts);
 
 // Soft delete a product
-router.get('/products/delete/:id', adminAuth, productController.softDeleteProduct);
+router.get('/products/unlist/:id', adminAuth, productController.unlistProduct);
 
 // Edit product form
 router.get('/products/edit/:id', adminAuth, productController.editProductForm);
@@ -141,16 +124,16 @@ router.post('/products/edit/:id', adminAuth, uploadProduct.array('images', 5), r
 // View deleted products
 router.get('/products/deleted', adminAuth, productController.viewDeletedProducts);
 
-// Recover soft-deleted product
-router.post('/products/recover/:id', adminAuth, productController.recoverProduct);
+
+// List product again
+router.get('/products/list/:id', adminAuth, productController.listProduct);
 
 
 //add variants
 // router.get('/products/variants/:id',adminAuth, productController.getVariantForm);
 // router.post('/products/variants/:id',adminAuth, productController.addVariants);
 
-router.get('/products/:id/variants', adminAuth, productController.getVariantForm);
-router.post('/products/:id/variants', adminAuth, productController.addVariants);
+
 
 
 

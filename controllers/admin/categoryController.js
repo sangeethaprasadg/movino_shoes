@@ -40,22 +40,6 @@ const addCategoryPage = (req, res) => {
   });
 };
 
-// POST: Add Category
-// const addCategory = async (req, res) => {
-//   try {
-//     const { categoryName, subCategory } = req.body;
-//     const image = req.file ? req.file.filename : null;
-
-//     await Category.create({ categoryName, subCategory, image });
-
-//     req.flash('successMessage', 'Category added successfully!');
-//     res.redirect("/admin/categories"); // redirect back to form if you want to show alert here
-//   } catch (error) {
-//     console.error("Error adding category:", error);
-//     req.flash('errorMessage', 'Something went wrong!');
-//     res.redirect("/admin/categories/add");
-//   }
-// };
 
 
 const addCategory = async (req, res) => {
@@ -115,76 +99,77 @@ const editCategory = async (req, res) => {
 
 
 
-const softDeleteCategory = async (req, res) => {
+
+
+
+
+
+
+
+
+const toggleCategoryListing = async (req, res) => {
+
   try {
-    const category = await Category.findByIdAndUpdate(req.params.id, { isDeleted: true }, { new: true });
-
-    if (category) {
-      // Also mark all products under this category as deleted
-      await Product.updateMany(
-        { category: category._id  },
-       
-        { $set: { isDeleted: true } }
-     
-      );
-    }
-
-    res.json({ success: true });
-  } catch (err) {
-    console.error("Error in soft deleting category and its products:", err);
-    res.json({ success: false, message: "Error deleting category" });
-  }
-};
-
-
-
-
-
-
-const recoveryPage = async (req, res) => {
-  const deletedCategories = await Category.find({ isDeleted: true });
-  res.render("recovery", { deletedCategories });
-};
-
-
-const recoverCategory = async (req, res) => {
-  try {
-
-    // console.log("recoverCategory function called with ID:", req.params.id);
-    // Recover the category
-    const category = await Category.findByIdAndUpdate(
-      req.params.id,
-      { isDeleted: false },
-      { new: true } // Return the updated document
-    );
+    // 1. Find the category
+    const category = await Category.findById(req.params.id);
 
     if (!category) {
-      console.error("Category not found for recovery:", req.params.id);
-      return res.status(404).json({ success: false, message: "Category not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
     }
 
-    // Debug: Log the recovered category name
-    console.log("Recovered category name:", category._id);
+    // 2. Toggle the listing status
+    category.isListed = !category.isListed;
+    await category.save();
 
-    // Recover all related products (case-insensitive match)
-    const updatedProductsResult = await Product.updateMany(
-      { category: { $regex: new RegExp(`^${category._id}$`, "i") } }, // Case-insensitive match
-      { $set: { isDeleted: false } }
-    );
+    // 3. Update all related products
+    // await Product.updateMany(
+    //   { category: category._id },
+    //   {
+    //     $set: {
+    //       isListed: category.isListed,
+    //     },
+    //   }
+    // );
 
-    // Debug: Log the number of updated products
-    console.log(
-      `Products updated for category (${category._id}):`,
-      updatedProductsResult.modifiedCount
-    );
 
-    // Redirect back to admin categories
-    res.redirect("/admin/categories");
-  } catch (err) {
-    console.error("Error recovering category and its products:", err);
-    res.status(500).json({ success: false, message: "Error recovering category" });
+    const products = await Product.find({
+    category: category._id
+});
+
+
+
+const result = await Product.updateMany(
+    { category: category._id },
+    {
+        $set: {
+            isListed: category.isListed,
+        },
+    }
+);
+
+console.log(result);
+
+    // 4. Send success response
+    res.json({
+      success: true,
+      isListed: category.isListed,
+    });
+
+  } catch (error) {
+    console.error("Error toggling category listing:", error);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
   }
 };
+
+
+
+  
 
 
 
@@ -197,10 +182,5 @@ module.exports = {
   addCategory,
   editCategoryPage,
   editCategory,
-  softDeleteCategory,
-  recoveryPage,
-  recoverCategory,
-
-
-
+  toggleCategoryListing,
 };

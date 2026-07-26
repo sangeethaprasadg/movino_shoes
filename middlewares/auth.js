@@ -25,6 +25,12 @@ const User = require("../models/userSchema");
 
 
 const userAuth = (req, res, next) => {
+
+
+
+    
+
+    
     if (req.session.user) {
         User.findById(req.session.user)
             .then(user => {

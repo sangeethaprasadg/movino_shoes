@@ -2,101 +2,7 @@ const mongoose = require('mongoose')
 const{ Schema }= mongoose;
 
 
-// const productSchema = new Schema({
-//     productName:{
-//         type:String,
-//         required:true,
-//     },
-//     description:{
-//         type:String,
-//         required:true,
-//     },
-//     brand:{
-//         type:String,
-//         required:true,
-//     },
-//     category:{
-//         type:Schema.Types.ObjectId,
-//         ref:"Category",
-//         required:true,
-//     },
-//     regularPrice:{
-//         type:Number,
-//         required:true,
-//     },
-//     salePrice:{
-//         type:Number,
-//         required:true,
 
-//     },
-//     productOffer:{
-//         type:Number,
-//         default:0
-//     },
-//     quantity:{
-//         type:Number,
-//         deafault:true
-//     },
-//     color:{
-//         type:String,
-//         required:true
-//     },
-//     productImage:{
-//         type:[String],
-//         required:true,
-//     },
-//     isBlocked:{
-//         type:Boolean,
-//         default:false
-//     },
-//     status:{
-//         type:String,
-//         enum:["Available","out of stock",Discountinued],
-//         required:true,
-//         default:"Available"
-
-//     },
-    
-
-// },{timestamps:true});
-// const productSchema = new mongoose.Schema({
-//   name: 
-//   { type: String, 
-//     required: true },
-
-//   category: { 
-//     type: String, 
-//     required: true },
-
-//   subcategory: { 
-//     type: String, 
-//     required: true },
-
-//   price: { 
-//     type: Number, 
-//     required: true },
-
-//   images: { 
-//     type: [String], 
-//     required: true }, // Multiple images
-
-//   isDeleted: { 
-//     type: Boolean, 
-//     default: false }, // Soft delete flag
-
-//     status: {
-//       type: String,
-//       enum: ['Active', 'Inactive'],
-//       default: 'Active'
-//     }
-    
-    
-// }, { timestamps: true });
-const variantSchema = new mongoose.Schema({
-  size: { type: String, required: true },
-  price: { type: Number, required: true },  // Price for this size variant
-  quantity: { type: Number, required: true }, // Stock for this size variant
-});
 
 const productSchema = new mongoose.Schema({
   name:
@@ -141,7 +47,7 @@ const productSchema = new mongoose.Schema({
     enum: ['Active', 'Inactive'],
     default: 'Active'
   },
-  variants: [variantSchema], 
+    // variants: [variantSchema], 
 }, { timestamps: true });
 
 

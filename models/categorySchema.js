@@ -17,11 +17,20 @@ const categorySchema = new mongoose.Schema({
       type: String, 
       required: true,
     },
-    isDeleted: {
+    isListed: {
       type: Boolean,
-      default: false,
+      default: true,
     },
-    isBlocked: { type: Boolean, default: false },
+    isDeleted: {
+    type: Boolean,
+    default: false
+},
+
+isBlocked: {
+    type: Boolean,
+    default: false
+},
+   
    
   },
   { timestamps: true } // for createdAt and updatedAt

@@ -24,9 +24,9 @@ const loadHomepage = async (req, res) => {
             isDeleted: false,
             isListed: true,
             status: "Active"
-          }).limit(6);
+          }).limit(4);
        
-
+          console.log('Homepage products fetched:', products.map(p => ({ id: p._id.toString(), isDeleted: p.isDeleted })));
       if (user) {
             const userData = await User.findOne({ _id: user._id });
             return res.render("home", { user: userData, products }); // Pass products here
@@ -316,6 +316,11 @@ const getShopPage = async (req, res) => {
   
       // Build the query object for MongoDB
       const filterQuery = {};
+
+      // Show only listed and active products on the user shop page.
+filterQuery.isDeleted = false;
+filterQuery.isListed = true;
+filterQuery.status = "Active";
   
       // Text search if query parameter exists
       if (query) {
@@ -327,14 +332,32 @@ const getShopPage = async (req, res) => {
   
 //    category and subcategory filter
 
-    if (selectedCategory) {
-        filterQuery.category = { $regex: `^${selectedCategory}$`, $options: 'i' }; // Case-insensitive match
-    }
+   // Category Filter
+// Product stores category as ObjectId.
+// So first find the category document, then filter using its _id.
 
-    // Add subcategory filter if selected
-    if (selectedSubCategory) {
-        filterQuery.subcategory = { $regex: `^${selectedSubCategory}$`, $options: 'i' }; // Case-insensitive match
+if (selectedCategory) {
+
+    const category = await Category.findOne({
+        categoryName: selectedCategory
+    });
+
+    if (category) {
+        filterQuery.category = category._id;
     }
+}
+
+// Subcategory is stored as a string,
+// so regex filtering is fine.
+
+if (selectedSubCategory) {
+
+    filterQuery.subcategory = {
+        $regex: `^${selectedSubCategory}$`,
+        $options: "i"
+    };
+
+}
 
 
 
@@ -409,12 +432,16 @@ const getShopPage = async (req, res) => {
         totalProducts,
         categoriesJson: JSON.stringify(categories), // Pass categories for client-side JS
       });
-    } catch (error) {
-      console.error('Shop page error:', error.message); // Log detailed error message
-      res.status(500).render('error', {
-        message: 'An error occurred while loading the shop page. Please try again later.',
-      });
-    }
+    } 
+catch (error) {
+  console.error("========== SHOP ERROR ==========");
+  console.error(error);
+  console.error("================================");
+
+  res.send(error.message);
+}
+
+
   };
   
  
@@ -582,9 +609,10 @@ const handleResetPassword = async (req, res) => {
     req.session.resetEmail = null;
     req.session.forgotOtp = null;
 
-    // Optional: Flash message
-    req.flash("success", "Password changed successfully!");
-    res.redirect("/login");
+   res.json({
+    success: true,
+    message: "Password changed successfully!"
+});
 };
 
 
@@ -623,14 +651,49 @@ const postEditProfile = async (req, res) => {
 const updateName = async (req, res) => {
     try {
         const userId = req.session.user._id;
-        const { name } = req.body;
+        let { name } = req.body;
+
+        name = name.trim();
+
+        if (!name) {
+            return res.json({
+                success: false,
+                message: "Name is required"
+            });
+        }
+
+        if (name.length < 3 || name.length > 30) {
+            return res.json({
+                success: false,
+                message: "Name must be between 3 and 30 characters"
+            });
+        }
+
+        const nameRegex = /^[A-Za-z ]+$/;
+
+        if (!nameRegex.test(name)) {
+            return res.json({
+                success: false,
+                message: "Name can contain only letters and spaces"
+            });
+        }
+
         await User.findByIdAndUpdate(userId, { name });
+
         req.session.user.name = name;
-        res.json({ success: true, updatedName: name }); 
-      
+
+        res.json({
+            success: true,
+            updatedName: name
+        });
+
     } catch (error) {
-      console.error(error);
-      res.json({ success: false });
+        console.error(error);
+
+        res.json({
+            success: false,
+            message: "Something went wrong"
+        });
     }
 };
 
@@ -641,36 +704,92 @@ const updateName = async (req, res) => {
 
 // Generate and Send OTP
 const sendOTP = async (req, res) => {
+
+
     try {
-        const { email } = req.body;
-        console.log("📨 Sending OTP to:", email);
-        const otp = Math.floor(100000 + Math.random() * 900000); 
+        let { email } = req.body;
+        email = email.trim().toLowerCase();
+
+        const userId = req.session.user._id;
+
+        // Current user
+        const currentUser = await User.findById(userId);
+
+        // Empty validation
+        if (!email) {
+            return res.json({
+                success: false,
+                message: "Email is required"
+            });
+        }
+
+        // Email format validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+            return res.json({
+                success: false,
+                message: "Please enter a valid email address"
+            });
+        }
+
+        // Same email validation
+        if (currentUser.email === email) {
+            return res.json({
+                success: false,
+                message: "This is already your current email"
+            });
+        }
+
+        // Duplicate email validation
+        const existingUser = await User.findOne({
+            email,
+            _id: { $ne: userId }
+        });
+
+        if (existingUser) {
+            return res.json({
+                success: false,
+                message: "Email already exists"
+            });
+        }
+
+        // Generate OTP
+        const otp = Math.floor(100000 + Math.random() * 900000);
 
         req.session.otp = otp;
         req.session.newEmail = email;
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.NODEMAILER_EMAIL,
-      pass: process.env.NODEMAILER_PASSWORD
-        
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.NODEMAILER_EMAIL,
+                pass: process.env.NODEMAILER_PASSWORD
+            }
+        });
+
+        await transporter.sendMail({
+            from: process.env.NODEMAILER_EMAIL,
+            to: email,
+            subject: "Verify Your Email",
+            text: `Your OTP is ${otp}`
+        });
+
+        console.log("OTP:", otp);
+
+        res.json({
+            success: true,
+            message: "OTP sent successfully"
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: "Server error"
+        });
     }
-});
-
-await transporter.sendMail({
-    from: process.env.EMAIL,
-    to: email,
-    subject: 'Verify Your Email',
-    text: `Your OTP is ${otp}`
-});
-
-
-console.log("✅ OTP sent:", otp);
-res.json({ success: true });
-} catch (error) {
-res.status(500).json({ success: false, message: 'Server error' });
-}
 };
 
 
@@ -691,7 +810,10 @@ const verifyEmailOTP = async (req, res) => {
           req.session.otp = null;
           req.session.newEmail = null;
 
-          res.json({ success: true });
+         res.json({
+    success: true,
+    updatedEmail: email
+});
       } else {
           res.status(400).json({ success: false, message: 'Invalid OTP or Email' });
       }
@@ -707,36 +829,7 @@ const verifyEmailOTP = async (req, res) => {
 
 
 
-// const changePassword = async (req, res) => {
-//   try {
-//       const { currentPassword, newPassword } = req.body;
 
-//       const user = await User.findById(req.user.id);
-//       if (!user) {
-//           return res.status(404).json({ success: false, message: 'User not found' });
-//       }
-
-//       if (!user.password) {
-//           return res.status(400).json({ success: false, message: 'Password change not supported for this account (e.g., Google login)' });
-//       }
-
-//       const isMatch = await bcrypt.compare(currentPassword, user.password);
-//       if (!isMatch) {
-//           return res.status(400).json({ success: false, message: 'Incorrect current password' });
-//       }
-
-//       const hashedPassword = await bcrypt.hash(newPassword, 10);
-//       user.password = hashedPassword;
-
-//       await user.save();
-
-//       res.json({ success: true, message: 'Password changed successfully' });
-
-//   } catch (error) {
-//       console.error('Change Password Error:', error);
-//       res.status(500).json({ success: false, message: 'Server error' });
-//   }
-// };
 
 const changePassword = async (req, res) => {
   try {

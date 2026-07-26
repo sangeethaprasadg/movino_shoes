@@ -187,33 +187,6 @@
 							<!-- <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p> -->
 							<div class="size-wrap">
 								<div class="block-26 mb-2">
-
-
-									<h4>Available Sizes</h4>
-									<div id="sizeButtons" class="mb-3">
-									  <% if (!product.variants || product.variants.length === 0) { %>
-										<p>No size variants available.</p>
-									  <% } else { %>
-										<% product.variants.forEach((variant, index) => { %>
-										  <button 
-											type="button" 
-											class="btn btn-outline-primary me-2 mb-2 size-btn" 
-											data-index="<%= index %>"
-											data-price="<%= variant.price %>"
-											data-quantity="<%= variant.quantity %>"
-										  >
-											<%= variant.size %>
-										  </button>
-										<% }) %>
-									  <% } %>
-									</div>
-
-									<div id="variantDetails">
-										<p>Price: ₹<span id="variantPrice"><%= product.price %></span></p> 
-										 <!-- <p>Stock: <span id="variantStock"><%= product.stock %></span></p> -->
-										<p id="stockStatus" class="fw-bold"></p>
-									  </div>
-									  
 									<!-- <h4>Size</h4> -->
 				               <!-- <ul>
 				                  <li><a href="#">7</a></li>
@@ -266,20 +239,7 @@
 								
 									  
 									  <!-- <form action="/cart/add/<%= product._id %>" method="POST"> -->
-										<!-- <form action="/cart/add/<%= product._id %>?from=product" method="POST">
-										<button 
-										  type="submit" 
-										  class="btn btn-primary"
-										  <% if (product.isBlocked || product.category?.isBlocked) { %> disabled <% } %>
-										>
-										  Add to Cart
-										</button>
-									  </form>
-									   -->
-
-
-									   <form action="/cart/add/<%= product._id %>?from=product" method="POST" id="addToCartForm">
-										<input type="hidden" name="variantSize" id="variantSize" value="<%= product.variants && product.variants.length > 0 ? product.variants[0].size : '' %>">
+										<form action="/cart/add/<%= product._id %>?from=product" method="POST">
 										<button 
 										  type="submit" 
 										  class="btn btn-primary"
@@ -307,7 +267,39 @@
 		
 
 
-				
+				<!-- <h4>Size Variants</h4>
+				<table class="table table-bordered">
+				  <thead>
+					<tr>
+					  <th>Size</th>
+					  <th>Price (₹)</th>
+					  <th>Quantity</th>
+					  <th>Status</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<% if (!product.variants || product.variants.length === 0) { %>
+					  <tr><td colspan="4">No size variants available.</td></tr>
+					<% } else { %>
+					  <% product.variants.forEach(variant => { %>
+						<tr>
+						  <td><%= variant.size %></td>
+						  <td>₹<%= variant.price %></td>
+						  <td><%= variant.quantity %></td>
+						  <td>
+							<% if (variant.quantity === 0) { %>
+							  <span class="badge bg-danger">Out of Stock</span>
+							<% } else if (variant.quantity < 5) { %>
+							  <span class="badge bg-warning text-dark">Limited Stock</span>
+							<% } else { %>
+							  <span class="badge bg-success">In Stock</span>
+							<% } %>
+						  </td>
+						</tr>
+					  <% }) %>
+					<% } %>
+				  </tbody>
+				</table> -->
 				
 
 
@@ -622,96 +614,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	</script>
 
 
-<!-- <script>
-	const sizeButtons = document.querySelectorAll('.size-btn');
-	const priceEl = document.getElementById('variantPrice');
-	const stockEl = document.getElementById('variantStock');
-	const stockStatusEl = document.getElementById('stockStatus');
-  
-	function updateStockStatus(quantity) {
-	  if (quantity === 0) {
-		stockStatusEl.textContent = 'Out of Stock';
-		stockStatusEl.style.color = 'red';
-	  } else if (quantity < 5) {
-		stockStatusEl.textContent = 'Limited Stock';
-		stockStatusEl.style.color = 'orange';
-	  } else {
-		stockStatusEl.textContent = 'In Stock';
-		stockStatusEl.style.color = 'green';
-	  }
-	}
-  
-	// Default select first size on page load
-	if (sizeButtons.length > 0) {
-	  sizeButtons[0].classList.add('active');
-	  priceEl.textContent = sizeButtons[0].dataset.price;
-	  stockEl.textContent = sizeButtons[0].dataset.quantity;
-	  updateStockStatus(parseInt(sizeButtons[0].dataset.quantity));
-	}
-  
-	sizeButtons.forEach(btn => {
-	  btn.addEventListener('click', () => {
-		// Remove active class from all buttons
-		sizeButtons.forEach(b => b.classList.remove('active'));
-		// Add active class to clicked button
-		btn.classList.add('active');
-		
-		// Update price and stock display
-		priceEl.textContent = btn.dataset.price;
-		stockEl.textContent = btn.dataset.quantity;
-		updateStockStatus(parseInt(btn.dataset.quantity));
-	  });
-	});
-  </script>
-   -->
-   <script>
 
-   const sizeButtons = document.querySelectorAll('.size-btn');
-const priceEl = document.getElementById('variantPrice');
-const stockEl = document.getElementById('variantStock');
-const stockStatusEl = document.getElementById('stockStatus');
-const variantSizeInput = document.getElementById('variantSize');
-const addToCartBtn = document.querySelector('#addToCartForm button[type="submit"]');
-
-function updateStockStatus(quantity) {
-  if (quantity === 0) {
-    stockStatusEl.textContent = 'Out of Stock';
-    stockStatusEl.style.color = 'red';
-  } else if (quantity < 5) {
-    stockStatusEl.textContent = 'Limited Stock';
-    stockStatusEl.style.color = 'orange';
-  } else {
-    stockStatusEl.textContent = 'In Stock';
-    stockStatusEl.style.color = 'green';
-  }
-}
-
-// Default select first size on page load
-if (sizeButtons.length > 0) {
-  const firstBtn = sizeButtons[0];
-  firstBtn.classList.add('active');
-  priceEl.textContent = firstBtn.dataset.price;
-  stockEl.textContent = firstBtn.dataset.quantity;
-  updateStockStatus(parseInt(firstBtn.dataset.quantity));
-  variantSizeInput.value = firstBtn.textContent.trim();
-  addToCartBtn.disabled = parseInt(firstBtn.dataset.quantity) === 0;
-}
-
-sizeButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    sizeButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    priceEl.textContent = btn.dataset.price;
-    stockEl.textContent = btn.dataset.quantity;
-    updateStockStatus(parseInt(btn.dataset.quantity));
-    variantSizeInput.value = btn.textContent.trim();
-    addToCartBtn.disabled = parseInt(btn.dataset.quantity) === 0;
-    
-    // Update max quantity allowed
-    document.getElementById('quantity').max = btn.dataset.quantity;
-  });
-});
-</script>
 
 	</body>
 </html>

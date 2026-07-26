@@ -1,12 +1,14 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-    document.getElementById("logoutBtn").addEventListener("click", function() {
-        fetch('/admin/logout', { method: 'GET' })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url; // Redirect to login page
-            }
-        })
-        .catch(error => console.error("Logout failed:", error));
-    });
+document.getElementById("logoutBtn").addEventListener("click", function() {
+    fetch('/admin/logout', { method: 'GET' })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
+    })
+    .catch(error => console.error("Logout failed:", error));
+});
 </script>
 
