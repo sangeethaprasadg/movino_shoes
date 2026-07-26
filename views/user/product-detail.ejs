@@ -214,6 +214,9 @@
 				               </ul>
 				            </div> -->
 							</div>
+
+
+							<% if (product.stock > 0) { %>
                      <div class="input-group mb-4">
                      	<span class="input-group-btn">
                         	<button type="button" class="quantity-left-minus btn"  data-type="minus" data-field="">
@@ -229,24 +232,36 @@
                   	</div>
                   	<div class="row">
 	                  	<div class="col-sm-12 text-center">
-									
+									<% } %>
 
 									<% if (product.isBlocked || product.category?.isBlocked) { %>
 										<p style="color:red;">This product is currently unavailable.</p>
 									  <% } %>
 
+<% if (product.isBlocked || product.category?.isBlocked) { %>
+    <p style="color:red;">This product is currently unavailable.</p>
+<% } %>
 
+<form action="/cart/add/<%= product._id %>?from=product" method="POST">
+    ...
+</form>
 								
 									  
 									  <!-- <form action="/cart/add/<%= product._id %>" method="POST"> -->
 										<form action="/cart/add/<%= product._id %>?from=product" method="POST">
-										<button 
-										  type="submit" 
-										  class="btn btn-primary"
-										  <% if (product.isBlocked || product.category?.isBlocked) { %> disabled <% } %>
-										>
-										  Add to Cart
-										</button>
+										<button
+    type="submit"
+    class="btn btn-primary"
+    <% if (product.isBlocked || product.category?.isBlocked || product.stock <= 0) { %>
+        disabled
+    <% } %>
+>
+    <% if (product.stock <= 0) { %>
+        Out of Stock
+    <% } else { %>
+        Add to Cart
+    <% } %>
+</button>
 									  </form>
 									  
 
@@ -267,39 +282,7 @@
 		
 
 
-				<!-- <h4>Size Variants</h4>
-				<table class="table table-bordered">
-				  <thead>
-					<tr>
-					  <th>Size</th>
-					  <th>Price (₹)</th>
-					  <th>Quantity</th>
-					  <th>Status</th>
-					</tr>
-				  </thead>
-				  <tbody>
-					<% if (!product.variants || product.variants.length === 0) { %>
-					  <tr><td colspan="4">No size variants available.</td></tr>
-					<% } else { %>
-					  <% product.variants.forEach(variant => { %>
-						<tr>
-						  <td><%= variant.size %></td>
-						  <td>₹<%= variant.price %></td>
-						  <td><%= variant.quantity %></td>
-						  <td>
-							<% if (variant.quantity === 0) { %>
-							  <span class="badge bg-danger">Out of Stock</span>
-							<% } else if (variant.quantity < 5) { %>
-							  <span class="badge bg-warning text-dark">Limited Stock</span>
-							<% } else { %>
-							  <span class="badge bg-success">In Stock</span>
-							<% } %>
-						  </td>
-						</tr>
-					  <% }) %>
-					<% } %>
-				  </tbody>
-				</table> -->
+				
 				
 
 

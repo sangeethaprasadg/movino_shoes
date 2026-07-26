@@ -49,7 +49,7 @@
 		<nav class="colorlib-nav" role="navigation">
 			<div class="top-menu">
 				<div class="container">
-					<div class="row">
+					<div class="row align-items-start">
 						<div class="col-sm-7 col-md-9">
 							<div id="colorlib-logo"><a href="/">M O V I N O</a></div>
 						</div>
@@ -214,7 +214,7 @@
 							   </form>
 							 </div>
 						   </div>
-						 <!-- </div> -->
+						 </div>
 					   <% } %>
 					   
 					   <!-- OTHER ADDRESSES -->
@@ -307,6 +307,7 @@
 	  </form>
 	</div>
   </div>
+
   
 				<!-- Side Section -->
 <div class="col-lg-4">
@@ -366,6 +367,9 @@
 	  </form>
 	</div>
   </div>
+  </div> <!-- col-lg-4 -->
+</div> <!-- row -->
+</div> <!-- container -->
   
 
 
@@ -613,43 +617,27 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		
 		// </script>
 		
-		// <script>
-		// 	const form = document.querySelector('form[action="/place-order"]');
-		  
-		// 	form.addEventListener('submit', async function(event) {
-		// 	  event.preventDefault(); // prevent normal form submit
-		  
-		// 	  const formData = new FormData(form);
-		  
-		// 	  try {
-		// 		const response = await fetch('/place-order', {
-		// 		  method: 'POST',
-		// 		  body: formData
-		// 		});
-		  
-		// 		const data = await response.json();
-		  
-		// 		if (!response.ok) {
-		// 		  // If error response, show SweetAlert with the error message
-		// 		  Swal.fire({
-		// 			icon: 'error',
-		// 			title: 'Oops...',
-		// 			text: data.error || 'Something went wrong!',
-		// 		  });
-		// 		} else {
-		// 		  // On success, redirect to order complete page
-		// 		  window.location.href = `/order-complete/${data.orderId}`;
-		// 		}
-		// 	  } catch (err) {
-		// 		Swal.fire({
-		// 		  icon: 'error',
-		// 		  title: 'Network Error',
-		// 		  text: 'Unable to place order. Please try again.',
-		// 		});
-		// 	  }
-		// 	});
-		//   </script>
-		  
+		
+		  <script>
+document.querySelector('form[action="/place-order"]').addEventListener('submit', function (e) {
+    const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+
+    if (!selectedAddress) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Address Required',
+            text: 'Please select a delivery address before placing your order.',
+            confirmButtonColor: '#3085d6'
+        });
+
+        return;
+    }
+
+    document.getElementById('hiddenAddressId').value = selectedAddress.value;
+});
+</script>
 
 
 	<!-- jQuery -->

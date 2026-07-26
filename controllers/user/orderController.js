@@ -25,6 +25,18 @@ const placeOrder = async (req, res) => {
     if (!cart || cart.items.length === 0) {
       return res.status(400).send("Cart is empty");
     }
+for (const item of cart.items) {
+  const product = await Product.findById(item.productId._id);
+
+  if (!product || product.stock < item.quantity) {
+    return res.status(400).send(
+      `${product?.name || "Product"} is out of stock or does not have enough quantity available.`
+    );
+  }
+}
+
+
+
 
     const orderItems = cart.items.map((item) => {
       const price = item.productId.price;
@@ -51,7 +63,17 @@ const placeOrder = async (req, res) => {
     });
 
     const savedOrder = await newOrder.save();
-    // console.log("Saved Order:", savedOrder);
+   // Reduce product stock
+for (const item of cart.items) {
+  await Product.findByIdAndUpdate(
+    item.productId._id,
+    {
+      $inc: {
+        stock: -item.quantity
+      }
+    }
+  );
+}
 
     // Clear Cart
     await Cart.deleteOne({ _id: cart._id });
@@ -196,9 +218,6 @@ const returnOrder = async (req, res) => {
     // Save the updated order
     await order.save();
     
-
-    // return res.status(200).send('Return request submitted successfully');
-    // return res.redirect(`/order-details/${orderId}?returnSuccess=true`);
     return res.redirect(`/order/${orderId}?returnSuccess=true`);
 
 
