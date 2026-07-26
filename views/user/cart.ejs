@@ -192,38 +192,7 @@
                                 <tbody>
                                     <% cartItems.forEach(item => { %>
                                     <tr>
-                                        <!-- <td>
-                                            <div class="d-flex align-items-center"> -->
-                                                <!-- Dynamically Render Product Image -->
-
-                                                <!-- <div class="product-img" style="background-image: url('<%= item.productId.images[0] %>'); width: 50px; height: 50px; background-size: cover; background-position: center; margin-right: 10px;"></div> -->
-                                                <!-- <div class="product-img" style="background-image: url('/uploads/products/<%= item.productId.images[0] %>'); width: 50px; height: 50px; background-size: cover; background-position: center; margin-right: 10px;"></div> -->
-
-                                                <!-- <div class="product-img" style="background-image: url('<%= item.productId.image %>'); width: 50px; height: 50px; background-size: cover; background-position: center; margin-right: 10px;"></div> -->
-                                                <!-- Product Name -->
-                                                <!-- <span><%= item.productId.name %></span> -->
-                                            <!-- </div>
-                                        </td>
-                                        <td>
-                                            Quantity Controls -->
-                                            <!-- <div class="input-group">
-                                                <button class="btn btn-sm btn-primary" onclick="updateCartQuantity('<%= item.productId._id %>', -1)">-</button>
-                                                <input type="text" value="<%= item.quantity %>" readonly class="form-control text-center" style="width: 50px;">
-                                                <button class="btn btn-sm btn-primary" onclick="updateCartQuantity('<%= item.productId._id %>', 1)">+</button>
-                                            </div>
-                                        </td>
-                                        <td>₹<%= item.productId.price %></td>
-                                        <td>₹<%= (item.productId.price * item.quantity).toFixed(2) %></td>
-                                        <td>
-                                          -->
-                                            <!-- <form action="/cart/remove/<%= item.productId._id %>" method="POST" style="display: inline;">
-    <button type="submit" class="btn btn-danger btn-sm"style="background-color: #339999; border-color: #339999;">Remove</button>
-</form> -->
-                                        <!-- </td>
-                                    </tr> -->
-
-<!-- a change did -->
-
+                                     
 <tr data-product-id="<%= item.productId._id %>">
 	<td>
 	  <div class="d-flex align-items-center">
@@ -286,15 +255,27 @@
             const msg = await response.text();
 
             // ✅ Show SweetAlert for out of stock
-            if (msg === "Exceeds stock availability.") {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Out of Stock",
-                    text: "You cannot add more items than available stock!",
-                });
-            } else {
-                alert(msg);
-            }
+           if (msg === "Exceeds stock availability.") {
+
+    Swal.fire({
+        icon: "warning",
+        title: "Out of Stock",
+        text: "You cannot add more items than available stock!",
+    });
+
+} else if (msg === "Maximum 5 units allowed per product.") {
+
+    Swal.fire({
+        icon: "warning",
+        title: "Limit Reached",
+        text: "You can purchase a maximum of 5 units of this product.",
+    });
+
+} else {
+
+    alert(msg);
+
+}
 
             return;
         }
@@ -394,60 +375,7 @@
 					</div>
 				</div>
 
-				<!-- <div class="row">
-					<div class="col-sm-8 offset-sm-2 text-center colorlib-heading colorlib-heading-sm">
-						<h2>Related Products</h2>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3 col-lg-3 mb-4 text-center">
-						<div class="product-entry border">
-							<a href="#" class="prod-img">
-								<img src="images/item-1.jpg" class="img-fluid" alt="Free html5 bootstrap 4 template">
-							</a>
-							<div class="desc">
-								<h2><a href="#">Women's Boots Shoes Maca</a></h2>
-								<span class="price">$139.00</span>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3 col-lg-3 mb-4 text-center">
-						<div class="product-entry border">
-							<a href="#" class="prod-img">
-								<img src="images/item-2.jpg" class="img-fluid" alt="Free html5 bootstrap 4 template">
-							</a>
-							<div class="desc">
-								<h2><a href="#">Women's Minam Meaghan</a></h2>
-								<span class="price">$139.00</span>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3 col-lg-3 mb-4 text-center">
-						<div class="product-entry border">
-							<a href="#" class="prod-img">
-								<img src="images/item-3.jpg" class="img-fluid" alt="Free html5 bootstrap 4 template">
-							</a>
-							<div class="desc">
-								<h2><a href="#">Men's Taja Commissioner</a></h2>
-								<span class="price">$139.00</span>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3 col-lg-3 mb-4 text-center">
-						<div class="product-entry border">
-							<a href="#" class="prod-img">
-								<img src="images/item-4.jpg" class="img-fluid" alt="Free html5 bootstrap 4 template">
-							</a>
-							<div class="desc">
-								<h2><a href="#">Russ Men's Sneakers</a></h2>
-								<span class="price">$139.00</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
-
+			
 		<footer id="colorlib-footer" role="contentinfo">
 			<div class="container">
 				<div class="row row-pb-md">

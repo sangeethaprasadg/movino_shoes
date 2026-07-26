@@ -69,12 +69,26 @@ if (!product || product.isBlocked || product.category?.isBlocked) {
   
     const item = cart.items.find(i => i.productId.toString() === productId);
   
-    if (item) {
-      item.quantity += 1;
-      if (item.quantity > product.stock) {
-        return res.status(400).send('Exceeds stock availability.');
-      }
-    } else {
+if (item) {
+
+  // Maximum 5 products per user
+  if (item.quantity >= 5) {
+    return res.status(400).send("Maximum 5 units allowed per product.");
+  }
+
+  item.quantity += 1;
+
+  if (item.quantity > product.stock) {
+    return res.status(400).json({
+    success: false,
+    message: "Exceeds stock availability."
+});
+  }
+
+}
+
+
+    else {
       cart.items.push({ productId, quantity: 1, price: product.price, totalPrice: product.price });
     }
   
@@ -153,7 +167,13 @@ const updateCartQuantity = async (req, res) => {
         const cartItem = cart.items.find(item => item.productId.toString() === productId);
         if (!cartItem) return res.status(404).send("Product not in cart.");
 
-        cartItem.quantity += change;
+// First update the quantity
+cartItem.quantity += change;
+
+// Maximum quantity limit
+if (cartItem.quantity > 5) {
+   return res.status(400).send("Maximum 5 units allowed per product.");
+}
 
         if (cartItem.quantity <= 0) {
             cart.items = cart.items.filter(item => item.productId.toString() !== productId);
