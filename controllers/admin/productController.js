@@ -78,7 +78,7 @@ const getAddProductForm = async (req, res) => {
 
 const postAddProduct = async (req, res) => {
   try {
-    const { name, category, subcategory, price,description,stock } = req.body;
+    const { name, category, subcategory, price,description,size,color,variantStock } = req.body;
 //already existing
     const existing = await Product.findOne({ name: name.trim() });
     if (existing) {
@@ -94,6 +94,33 @@ const postAddProduct = async (req, res) => {
     const images = req.files.map(file => file.filename);
 
  
+const variants = [];
+
+if (size && color && variantStock) {
+    for (let i = 0; i < size.length; i++) {
+
+        if (
+            size[i] &&
+            color[i] &&
+            variantStock[i] !== ""
+        ) {
+            variants.push({
+                size: size[i],
+                color: color[i],
+                stock: Number(variantStock[i])
+            });
+        }
+    }
+}
+
+
+// Calculate total stock
+
+const totalStock = variants.reduce((sum, variant) => {
+    return sum + variant.stock;
+}, 0);
+
+
 
     const newProduct = new Product({
       name,
@@ -102,9 +129,12 @@ const postAddProduct = async (req, res) => {
       price,
       images,
       description,
-      stock,
+      stock: totalStock,
+      variants,
     });
 
+
+    console.log(variants);
     await newProduct.save();
 
     // Pass success message via query string
@@ -316,55 +346,7 @@ const searchProducts = async (req, res) => {
 
 
 
-// const getVariantForm = async (req, res) => {
-//   const productId = req.params.id;
-//   try {
-//     const product = await Product.findById(productId);
-//     if (!product) {
-//       return res.status(404).send('Product not found');
-//     }
-//     res.render('products/variants', { product });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send('Server error');
-//   }
-// };
 
-
-
-
-// const addVariants = async (req, res) => {
-//   const productId = req.params.id;
-//   const { sizes, prices, quantities } = req.body;
-
-//   if (!sizes || !prices || !quantities || !Array.isArray(sizes)) {
-//     return res.status(400).send('Invalid input');
-//   }
-
-//   try {
-//     const product = await Product.findById(productId);
-//     if (!product) return res.status(404).send('Product not found');
-
-//     // Build variants array from input arrays
-//     const variants = sizes.map((size, index) => ({
-//       size,
-//       price: parseFloat(prices[index]),
-//       quantity: parseInt(quantities[index], 10),
-//     }));
-
-//     product.variants = variants;
-
-//     // Update total stock as sum of all variant quantities
-//     product.stock = variants.reduce((acc, v) => acc + v.quantity, 0);
-
-//     await product.save();
-
-//     res.redirect('/admin/products');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Server error');
-//   }
-// };
 
    
 
@@ -379,8 +361,7 @@ module.exports = {
   viewDeletedProducts,
   listProduct,
   searchProducts,
-  // getVariantForm,
-  // addVariants
+  
 
   
 };

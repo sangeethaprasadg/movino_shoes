@@ -2,7 +2,21 @@ const mongoose = require('mongoose')
 const{ Schema }= mongoose;
 
 
-
+const variantSchema = new Schema({
+    size: {
+        type: String,
+        required: true
+    },
+    color: {
+        type: String,
+        required: true
+    },
+    stock: {
+        type: Number,
+        required: true,
+        min: 0
+    }
+}, { _id: true });
 
 const productSchema = new mongoose.Schema({
   name:
@@ -25,9 +39,18 @@ const productSchema = new mongoose.Schema({
   { type: [String],
     //  required: true 
     },
-  stock: 
-  { type: Number, 
-    required: true },
+
+stock: {
+  type: Number,
+  default: 0
+},
+
+variants: {
+  type: [variantSchema],
+  default: []
+},
+
+
   description: 
   { type: String, 
     required: true,

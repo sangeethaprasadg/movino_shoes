@@ -24,11 +24,7 @@
               <div class="invalid-feedback">Description is required.</div>
             </div>
 
-            <div class="mb-3">
-              <label for="stock" class="form-label">Stock</label>
-              <input type="number" name="stock" id="stock" class="form-control" min="0" required>
-              <div class="invalid-feedback">Stock must be a non-negative number.</div>
-            </div>
+           
 
             <div class="mb-3">
               <label for="price" class="form-label">Price</label>
@@ -36,6 +32,66 @@
               <div class="invalid-feedback">Price is required.</div>
             </div>
           </div>
+
+
+<div class="card mt-3">
+    <div class="card-header">
+        <h5>Product Variants</h5>
+    </div>
+
+    <div class="card-body">
+
+        <div class="row fw-bold mb-2">
+            <div class="col">Size</div>
+            <div class="col">Color</div>
+            <div class="col">Stock</div>
+        </div>
+
+        <div id="variantContainer">
+
+            <div class="row mb-2 variant-row">
+                <div class="col">
+                    <select name="size[]" class="form-select">
+                        <option value="">Select Size</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <select name="color[]" class="form-select">
+                        <option value="">Select Color</option>
+                        <option value="Black">Black</option>
+                        <option value="White">White</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <input
+                        type="number"
+                        name="variantStock[]"
+                        class="form-control"
+                        min="0">
+                </div>
+            </div>
+
+        </div>
+
+        <button
+            type="button"
+            class="btn btn-primary btn-sm mt-2"
+            id="addVariant">
+            + Add Variant
+        </button>
+
+    </div>
+</div>
+
+
+
+
+
+
 
           <!-- Right Column -->
           <div class="col-md-6">
@@ -153,6 +209,21 @@
       text: 'Please try with another name.',
     });
   }
+
+document.getElementById("addVariant").addEventListener("click", () => {
+
+    const row = document.querySelector(".variant-row").cloneNode(true);
+
+    row.querySelectorAll("input").forEach(input => input.value = "");
+
+    row.querySelectorAll("select").forEach(select => select.selectedIndex = 0);
+
+    document.getElementById("variantContainer").appendChild(row);
+
+});
+
+
+
 </script>
 
 <%- include("../../views/partials/admin/footer") %>
