@@ -7,10 +7,7 @@ const variantSchema = new Schema({
         type: String,
         required: true
     },
-    color: {
-        type: String,
-        required: true
-    },
+  
     stock: {
         type: Number,
         required: true,

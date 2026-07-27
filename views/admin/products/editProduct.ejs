@@ -51,15 +51,89 @@
 
       <!-- Price and Stock -->
       <div class="row mb-3">
-        <div class="col-md-6">
-          <label>Price (₹)</label>
-          <input type="number" name="price" value="<%= product.price %>" class="form-control" >
+    <div class="col-md-6">
+        <label>Price (₹)</label>
+        <input
+            type="number"
+            name="price"
+            value="<%= product.price %>"
+            class="form-control"
+        >
+    </div>
+</div>
+
+
+
+<div class="mb-3">
+    <label class="form-label"><strong>Product Variants</strong></label>
+
+    <div id="variantContainer">
+
+        <!-- Column Headings -->
+        <div class="row mb-2 fw-bold">
+            <div class="col-md-5">
+                Size
+            </div>
+
+            <div class="col-md-5">
+                Stock
+            </div>
+
+            <div class="col-md-2"></div>
         </div>
-        <div class="col-md-6">
-          <label>Stock</label>
-          <input type="number" name="stock" value="<%= product.stock %>" class="form-control" min="0" >
+
+        <% product.variants.forEach(function(variant){ %>
+
+        <div class="row mb-2 variant-row">
+
+            <div class="col-md-5">
+                <input
+                    type="text"
+                    name="size"
+                    class="form-control"
+                    placeholder="Enter Size"
+                    value="<%= variant.size %>"
+                >
+            </div>
+
+            <div class="col-md-5">
+                <input
+                    type="number"
+                    name="variantStock"
+                    class="form-control"
+                    placeholder="Enter Stock"
+                    value="<%= variant.stock %>"
+                >
+            </div>
+
+            <div class="col-md-2">
+                <button type="button" class="btn btn-danger removeVariant">
+                    Remove
+                </button>
+            </div>
+
         </div>
-      </div>
+
+        <% }) %>
+
+    </div>
+
+    <button type="button" class="btn btn-success mt-2" id="addVariant">
+        + Add Size
+    </button>
+
+</div>
+
+
+      
+
+
+
+
+
+
+
+
 
       <!-- Description -->
       <div class="mb-3">
@@ -111,67 +185,7 @@
 
 
 
-<!-- <script>
-  const imageInput = document.getElementById('imagesInput');
-  const previewDiv = document.getElementById('newImagePreview');
-  const form = document.getElementById('editProductForm');
 
-  // Show previews of newly selected images
-  imageInput.addEventListener('change', () => {
-    previewDiv.innerHTML = '';
-    const files = Array.from(imageInput.files);
-
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.classList.add('me-2', 'mb-2');
-        img.style.height = '60px';
-        img.style.width = '60px';
-        img.style.objectFit = 'cover';
-        img.style.border = '1px solid #ccc';
-        img.style.borderRadius = '5px';
-        previewDiv.appendChild(img);
-      };
-      reader.readAsDataURL(file);
-    });
-  });
-
- 
-
-  // On form submit, validate if 3+ new images selected only if images are provided
-  form.addEventListener('submit', function(e) {
-    const files = imageInput.files;
-
-    console.log("Newly selected files count:", files.length);
-    if (files.length > 0 && files.length < 3) {
-      e.preventDefault();
-      Swal.fire({
-        icon: 'warning',
-        title: 'Minimum 3 Images Required',
-        text: 'Please upload at least 3 images to replace existing ones.',
-      });
-    }
-  });
-
-  // Handle query string error from backend redirect
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('error') === 'minImages') {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Minimum 3 Images Required',
-      text: 'Please upload at least 3 images to replace existing ones.',
-    });
-  }
-
-  if (urlParams.get('exists') === 'true') {
-    Swal.fire({
-      icon: 'error',
-      title: 'Product Name Already Exists',
-      text: 'Please use a different name.',
-    });
-  }
 </script> -->
 
 
@@ -237,7 +251,7 @@
 
     const name = form.name;
     const price = form.price;
-    const stock = form.stock;
+   
     const description = form.description;
     const files = imageInput.files;
 
@@ -249,10 +263,29 @@
       showError(price, 'Enter a valid price');
       valid = false;
     }
-    if (stock.value.trim() === '' || stock.value < 0) {
-      showError(stock, 'Enter a valid stock quantity');
-      valid = false;
-    }
+    
+const sizes = document.getElementsByName("size");
+const stocks = document.getElementsByName("variantStock");
+
+for (let i = 0; i < sizes.length; i++) {
+
+  if (sizes[i].value.trim() === "") {
+    showError(sizes[i], "Size is required");
+    valid = false;
+  }
+
+  if (
+    stocks[i].value.trim() === "" ||
+    Number(stocks[i].value) < 0
+  ) {
+    showError(stocks[i], "Enter a valid stock");
+    valid = false;
+  }
+
+}
+
+
+
     if (description.value.trim() === '') {
       showError(description, 'Description cannot be empty');
       valid = false;
@@ -267,6 +300,68 @@
       e.preventDefault();
     }
   });
+
+
+
+const variantContainer = document.getElementById("variantContainer");
+const addVariantBtn = document.getElementById("addVariant");
+
+addVariantBtn.addEventListener("click", function () {
+
+    const row = document.createElement("div");
+
+    row.className = "row mb-2 variant-row";
+
+    row.innerHTML = `
+        <div class="col-md-5">
+            <input
+                type="text"
+                name="size"
+                class="form-control"
+                placeholder="Enter Size">
+        </div>
+
+        <div class="col-md-5">
+            <input
+                type="number"
+                name="variantStock"
+                class="form-control"
+                placeholder="Enter Stock">
+        </div>
+
+        <div class="col-md-2">
+            <button
+                type="button"
+                class="btn btn-danger removeVariant">
+                Remove
+            </button>
+        </div>
+    `;
+
+    variantContainer.appendChild(row);
+});
+
+variantContainer.addEventListener("click", function (e) {
+
+    if (e.target.classList.contains("removeVariant")) {
+
+        e.target.closest(".variant-row").remove();
+
+    }
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 
 

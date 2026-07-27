@@ -78,7 +78,7 @@ const getAddProductForm = async (req, res) => {
 
 const postAddProduct = async (req, res) => {
   try {
-    const { name, category, subcategory, price,description,size,color,variantStock } = req.body;
+    const { name, category, subcategory, price,description,size,variantStock } = req.body;
 //already existing
     const existing = await Product.findOne({ name: name.trim() });
     if (existing) {
@@ -96,17 +96,17 @@ const postAddProduct = async (req, res) => {
  
 const variants = [];
 
-if (size && color && variantStock) {
+if (size  && variantStock) {
     for (let i = 0; i < size.length; i++) {
 
         if (
             size[i] &&
-            color[i] &&
+            
             variantStock[i] !== ""
         ) {
             variants.push({
                 size: size[i],
-                color: color[i],
+                
                 stock: Number(variantStock[i])
             });
         }
@@ -182,7 +182,7 @@ const updateProduct = async (req, res) => {
 
 
     const productId = req.params.id;
-    const { name, category: categoryId, subcategory, price, description, stock } = req.body;
+    const { name, category: categoryId, subcategory, price, description,size, variantStock} = req.body;
 
 
 
@@ -209,9 +209,39 @@ const updateProduct = async (req, res) => {
 
     // Check for duplicate product name
     const nameExists = await Product.findOne({ name: name.trim(), _id: { $ne: productId } });
+
+const variants = [];
+
+const sizes = Array.isArray(size) ? size : [size];
+const stocks = Array.isArray(variantStock)
+    ? variantStock
+    : [variantStock];
+
+
+if (size && variantStock) {
+   for (let i = 0; i < sizes.length; i++) {
+
+       if (sizes[i] && stocks[i] !== "") {
+    variants.push({
+        size: sizes[i],
+        stock: Number(stocks[i])
+    });
+}
+    }
+}
+
+const totalStock = variants.reduce((sum, variant) => {
+    return sum + variant.stock;
+}, 0);
+
+
+
     if (nameExists) {
       return res.redirect(`/admin/products/edit/${productId}?exists=true`);
     }
+
+
+
 
     // Prepare updated fields
     const updatedFields = {
@@ -220,7 +250,8 @@ const updateProduct = async (req, res) => {
       subcategory: subcategory || existingProduct.subcategory,
       price: price || existingProduct.price,
       description: description || existingProduct.description,
-      stock: stock || existingProduct.stock,
+      stock: totalStock,
+      variants: variants,
     };
 
     
