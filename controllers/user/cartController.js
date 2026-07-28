@@ -182,6 +182,7 @@ const removeFromCart = async (req, res) => {
     try {
         const userId = req.session.user._id;
         const productId = req.params.id;
+        const { size } = req.body;
 
         const cart = await Cart.findOne({ userId }).populate('items.productId');
 
@@ -190,7 +191,12 @@ const removeFromCart = async (req, res) => {
         }
 
         // Remove the item
-        cart.items = cart.items.filter(item => item.productId._id.toString() !== productId);
+     cart.items = cart.items.filter(item =>
+    !(
+        item.productId._id.toString() === productId &&
+        item.size === size
+    )
+);
         await cart.save();
 
         // Recalculate the new total
@@ -217,12 +223,12 @@ const updateCartQuantity = async (req, res) => {
     try {
         const userId = req.session.user._id;
         const productId = req.params.id;
-        const { change } = req.body;
+        const { change,size } = req.body;
 
         const cart = await Cart.findOne({ userId });
         if (!cart) return res.status(404).send("Cart not found.");
 
-        const cartItem = cart.items.find(item => item.productId.toString() === productId);
+        const cartItem = cart.items.find(item => item.productId.toString() === productId && item.size === size);
         if (!cartItem) return res.status(404).send("Product not in cart.");
 
 // First update the quantity
@@ -234,13 +240,29 @@ if (cartItem.quantity > 5) {
 }
 
         if (cartItem.quantity <= 0) {
-            cart.items = cart.items.filter(item => item.productId.toString() !== productId);
+    cart.items = cart.items.filter(item =>
+        !(
+            item.productId.toString() === productId &&
+            item.size === size
+        )
+    );
+
         } else {
-            const product = await Product.findById(productId);
-            if (cartItem.quantity > product.stock) {
-                return res.status(400).send("Exceeds stock availability.");
-            }
-            cartItem.totalPrice = cartItem.quantity * product.price;
+           const product = await Product.findById(productId);
+
+const selectedVariant = product.variants.find(
+    variant => variant.size === size
+);
+
+if (!selectedVariant) {
+    return res.status(400).send("Invalid size.");
+}
+
+if (cartItem.quantity > selectedVariant.stock) {
+    return res.status(400).send("Exceeds stock availability.");
+}
+
+cartItem.totalPrice = cartItem.quantity * product.price;
         }
 
         await cart.save();
