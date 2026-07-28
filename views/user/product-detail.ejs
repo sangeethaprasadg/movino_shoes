@@ -9,6 +9,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"> -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/bootstrap-icons.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     
@@ -25,6 +26,48 @@
 <link rel="stylesheet" href="/css/bootstrap-datepicker.css">
 <link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
 <link rel="stylesheet" href="/css/style.css">
+
+<style>
+.size-container{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.size-btn{
+    width:45px;
+    height:45px;
+    border:1px solid #333;
+    border-radius:5px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:.2s;
+    font-weight:600;
+}
+
+.size-btn:hover{
+    background:#f5f5f5;
+}
+
+input[type="radio"]:checked + .size-btn{
+    background:#000;
+    color:#fff;
+    border-color:#000;
+}
+
+.disabled-size {
+    background: #e9ecef;
+    color: #999;
+    border-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+</style>
+
+
 
 	</head>
 	<body>
@@ -184,36 +227,48 @@
 								</span>
 							</p>
 							<p>Description: <%= product.description %></p>
+							
+							
+							
 							<!-- <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p> -->
-							<div class="size-wrap">
-								<div class="block-26 mb-2">
-									<!-- <h4>Size</h4> -->
-				               <!-- <ul>
-				                  <li><a href="#">7</a></li>
-				                  <li><a href="#">7.5</a></li>
-				                  <li><a href="#">8</a></li>
-				                  <li><a href="#">8.5</a></li>
-				                  <li><a href="#">9</a></li>
-				                  <li><a href="#">9.5</a></li>
-				                  <li><a href="#">10</a></li>
-				                  <li><a href="#">10.5</a></li>
-				                  <li><a href="#">11</a></li>
-				                  <li><a href="#">11.5</a></li>
-				                  <li><a href="#">12</a></li>
-				                  <li><a href="#">12.5</a></li>
-				                  <li><a href="#">13</a></li>
-				                  <li><a href="#">13.5</a></li>
-				                  <li><a href="#">14</a></li>
-				               </ul> -->
-				            </div>
-				            <!-- <div class="block-26 mb-4">
-									<h4>Width</h4>
-				               <ul>
-				                  <li><a href="#">M</a></li>
-				                  <li><a href="#">W</a></li>
-				               </ul>
-				            </div> -->
-							</div>
+							
+							<form action="/cart/add/<%= product._id %>?from=product" method="POST">
+						<div class="size-container">
+
+    <% if (product.variants && product.variants.length > 0) { %>
+
+       <% product.variants.forEach(function(variant){ %>
+
+    <input
+        type="radio"
+        id="size-<%= variant.size %>"
+        name="size"
+        value="<%= variant.size %>"
+        data-stock="<%= variant.stock %>"
+        hidden
+        required
+        <%= variant.stock === 0 ? "disabled" : "" %>>
+
+    <label
+        for="size-<%= variant.size %>"
+        class="size-btn <%= variant.stock === 0 ? 'disabled-size' : '' %>">
+
+        <%= variant.size %>
+
+    </label>
+
+<% }) %>
+
+    <% } else { %>
+
+        <p>No sizes available</p>
+
+    <% } %>
+
+</div>
+
+<p id="stockMessage" class="mt-2 fw-bold"></p>
+
 
 
 							<% if (product.stock > 0) { %>
@@ -242,13 +297,11 @@
     <p style="color:red;">This product is currently unavailable.</p>
 <% } %>
 
-<form action="/cart/add/<%= product._id %>?from=product" method="POST">
-    ...
-</form>
+
 								
 									  
-									  <!-- <form action="/cart/add/<%= product._id %>" method="POST"> -->
-										<form action="/cart/add/<%= product._id %>?from=product" method="POST">
+								
+									
 										<button
     type="submit"
     class="btn btn-primary"
@@ -262,6 +315,7 @@
         Add to Cart
     <% } %>
 </button>
+
 									  </form>
 									  
 
@@ -270,6 +324,17 @@
 										  Sorry, this product is currently <strong>Out of Stock</strong>.
 										</div>
 									  <% } %>
+
+									  <% if (error === 'maxlimit') { %>
+<script>
+Swal.fire({
+    icon: "warning",
+    title: "Purchase Limit Reached",
+    text: "Maximum 5 units are allowed per product.",
+    confirmButtonText: "OK"
+});
+</script>
+<% } %>
 									  
 								</div>
 							</div>
@@ -560,24 +625,60 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 
 	<script>
+
+
+
+
+
+
+
 		$(document).ready(function(){
 
 		var quantitiy=0;
-		   $('.quantity-right-plus').click(function(e){
-		        
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		            
-		            $('#quantity').val(quantity + 1);
 
-		          
-		            // Increment
-		        
-		    });
+let selectedStock = 5;
+
+const sizeRadios = document.querySelectorAll('input[name="size"]');
+
+sizeRadios.forEach((radio) => {
+
+    radio.addEventListener("change", function () {
+
+        selectedStock = Math.min(Number(this.dataset.stock), 5);
+
+        $("#quantity").val(1);
+
+        console.log("Selected Stock:", selectedStock);
+
+    });
+
+});
+
+
+
+
+		  $('.quantity-right-plus').click(function(e){
+
+    e.preventDefault();
+
+    let quantity = parseInt($("#quantity").val());
+
+    if (quantity < selectedStock) {
+
+        $("#quantity").val(quantity + 1);
+
+    } else {
+
+      Swal.fire({
+    icon: "warning",
+    title: "Maximum Purchase Limit",
+    text: "You cannot add more than the available stock.",
+    confirmButtonText: "OK"
+});
+
+    }
+
+});
 
 		     $('.quantity-left-minus').click(function(e){
 		        // Stop acting like a button
@@ -594,6 +695,41 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		    });
 		    
 		});
+
+
+const sizeRadios = document.querySelectorAll('input[name="size"]');
+const stockMessage = document.getElementById('stockMessage');
+
+sizeRadios.forEach(radio => {
+
+    radio.addEventListener('change', function () {
+
+        const stock = Number(this.dataset.stock);
+
+        if (stock === 0) {
+
+            stockMessage.innerHTML =
+                '<span style="color:red;">Out of Stock</span>';
+
+        } else if (stock <= 3) {
+
+            stockMessage.innerHTML =
+                `<span style="color:orange;">Limited stock </span>`;
+
+        } else {
+
+    stockMessage.innerHTML = '';
+
+}
+
+    });
+
+});
+
+
+
+
+
 	</script>
 
 

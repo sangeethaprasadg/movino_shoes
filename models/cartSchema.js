@@ -1,55 +1,3 @@
-// const mongoose = require('mongoose')
-// const {Schema} = mongoose;
-
-
-// const cartSchema = new Schema ({
-//     userId:{
-//         type:Schema.Types.ObjectId,
-//         ref:"User",
-//         required:true
-//     },
-//     items:[{
-//         productId:{
-//             type:Schema.Types.ObjectId,
-//             ref:"Product",
-//             required:true
-//         },
-//         quantity:{
-//             type:Number,
-//             default:1
-//         },
-//         price:{
-//             type:Number,
-//             required:true
-//         },
-//         totalPrice:{
-//             type:Number,
-//             required:true
-//         },
-//         // status:{
-//         //     type:String,
-//         //     default:'placed'
-//         // },
-//         // cancellationReason:{
-//         //     type:String,
-//         //     default:"none"
-//         // }
-//     }]
-// })
-
-
-
-
-//  cartSchema.pre("save", function (next) {
-//     this.items.forEach((item) => {
-//         item.totalPrice = item.quantity * item.price;
-//     });
-//     next();
-// });
-
-
-// const Cart = mongoose.model("Cart",cartSchema);
-// module.exports = Cart;
 
 
 const mongoose = require('mongoose');
@@ -68,6 +16,14 @@ const cartSchema = new Schema({
             required: true
         },
       
+   size: {
+        type: String,
+        required: true
+    },
+
+
+
+
         quantity: {
             type: Number,
             default: 1,
@@ -109,7 +65,10 @@ cartSchema.pre("save", function (next) {
 
 // Add indexes for faster querying
 cartSchema.index({ userId: 1 });
-cartSchema.index({ "items.productId": 1 });
+cartSchema.index({
+    "items.productId": 1,
+    "items.size": 1
+});
 
 const Cart = mongoose.model("Cart", cartSchema);
 module.exports = Cart;

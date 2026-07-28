@@ -40,10 +40,29 @@ const addToCart = async (req, res) => {
       }
     const userId = req.session.user._id;
     const productId = req.params.id;
+
+    const { size, quantity } = req.body;
+
+    console.log(req.body);
+
+
     const from = req.query.from;
   
   
     const product = await Product.findById(productId).populate('category');
+
+
+    if (!size) {
+    return res.redirect(`/product-detail/${productId}?error=selectsize`);
+}
+
+const selectedVariant = product.variants.find(
+    variant => variant.size === size
+);
+
+if (!selectedVariant) {
+    return res.redirect(`/product-detail/${productId}?error=invalidsize`);
+}
   
 
 if (!product || product.isBlocked || product.category?.isBlocked) {
@@ -51,45 +70,87 @@ if (!product || product.isBlocked || product.category?.isBlocked) {
 }
 
  // 🚨 New check: If stock is zero, don't add to cart
- if (product.stock <= 0) {
-  
+
+
+// 🚨 Check the selected size's stock
+if (selectedVariant.stock <= 0) {
+
     if (from === 'wishlist') {
-      
+
         return res.redirect('/wishlist?error=outofstock');
     } else {
-      
+
         return res.redirect(`/product-detail/${productId}?error=outofstock`);
     }
 }
 
+
+
+
+
+
+
     let cart = await Cart.findOne({ userId });
+
+const totalProductQuantity = cart
+    ? cart.items
+        .filter(item => item.productId.toString() === productId)
+        .reduce((total, item) => total + item.quantity, 0)
+    : 0;
+
+
+
+
+
+    
     if (!cart) {
       cart = new Cart({ userId, items: [] });
     }
   
-    const item = cart.items.find(i => i.productId.toString() === productId);
+const item = cart.items.find(
+    i =>
+        i.productId.toString() === productId &&
+        i.size === size
+);
   
+
 if (item) {
 
-  // Maximum 5 products per user
-  if (item.quantity >= 5) {
-    return res.status(400).send("Maximum 5 units allowed per product.");
-  }
+    item.quantity += Number(quantity);
 
-  item.quantity += 1;
+    // Maximum 5 products per user
+   if (totalProductQuantity + Number(quantity) > 5) {
+   return res.redirect(`/product-detail/${productId}?error=maxlimit`);
+}
 
-  if (item.quantity > product.stock) {
-    return res.status(400).json({
-    success: false,
-    message: "Exceeds stock availability."
-});
-  }
-
+    if (item.quantity > selectedVariant.stock) {
+        return res.status(400).json({
+            success: false,
+            message: "Exceeds stock availability."
+        });
+    }
 }
 
 
+
+
+
     else {
-      cart.items.push({ productId, quantity: 1, price: product.price, totalPrice: product.price });
+
+        if (totalProductQuantity + Number(quantity) > 5) {
+   return res.redirect(`/product-detail/${productId}?error=maxlimit`);
+}
+    
+cart.items.push({
+    productId,
+    size,
+    quantity: Number(quantity),
+    price: product.price,
+    totalPrice: product.price * Number(quantity)
+});
+
+
+
     }
   
     // Remove from wishlist
@@ -110,11 +171,8 @@ if (item) {
 };
 
 
-    // res.redirect('/wishlist?cart=added');
+   
 
-
-
-//   };
   
 
 

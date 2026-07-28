@@ -474,7 +474,8 @@ if (!product.category) {
   console.warn("⚠️ Product has no valid categoryId or category not found.");
 }
 
-
+console.log(product);
+console.log(product.variants);
     res.render('product-detail', { 
       product ,
       user: req.session.user || null,
