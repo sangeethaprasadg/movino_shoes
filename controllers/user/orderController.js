@@ -9,7 +9,7 @@ const PDFDocument = require('pdfkit');
 const placeOrder = async (req, res) => {
   try {
     const userId = req.session.user?._id;
-    // console.log("Session object:", req.session);
+   
 
     if (!userId) {
       return res.status(401).send("User not authenticated");
@@ -44,6 +44,7 @@ for (const item of cart.items) {
 
       return {
         product: item.productId._id,
+        size: item.size,
         quantity: item.quantity,
         price,
         totalPrice,
@@ -63,16 +64,31 @@ for (const item of cart.items) {
     });
 
     const savedOrder = await newOrder.save();
-   // Reduce product stock
+// Reduce variant stock
 for (const item of cart.items) {
-  await Product.findByIdAndUpdate(
-    item.productId._id,
-    {
-      $inc: {
-        stock: -item.quantity
-      }
+
+  
+
+    const product = await Product.findById(item.productId._id);
+
+    const selectedVariant = product.variants.find(
+        variant => variant.size === item.size
+    );
+ 
+
+
+    if (!selectedVariant) {
+        throw new Error(`Invalid size selected for ${product.name}`);
     }
-  );
+
+    selectedVariant.stock -= item.quantity;
+
+    product.stock = product.variants.reduce(
+        (total, variant) => total + variant.stock,
+        0
+    );
+
+    await product.save();
 }
 
     // Clear Cart
@@ -116,72 +132,6 @@ const getOrderCompletePage = async (req, res) => {
 
 
 
-
-
-  
-
-// const returnOrder = async (req, res) => {
-//     const reason = req.body.reason;
-//     const order = await Order.findById(req.params.orderId);
-  
-//     if (!reason) return res.status(400).send('Reason required');
-  
-//     order.status = 'Returned';
-//     order.returnReason = reason;
-  
-//     await order.save();
-  
-//     res.redirect(`/order/${order.orderId}`);
-//   };
-
-
-
-// const returnOrder = async (req, res) => {
-//   console.log("⚡ VERIFY RETURN order FUNCTION HIT");
-//   try {
-//     const { reason } = req.body;
-//     const order = await Order.findOne({ orderId: req.params.orderId });
-
-    
-//     // const { itemId } = req.body;
-
-//     console.log('orderId from URL:', req.params.orderId);
-//     // console.log('itemId from URL:', req.params.itemId); // if you are sending itemId
-    
-
-
-
-//     if (!order) {
-//       return res.status(404).send('Order not found here ');
-//     }
-
-//     if (!reason || reason.trim() === "") {
-//       return res.status(400).send('Return reason is required');
-//     }
-
-//     if (order.status !== 'Delivered') {
-//       return res.status(400).send('Only delivered orders can be returned');
-//     }
-
-//     if (order.returnRequest && order.returnRequest.status === 'Pending') {
-//       return res.status(400).send('Return request already submitted');
-//     }
-
-//     // Add return request object
-//     order.returnRequest = {
-//       reason: reason.trim(),
-//       status: 'Pending', // admin will verify and update this
-//       requestedAt: new Date(),
-//     };
-
-//     await order.save();
-
-//     res.redirect(`/orders/${order.orderId}`); // adjust URL if different
-//   } catch (err) {
-//     console.error('Error in returnOrder:', err);
-//     res.status(500).send('Something went wrong');
-//   }
-// };
 
 const returnOrder = async (req, res) => {
 
@@ -230,7 +180,7 @@ const returnOrder = async (req, res) => {
 
 
 const downloadInvoice = async (req, res) => {
-//   const order = await Order.findById(req.params.orderId).populate('products.productId');
+
   const order = await Order.findOne({ orderId: req.params.orderId }).populate('orderItems.product')
 
   const doc = new PDFDocument();
@@ -258,15 +208,6 @@ const downloadInvoice = async (req, res) => {
 
 
 
-//     const q = req.query.q;
-//     const orders = await Order.find({
-//       orderId: { $regex: q, $options: 'i' },
-//     });
-//     res.render('order-list', { orders });
-//   };
-  
-
-//order listing
 
 
 const searchOrder = async (req, res) => {
@@ -304,42 +245,8 @@ const getUserOrders = async (req, res) => {
 
 
 
-//order detail
-// const cancelOrderItem = async (req, res) => {
-//   try {
-//     const { orderId, itemId } = req.params;
-//     const reason = req.body.reason || 'No reason given';
 
-//     const order = await Order.findById(orderId);
-//     if (!order) return res.status(404).send('Order not found');
 
-//     const item = order.orderItems.id(itemId);
-//     if (!item) return res.status(404).send('Item not found');
-
-//     // Check if already cancelled
-//     if (item.status === 'Cancelled') {
-//       return res.status(400).send('Item already cancelled');
-//     }
-
-//     item.status = 'Cancelled';
-
-//     // Optional: Save cancellation reason somewhere
-//     item.cancellationReason = reason;
-
-//     // ✅ Increment product stock
-//     const product = await Product.findById(item.product);
-//     if (product) {
-//       product.stock += item.quantity;
-//       await product.save();
-//     }
-
-//     await order.save();
-//     res.redirect(`/order/${order.orderId}`);
-//   } catch (err) {
-//     console.error("Error cancelling item:", err);
-//     res.status(500).send("Internal server error");
-//   }
-// };
 
 const cancelOrderItem = async (req, res) => {
 
@@ -349,7 +256,7 @@ const cancelOrderItem = async (req, res) => {
   try {
     const { orderId, itemId } = req.params;
     const reason = req.body.reason || 'No reason given';
-console.log("Incoming orderId2:", orderId);
+
 
    
     // const order = await Order.findOne({ orderId });
@@ -371,13 +278,38 @@ console.log("Incoming orderId2:", orderId);
     item.cancellationReason = reason;
 
     // ✅ Increment product stock
+    
     const product = await Product.findById(item.product);
-    if (product) {
-      product.stock += item.quantity;
-      await product.save();
+
+if (product) {
+
+   
+
+    const selectedVariant = product.variants.find(
+        variant => variant.size === item.size
+    );
+
+   
+
+    if (selectedVariant) {
+        selectedVariant.stock += item.quantity;
     }
 
-    await order.save();
+    product.stock = product.variants.reduce(
+        (total, variant) => total + variant.stock,
+        0
+    );
+
+    await product.save();
+}
+
+
+
+
+
+
+
+
     
     // ✅ This is already correct - using order.orderId
     res.redirect(`/order/${order.orderId}?cancelled=true`);
