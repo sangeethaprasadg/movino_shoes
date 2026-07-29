@@ -94,8 +94,7 @@ for (const item of cart.items) {
     // Clear Cart
     await Cart.deleteOne({ _id: cart._id });
 
-    // Redirect to success page
-    // res.redirect(`/order-complete/${savedOrder._id}`);
+   
     res.redirect(`/order-complete/${savedOrder.orderId}`);
 
   } catch (err) {
@@ -259,7 +258,7 @@ const cancelOrderItem = async (req, res) => {
 
 
    
-    // const order = await Order.findOne({ orderId });
+
     const order = await Order.findById(orderId);
 
     if (!order) return res.status(404).send('Order not found3');
@@ -305,7 +304,8 @@ if (product) {
 
 
 
-
+// ✅ Save the updated order
+await order.save();
 
 
 
