@@ -1,7 +1,7 @@
 
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const { v4: uuidv4 } = require('uuid');
+
 
 const orderItemSchema = new Schema({
   product: {
@@ -45,7 +45,7 @@ const orderItemSchema = new Schema({
   status: {
     type: String,
     required: true,
-    enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Return Request', 'Returned']
+    enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Return Request',  'Refunded', 'Returned','Return Rejected']
   },
   couponApplied: {
     type: Boolean,
@@ -55,11 +55,11 @@ const orderItemSchema = new Schema({
 
 
 const orderSchema = new Schema({
-   orderId: {
-     type: String,
-     default: () => uuidv4(),
-     unique: true
-   },
+  orderId: {
+    type: String,
+    unique: true,
+    default: () => `MOV${Date.now()}`
+},
    user: {
      type: Schema.Types.ObjectId,
      ref: 'User',

@@ -64,11 +64,8 @@ router.get('/product-detail/:id', userController.getProductDetail);
 
 //profile page
 
-router.get('/profile', userAuth,(req, res) => {
-    
-    res.render('profile', { user: req.session.user });
-});
-
+router.get('/profile', userAuth, userController.loadProfile);
+router.post("/remove-profile-image", userController.removeProfileImage);
 router.get('/edit-profile', userController.getEditProfile);
 router.post('/edit-profile', userController.postEditProfile);
 
@@ -91,8 +88,10 @@ router.post('/change-password',userAuth, userController.changePassword);
 
 
 
+
+
 //forgot password
-router.get("/forgot-password", userController.loadForgotPassword);
+router.get("/forgot-password",userAuth, userController.loadForgotPassword);
 router.post("/forgot-password", userController.handleForgotPassword);
 router.get("/verify-forgot-otp", userController.loadForgotOtp);
 router.post("/verify-forgot-otp", userController.verifyForgotOtp);

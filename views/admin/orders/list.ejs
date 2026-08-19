@@ -1,45 +1,343 @@
 <%- include("../../views/partials/admin/header") %>
 
-<div class="container mt-5">
-  <h2 class="mb-4 text-center">Order Management</h2>
+<style>
+
+.modern-table{
+
+background:#fff;
+
+border-radius:20px;
+
+overflow:hidden;
+
+box-shadow:0 8px 30px rgba(0,0,0,.06);
+
+}
+
+.modern-table th{
+    background:#eceff3;
+    color:#404040;
+    font-weight:600;
+    padding:18px;
+    border-bottom:1px solid #d8dde5;
+}
+
+
+
+
+
+
+
+.modern-table td{
+
+padding:18px;
+
+vertical-align:middle;
+
+border-color:#efefef;
+
+}
+
+.modern-table tbody tr:hover{
+
+background:#fafafa;
+
+transition:.3s;
+
+}
+
+.action-btn{
+
+width:42px;
+
+height:42px;
+
+display:inline-flex;
+
+justify-content:center;
+
+align-items:center;
+
+border-radius:12px;
+
+text-decoration:none;
+
+background:#eef6ff;
+
+color:#339999;
+
+font-size:18px;
+
+transition:.25s;
+
+}
+
+.action-btn:hover{
+
+transform:translateY(-2px);
+
+background:#339999;
+
+color:white;
+
+}
+
+.status-pending{
+
+padding:8px 16px;
+
+background:#fff5d9;
+
+color:#d97706;
+
+border-radius:20px;
+
+font-size:13px;
+
+font-weight:600;
+
+}
+
+.status-shipped{
+
+padding:8px 16px;
+
+background:#e0f2fe;
+
+color:#0284c7;
+
+border-radius:20px;
+
+font-size:13px;
+
+font-weight:600;
+
+}
+
+.status-delivered{
+
+padding:8px 16px;
+
+background:#e8f8ed;
+
+color:#16a34a;
+
+border-radius:20px;
+
+font-size:13px;
+
+font-weight:600;
+
+}
+
+.status-cancelled{
+
+padding:8px 16px;
+
+background:#fdecec;
+
+color:#dc2626;
+
+border-radius:20px;
+
+font-size:13px;
+
+font-weight:600;
+
+}
+
+.status-returned{
+
+padding:8px 16px;
+
+background:#ede9fe;
+
+color:#7c3aed;
+
+border-radius:20px;
+
+font-size:13px;
+
+font-weight:600;
+
+}
+
+
+.btn-search{
+    background:#339999;
+    color:white;
+    border:none;
+    transition:.25s;
+}
+
+.btn-search:hover{
+    background:#2d8787;
+    color:white;
+}
+
+.btn-outline-secondary{
+    border:1px solid #d8d8d8;
+    color:#555;
+}
+
+.btn-outline-secondary:hover{
+    background:#f5f5f5;
+    color:#333;
+}
+
+
+.page-title{
+    font-size:2rem;
+    font-weight:700;
+    color:#20242b;
+    margin-bottom:4px;
+}
+.page-subtitle{
+    font-size:15px;
+    color:#8b8b8b;
+}
+
+
+
+
+.table-card{
+    background:#fff;
+    border-radius:18px;
+    box-shadow:0 8px 24px rgba(0,0,0,.05);
+    overflow:hidden;
+}
+
+
+
+.status-refunded{
+    padding:8px 16px;
+    background:#f1f5f9;
+    color:#475569;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+</style>
+
+
+
+
+
+
+
+
+<div class="container-fluid py-5"
+     style="padding-left:90px;padding-right:60px;">
+
+    <div class="mb-4">
+        <h2 class="fw-bold mb-2 page-title">
+    Order Management
+</h2>
+
+     <p class="page-subtitle mb-4">
+            Manage and track customer orders
+        </p>
+    </div>
 
   <!-- Search + Filter -->
-  <form method="GET" class="row g-3 mb-4">
-    <div class="col-md-3">
-      <input type="text" name="search" class="form-control" placeholder="Search by Order ID/User" value="<%= search %>">
-    </div>
+ 
 
-    <div class="col-md-2">
-      <select name="status" class="form-select">
+<form
+method="GET"
+class="d-flex align-items-center justify-content-between gap-3 mb-4">
+
+    <input
+        type="text"
+        name="search"
+     class="form-control"
+style="width:520px"
+        placeholder="Search by Order ID or Customer"
+        value="<%= search %>"
+    >
+
+    <select name="status"
+            class="form-select"
+            style="width:180px">
+
         <option value="">All Status</option>
-        <option value="Pending" <%= status === 'Pending' ? 'selected' : '' %>>Pending</option>
-        <option value="Shipped" <%= status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
-        <option value="Delivered" <%= status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-        <option value="Cancelled" <%= status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
-        <option value="Returned" <%= status === 'Returned' ? 'selected' : '' %>>Returned</option>
-      </select>
-    </div>
 
-    <div class="col-md-2">
-      <select name="sort" class="form-select">
-        <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Newest First</option>
-        <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>Oldest First</option>
-      </select>
-    </div>
+        <option value="Pending"
+        <%= status==="Pending" ? "selected":"" %>>
+            Pending
+        </option>
 
-    <div class="col-md-2 d-grid">
-      <button type="submit" class="btn btn-primary">Search</button>
-    </div>
+        <option value="Shipped"
+        <%= status==="Shipped" ? "selected":"" %>>
+            Shipped
+        </option>
 
-    <div class="col-md-2 d-grid">
-      <a href="/admin/orders" class="btn btn-secondary">Clear</a>
-    </div>
-  </form>
+        <option value="Delivered"
+        <%= status==="Delivered" ? "selected":"" %>>
+            Delivered
+        </option>
+
+        <option value="Cancelled"
+        <%= status==="Cancelled" ? "selected":"" %>>
+            Cancelled
+        </option>
+
+        <option value="Returned"
+        <%= status==="Returned" ? "selected":"" %>>
+            Returned
+        </option>
+
+        <option value="Refunded"
+        <%= status==="Refunded" ? "selected":"" %>>
+         Refunded
+        </option> 
+
+    </select>
+
+    <select
+        name="sort"
+        class="form-select"
+        style="width:170px">
+
+        <option value="desc"
+        <%= sort==="desc" ? "selected":"" %>>
+            Newest First
+        </option>
+
+        <option value="asc"
+        <%= sort==="asc" ? "selected":"" %>>
+            Oldest First
+        </option>
+
+    </select>
+
+ <button class="btn btn-search px-4">
+    Search
+</button>
+
+    <a href="/admin/orders"
+       class="btn btn-outline-secondary px-4">
+        Clear
+    </a>
+
+</form>
+
+
+
+
+
+
+
 
   <!-- Table -->
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped align-middle text-center">
-      <thead class="table-dark">
+ 
+<div class="table-card">
+
+<div class="table-responsive">
+
+
+    <table class="table align-middle text-center mb-0 modern-table">
+     <thead class="table-light">
         <tr>
           <th>Order ID</th>
           <th>User</th>
@@ -60,17 +358,61 @@
               <% } %>
             </td>
             <td><%= order.createdAt.toDateString() %></td>
-            <td>
-              <span class="badge 
-                <%= order.orderItems[0]?.status === 'Pending' ? 'bg-warning text-dark' :
-                    order.orderItems[0]?.status === 'Shipped' ? 'bg-info text-dark' :
-                    order.orderItems[0]?.status === 'Delivered' ? 'bg-success' :
-                    order.orderItems[0]?.status === 'Cancelled' ? 'bg-danger' :
-                    order.orderItems[0]?.status === 'Returned' ? 'bg-secondary' : 'bg-light text-dark' %>">
-                <%= order.orderItems && order.orderItems.length > 0 ? order.orderItems[0].status : 'N/A' %>
-              </span>
-            </td>
-            <td><a href="/admin/orders/<%= order.orderId %>" class="btn btn-sm btn-outline-primary">View</a></td>
+            
+<td>
+
+<%
+let badgeClass = "status-pending";
+
+
+switch(order.displayStatus){
+
+    case "Shipped":
+        badgeClass = "status-shipped";
+        break;
+
+    case "Delivered":
+        badgeClass = "status-delivered";
+        break;
+
+    case "Cancelled":
+        badgeClass = "status-cancelled";
+        break;
+
+    case "Returned":
+        badgeClass = "status-returned";
+        break;
+
+    case "Refunded":
+        badgeClass = "status-refunded";
+        break;
+
+    default:
+        badgeClass = "status-pending";
+}
+
+
+%>
+
+<span class="<%= badgeClass %>">
+    <%= order.displayStatus %>
+</span>
+
+</td>
+
+
+
+
+
+
+            <td><a
+href="/admin/orders/<%= order.orderId %>"
+class="action-btn view-btn"
+title="View Order">
+
+<i class="bi bi-eye"></i>
+
+</a></td>
           </tr>
         <% }) %>
       </tbody>
@@ -90,6 +432,11 @@
     </ul>
   </nav>
 </div>
+</div>
+
+
+
+
 
 <%- include("../../views/partials/admin/footer") %>
 

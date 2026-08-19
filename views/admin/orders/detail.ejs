@@ -3,6 +3,258 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
+<style>
+
+/* ================================
+   ORDER ITEM CARDS
+================================ */
+
+.order-items-body {
+    padding: 28px;
+}
+
+.items-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.order-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.order-item-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr 1fr;
+    align-items: center;
+    gap: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.order-item-card:hover {
+    box-shadow: 0 7px 22px rgba(0, 0, 0, 0.07);
+    transform: translateY(-1px);
+}
+
+
+/* PRODUCT */
+
+.product-section {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.product-image-wrapper {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f8f9fa;
+    flex-shrink: 0;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-size: 24px;
+}
+
+.product-label,
+.info-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #9a9a9a;
+    letter-spacing: 0.7px;
+    margin-bottom: 5px;
+}
+
+.product-info h4 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #25292e;
+}
+
+.quantity {
+    font-size: 14px;
+    color: #777;
+}
+
+.quantity span {
+    font-weight: 600;
+    color: #333;
+}
+
+
+/* STATUS */
+
+.item-info-section {
+    min-width: 0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff5d9;
+    color: #d97706;
+}
+
+.status-processing {
+    background: #e0f2fe;
+    color: #0284c7;
+}
+
+.status-shipped {
+    background: #e8f0ff;
+    color: #2563eb;
+}
+
+.status-out {
+    background: #e0e7ff;
+    color: #4f46e5;
+}
+
+.status-delivered {
+    background: #e8f8ed;
+    color: #16a34a;
+}
+
+.status-cancelled {
+    background: #fdecec;
+    color: #dc2626;
+}
+
+.status-returned {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.status-refunded {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.status-unknown {
+    background: #f1f1f1;
+    color: #666;
+}
+
+
+/* UPDATE STATUS */
+
+.status-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-form .form-select {
+    width: 150px;
+    font-size: 13px;
+}
+
+.update-btn {
+    background: #339999;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.update-btn:hover {
+    background: #2d8787;
+}
+
+
+/* REFUND */
+
+.refund-btn {
+    background: #fff5d9;
+    color: #d97706;
+    border: 1px solid #f3d38a;
+    padding: 8px 13px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.refund-btn:hover {
+    background: #d97706;
+    color: white;
+}
+
+.not-available {
+    color: #aaa;
+    font-size: 13px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+
+    .order-item-card {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .order-item-card {
+        grid-template-columns: 1fr;
+    }
+
+    .status-form {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+
+.back-to-orders {
+    margin-top: 40px;
+    padding: 0 28px 30px;
+}
+
+</style>
+
+
+
+
+
+
 <div class="container mt-5 mb-5">
   <div class="card shadow">
     <div class="card-header bg-primary text-white">
@@ -11,92 +263,222 @@
       <small>User: <strong><%= order.user.name %></strong> (<%= order.user.email %>)</small>
     </div>
 
-    <div class="card-body">
-      <h5 class="mb-3 text-secondary"> Items</h5>
-      <table class="table table-striped table-hover align-middle">
-        <thead class="table-dark">
-          <tr>
-            <th>Product</th>
-            <th>Qty</th>
-            <th>Status</th>
-            <th>Refund</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% order.orderItems.forEach(item => { %>
-            <tr>
-              <td><%= item.product.name %></td>
-              <td><span class="badge bg-secondary"><%= item.quantity %></span></td>
-              <td>
-                <% if (item.status === 'Pending') { %>
-                  <span class="badge bg-warning text-dark">Pending</span>
-                <% } else if (item.status === 'Shipped') { %>
-                  <span class="badge bg-info text-dark">Shipped</span>
-                <% } else if (item.status === 'Out for Delivery') { %>
-                  <span class="badge bg-primary">Out for Delivery</span>
-                <% } else if (item.status === 'Delivered') { %>
-                  <span class="badge bg-success">Delivered</span>
-                <% } else if (item.status === 'Cancelled') { %>
-                  <span class="badge bg-danger">Cancelled</span>
-                <% } else if (item.status === 'Returned') { %>
-                  <span class="badge bg-dark">Returned</span>
-                <% } else if (item.status === 'Refunded') { %>
-                  <span class="badge bg-success">Refunded</span>
-                <% } else { %>
-                  <span class="badge bg-secondary">Unknown</span>
-                <% } %>
-              </td>
-              <td>
-                <% if (item.status === 'Return Request' || item.status === 'Returned') { %>
-                  <form id="verifyForm-<%= item._id %>" method="POST" action="/admin/orders/verify-return/<%= order.orderId %>/<%= item._id %>" class="d-inline">
-                    <input type="hidden" name="action" id="action-<%= item._id %>" value="">
-                    <button type="button" class="btn btn-sm btn-outline-warning" onclick="showPopup('<%= item._id %>')">Verify Refund</button>
-                  </form>
-                <% } else if (item.status === 'Refunded') { %>
-                  <span class="badge bg-success">Refunded</span>
-                <% } else { %>
-                  <span class="text-muted">-</span>
-                <% } %>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
+    
 
-      <hr class="my-4">
+<div class="card-body order-items-body">
 
-     
-      <% if (order.orderItems[0].status !== 'Cancelled') { %>
-        <h5 class="text-secondary">Update Order Status</h5>
-        <form method="POST" action="/admin/orders/update-status/<%= order.orderId %>" class="row g-3 align-items-center mt-2">
-          <div class="col-md-4">
-            <select name="status" class="form-select border-primary" required>
-              <option value="Pending" <%= order.orderItems[0].status === 'Pending' ? 'selected' : '' %>>Pending</option>
-              <option value="Shipped" <%= order.orderItems[0].status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
-              <option value="Out for Delivery" <%= order.orderItems[0].status === 'Out for Delivery' ? 'selected' : '' %>>Out for Delivery</option>
-              <option value="Delivered" <%= order.orderItems[0].status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-              <option value="Cancelled" <%= order.orderItems[0].status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
-              <option value="Returned" <%= order.orderItems[0].status === 'Returned' ? 'selected' : '' %>>Returned</option>
-            </select>
-          </div>
-          <div class="col-auto">
-            <button type="submit" class="btn btn-success">Update</button>
-          </div>
-        </form>
-      <% } else { %>
-        <h5 class="text-secondary text-danger">This order was cancelled</h5>
-      <% } %>
-      
+    <h5 class="items-title">Items</h5>
+
+    <div class="order-items-list">
+
+        <% order.orderItems.forEach(item => { %>
+
+            <div class="order-item-card">
+
+                <!-- Product -->
+                <div class="product-section">
+
+                   
+
+                    <div class="product-info">
+                        <span class="product-label">PRODUCT</span>
+                        <h4><%= item.product.name %></h4>
+
+                        <div class="quantity">
+                            Quantity:
+                            <span><%= item.quantity %></span>
+                        </div>
+                    </div>
+
+                </div>
 
 
+                <!-- Status -->
+                <div class="item-info-section">
+
+                    <span class="info-label">STATUS</span>
+
+                    <% if (item.status === 'Pending') { %>
+
+                        <span class="status-badge status-pending">
+                            Pending
+                        </span>
+
+                    <% } else if (item.status === 'Processing') { %>
+
+                        <span class="status-badge status-processing">
+                            Processing
+                        </span>
+
+                    <% } else if (item.status === 'Shipped') { %>
+
+                        <span class="status-badge status-shipped">
+                            Shipped
+                        </span>
+
+                    <% } else if (item.status === 'Out for Delivery') { %>
+
+                        <span class="status-badge status-out">
+                            Out for Delivery
+                        </span>
+
+                    <% } else if (item.status === 'Delivered') { %>
+
+                        <span class="status-badge status-delivered">
+                            Delivered
+                        </span>
+
+                    <% } else if (item.status === 'Cancelled') { %>
+
+                        <span class="status-badge status-cancelled">
+                            Cancelled
+                        </span>
+
+                    <% } else if (item.status === 'Returned') { %>
+
+                        <span class="status-badge status-returned">
+                            Returned
+                        </span>
+
+                    <% } else if (item.status === 'Refunded') { %>
+
+                        <span class="status-badge status-refunded">
+                            Refunded
+                        </span>
+
+                    <% } else { %>
+
+                        <span class="status-badge status-unknown">
+                            Unknown
+                        </span>
+
+                    <% } %>
+
+                </div>
+
+
+                <!-- Update Status -->
+                <div class="item-info-section update-section">
+
+                    <span class="info-label">UPDATE STATUS</span>
+
+                    <% if(item.status !== 'Cancelled' &&
+                          item.status !== 'Returned' &&
+                          item.status !== 'Refunded'){ %>
+
+                        <form
+                            method="POST"
+                            action="/admin/orders/update-status/<%= order.orderId %>/<%= item._id %>"
+                            class="status-form"
+                        >
+
+                            <select name="status" class="form-select">
+
+                                <option value="Pending"
+                                    <%= item.status === 'Pending' ? 'selected' : '' %>>
+                                    Pending
+                                </option>
+
+                                <option value="Processing"
+                                    <%= item.status === 'Processing' ? 'selected' : '' %>>
+                                    Processing
+                                </option>
+
+                                <option value="Shipped"
+                                    <%= item.status === 'Shipped' ? 'selected' : '' %>>
+                                    Shipped
+                                </option>
+
+                                <option value="Delivered"
+                                    <%= item.status === 'Delivered' ? 'selected' : '' %>>
+                                    Delivered
+                                </option>
+
+                            </select>
+
+                            <button type="submit" class="update-btn">
+                                Update
+                            </button>
+
+                        </form>
+
+                    <% } else { %>
+
+                        <span class="not-available">No changes available</span>
+
+                    <% } %>
+
+                </div>
+
+
+                <!-- Refund -->
+                <div class="item-info-section refund-section">
+
+                    <span class="info-label">REFUND</span>
+
+                    <% if (item.status === 'Return Request' || item.status === 'Returned') { %>
+
+                        <form
+                            id="verifyForm-<%= item._id %>"
+                            method="POST"
+                            action="/admin/orders/verify-return/<%= order.orderId %>/<%= item._id %>"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="action"
+                                id="action-<%= item._id %>"
+                                value=""
+                            >
+
+                            <button
+                                type="button"
+                                class="refund-btn"
+                                onclick="showPopup('<%= item._id %>')"
+                            >
+                                Verify Refund
+                            </button>
+
+                        </form>
+
+                    <% } else if (item.status === 'Refunded') { %>
+
+                        <span class="status-badge status-refunded">
+                            Refunded
+                        </span>
+
+                    <% } else { %>
+
+                        <span class="not-available">-</span>
+
+                    <% } %>
+
+                </div>
+
+            </div>
+
+        <% }) %>
 
     </div>
 
-    <div class="mt-3 ms-3">
-      <a href="/admin/orders" class="btn btn-outline-secondary">
+</div>
+
+
+
+<div class="back-to-orders">
+    <a href="/admin/orders" class="btn btn-outline-secondary">
         ← Back to Order List
-      </a>
-    </div>
+    </a>
+</div>
+
+
+
+
+
+
+
+
+   
     
   </div>
 </div>

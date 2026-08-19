@@ -106,67 +106,72 @@ const editCategory = async (req, res) => {
 
 
 
-
 const toggleCategoryListing = async (req, res) => {
-
   try {
-    // 1. Find the category
+
+    // Find the category/subcategory being listed/unlisted
     const category = await Category.findById(req.params.id);
 
     if (!category) {
       return res.status(404).json({
         success: false,
-        message: "Category not found",
+        message: "Category not found"
       });
     }
 
-    // 2. Toggle the listing status
+    // Toggle category status
     category.isListed = !category.isListed;
     await category.save();
 
-    // 3. Update all related products
-    // await Product.updateMany(
-    //   { category: category._id },
-    //   {
-    //     $set: {
-    //       isListed: category.isListed,
-    //     },
-    //   }
-    // );
+    // Find all category documents belonging to the same
+    // main category (Women / Men)
+    const relatedCategories = await Category.find({
+      categoryName: {
+        $regex: new RegExp(`^${category.categoryName.trim()}$`, "i")
+      },
+      isDeleted: false
+    }).select("_id");
 
-
-    const products = await Product.find({
-    category: category._id
-});
+    const categoryIds = relatedCategories.map(cat => cat._id);
 
 
 
-const result = await Product.updateMany(
-    { category: category._id },
-    {
+    // Update products belonging to this main category
+    // and this specific subcategory
+
+
+    const result = await Product.updateMany(
+      {
+        category: { $in: categoryIds },
+
+       subcategory: category.subCategory
+      },
+      {
         $set: {
-            isListed: category.isListed,
-        },
-    }
-);
+          isListed: category.isListed
+        }
+      }
+    );
 
-console.log(result);
 
-    // 4. Send success response
+
     res.json({
       success: true,
       isListed: category.isListed,
+      updatedProducts: result.modifiedCount
     });
 
   } catch (error) {
+
     console.error("Error toggling category listing:", error);
+
     res.status(500).json({
       success: false,
-      message: "Something went wrong",
+      message: "Something went wrong"
     });
+
   }
 };
-
 
 
   

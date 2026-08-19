@@ -11,6 +11,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
+
 	
 
 
@@ -54,6 +55,60 @@
     .btn-sm {
         margin-right: 10px;
     }
+
+
+
+.profile-image{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #fff;
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.profile-image-actions{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    margin-top:15px;
+}
+
+.profile-image-actions form{
+    margin:0;
+}
+
+.edit-photo-btn,
+.delete-photo-btn{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    border:1px solid #ddd;
+    background:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.edit-photo-btn{
+    color:#0d6efd;
+}
+
+.delete-photo-btn{
+    color:#dc3545;
+}
+
+.edit-photo-btn:hover,
+.delete-photo-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+
+
+
 </style>
 	</head>
 
@@ -84,7 +139,7 @@
                             <ul>
                                 <li class="active"><a href="/">Home</a></li>
                                 <li class="has-dropdown">
-                                    <!-- <a href="/men">Men</a> -->
+                                  
                                     <ul class="dropdown">
                                         <li><a href="/product-detail">Product Detail</a></li>
                                         <li><a href="/cart">Shopping Cart</a></li>
@@ -93,7 +148,7 @@
                                         <li><a href="/wishlist">Wishlist</a></li>
                                     </ul>
                                 </li>
-                                <!-- <li><a href="/women">Women</a></li> -->
+                             
                                 <li><a href="/about">About</a></li>
                                 <li><a href="/contact">Contact</a></li>
                                 <li class="cart"><a href="/cart"><i class="icon-shopping-cart"></i> Cart</a></li>
@@ -145,18 +200,65 @@
               
 
 
-   <div class="mb-3 text-center">
+ 
+
+
+
+
+
+
+
+
+
+
+ <div class="mb-3 text-center">
+
     <!-- Profile Image -->
-    <img src="<%= user.profileImage || '/images/default-user.png' %>" alt="User Image" class="img-fluid rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
-  
-    <!-- Edit icon and form -->
-    <form action="/upload-profile-image" method="POST" enctype="multipart/form-data" style="margin-top: 10px;">
-      <label for="profileImage" class="btn btn-sm btn-outline-primary">
-        <i class="fas fa-edit"></i> 
-      </label>
-      <input type="file" name="profileImage" id="profileImage" style="display: none;" onchange="this.form.submit()" />
-    </form>
-  </div>
+   <img
+src="<%= user.profileImage && user.profileImage.trim() !== '' ? user.profileImage : '/images/default-profile.png' %>"
+class="profile-image">
+
+    <!-- Action Buttons -->
+    <div class="profile-image-actions">
+
+        <!-- Edit Button -->
+        <form action="/upload-profile-image" method="POST" enctype="multipart/form-data">
+
+            <label for="profileImage" class="edit-photo-btn">
+                <i class="fas fa-edit"></i>
+            </label>
+
+            <input
+                type="file"
+                name="profileImage"
+                id="profileImage"
+                hidden
+                onchange="this.form.submit()"
+            >
+
+        </form>
+
+        <!-- Delete Button -->
+        <% if(user.profileImage){ %>
+
+<form id="deleteProfileForm" action="/remove-profile-image" method="POST">
+
+           <button
+    type="button"
+    class="delete-photo-btn"
+    onclick="deleteProfileImage()">
+
+    <i class="fas fa-trash"></i>
+
+</button>
+
+        </form>
+
+        <% } %>
+
+    </div>
+
+</div>
   
 
 
@@ -219,15 +321,7 @@
                                    
                                    
                                
-                                
-
-
-
-
-
-
-
-
+                    
 
 <!-- footer starts -->
                              
@@ -335,7 +429,46 @@
                                 <!-- Stellar Parallax -->
                                 <script src="js/jquery.stellar.min.js"></script>
                                 <!-- Main -->
-                                <script src="js/main.js"></script>
-                                
+                              
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+function deleteProfileImage() {
+
+    Swal.fire({
+
+        title: 'Delete Profile Picture?',
+
+        text: 'This action cannot be undone.',
+
+        icon: 'warning',
+
+        showCancelButton: true,
+
+        confirmButtonColor: '#dc3545',
+
+        cancelButtonColor: '#6c757d',
+
+        confirmButtonText: 'Yes, Delete',
+
+        cancelButtonText: 'Cancel'
+
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            document.getElementById("deleteProfileForm").submit();
+
+        }
+
+    });
+
+}
+
+</script>
+
+
                                 </body>
+                              
                                 </html>

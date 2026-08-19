@@ -12,10 +12,29 @@ const listOrders = async (req, res) => {
   
       const query = {};
   
-      if (search) {
-     
-        query.orderId = { $regex: search, $options: 'i' };
-      }
+     if (search) {
+
+    // Find users whose names match the search
+    const users = await User.find({
+        name: { $regex: search, $options: "i" }
+    }).select("_id");
+
+    const userIds = users.map(user => user._id);
+
+    query.$or = [
+        {
+            orderId: {
+                $regex: search,
+                $options: "i"
+            }
+        },
+        {
+            user: {
+                $in: userIds
+            }
+        }
+    ];
+}
   
       if (status) {
         query['orderItems.status'] = status;
@@ -23,13 +42,62 @@ const listOrders = async (req, res) => {
   
       const skip = (page - 1) * limit;
   
-      const orders = await Order.find(query)
-        .populate('user')
-        .sort({ createdAt: sort === 'asc' ? 1 : -1 })
-        .skip(skip)
-        .limit(limit);
-  
-      const total = await Order.countDocuments(query);
+     let orders = await Order.find(query)
+    .populate('user')
+    .sort({ createdAt: sort === 'asc' ? 1 : -1 })
+    .skip(skip)
+    .limit(limit);
+
+
+// Calculate overall order status
+
+orders.forEach(order => {
+
+    const statuses = order.orderItems.map(item => item.status);
+
+    // All items have the same final status
+    if (statuses.every(status => status === "Delivered")) {
+
+        order.displayStatus = "Delivered";
+
+    } else if (statuses.every(status => status === "Cancelled")) {
+
+        order.displayStatus = "Cancelled";
+
+    } else if (statuses.every(status => status === "Shipped")) {
+
+        order.displayStatus = "Shipped";
+
+    } else if (statuses.every(status => status === "Returned")) {
+
+        order.displayStatus = "Returned";
+
+    } else if (statuses.every(status => status === "Refunded")) {
+
+        order.displayStatus = "Refunded";
+
+    } else {
+
+        // Any mixed / Processing / Pending status
+        // means the order is still ongoing
+        order.displayStatus = "Pending";
+
+    }
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+const total = await Order.countDocuments(query);
     
       res.render('orders/list', {
         orders,
@@ -73,40 +141,41 @@ const viewOrderDetails = async (req, res) => {
 
 // 3. Update order status (pending, shipped, delivered, etc.)
 const updateOrderStatus = async (req, res) => {
+
   try {
+
+    const { orderId, itemId } = req.params;
     const { status } = req.body;
-    const order = await Order.findOne({ orderId: req.params.orderId });
 
-    if (!order) return res.status(404).send("Order not found now");
+    const order = await Order.findOne({ orderId });
 
-    for (const item of order.orderItems) {
-      item.status = status;
-
-      if (status === 'Delivered') {
-        const product = await Product.findById(item.product);
-        if (product) {
-          product.stock -= item.quantity;
-          if (product.stock < 0) product.stock = 0; // Prevent negative stock
-          await product.save();
-        }
-      }
+    if (!order) {
+      return res.status(404).send("Order not found");
     }
+
+    // Find the selected item
+    const item = order.orderItems.id(itemId);
+
+    if (!item) {
+      return res.status(404).send("Item not found");
+    }
+
+    // Update only this item
+    item.status = status;
 
     await order.save();
 
-    // order.orderItems.forEach(item => {
-    //   item.status = status;
-    // });
-
-    // await order.save();
-
     res.redirect(`/admin/orders/${order.orderId}`);
-  } catch (err) {
-    console.error("Error updating order status:", err);
-    res.status(500).send("Internal Server Error");
-  }
-};
 
+  } catch (err) {
+
+    console.error("Error updating order status:", err);
+
+    res.status(500).send("Internal Server Error");
+
+  }
+
+};
 
 
 
@@ -153,6 +222,28 @@ const verifyReturnRequest = async (req, res) => {
       type: 'credit',
       description: `Refund for returned item in order ${orderId}`,
     });
+
+const product = await Product.findById(item.product);
+
+if (product) {
+
+    const selectedVariant = product.variants.find(
+        variant => variant.size === item.size
+    );
+
+    if (selectedVariant) {
+        selectedVariant.stock += item.quantity;
+    }
+
+    product.stock = product.variants.reduce(
+        (total, variant) => total + variant.stock,
+        0
+    );
+
+    await product.save();
+}
+
+
 
     item.status = 'Refunded';
 

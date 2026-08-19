@@ -1,162 +1,731 @@
 <%- include("../../views/partials/admin/header") %>
+
 <style>
-    .custom-btn {
-        background-color: #339999;
-        color: white;
-        border: none;
+
+/* ================================
+   MOVINO USER MANAGEMENT
+================================ */
+
+
+/* Fix admin content alignment */
+
+.main-content {
+    margin-left: 267px !important;
+    width: calc(100% - 267px) !important;
+}
+
+.user-management {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 45px 40px 50px 40px;
+    box-sizing: border-box;
+}
+
+
+
+/* Page Header */
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #20242b;
+    margin-bottom: 5px;
+}
+
+.page-subtitle {
+    font-size: 15px;
+    color: #8b8b8b;
+    margin-bottom: 25px;
+}
+
+
+/* Search Section */
+
+.search-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.search-input {
+    height: 42px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    padding: 0 15px;
+    font-size: 14px;
+    flex: 1;
+    outline: none;
+    transition: .25s;
+}
+
+.search-input:focus {
+    border-color: #339999;
+    box-shadow: 0 0 0 3px rgba(51,153,153,.08);
+}
+
+
+/* Buttons */
+
+.btn-search {
+    height: 42px;
+    padding: 0 20px;
+    background: #339999;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: .25s;
+}
+
+.btn-search:hover {
+    background: #2d8787;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-clear {
+    height: 42px;
+    padding: 0 20px;
+    background: white;
+    color: #555;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: .25s;
+}
+
+.btn-clear:hover {
+    background: #f5f5f5;
+    color: #333;
+}
+
+
+/* Table Card */
+
+.user-table-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.05);
+    overflow: hidden;
+}
+
+
+/* Table */
+
+.user-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+}
+
+.user-table thead {
+    background: #eceff3;
+}
+
+.user-table th {
+    padding: 17px 20px;
+    color: #404040;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid #d8dde5;
+}
+
+.user-table td {
+    padding: 17px 20px;
+    vertical-align: middle;
+    color: #444;
+    font-size: 14px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.user-table tbody tr {
+    transition: .2s;
+}
+
+.user-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.user-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* User Name */
+
+.user-name {
+    font-weight: 600;
+    color: #30343b;
+}
+
+.user-email {
+    color: #666;
+}
+
+
+/* Status */
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 13px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-active {
+    background: #e8f8ed;
+    color: #16a34a;
+}
+
+.status-blocked {
+    background: #fdecec;
+    color: #dc2626;
+}
+
+
+/* Action Buttons */
+
+.action-btn {
+    min-width: 75px;
+    padding: 8px 15px;
+    border-radius: 7px;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: .25s;
+}
+
+
+/* Block */
+
+.block-btn {
+    background: #fff5d9;
+    color: #d97706;
+}
+
+.block-btn:hover {
+    background: #d97706;
+    color: white;
+    transform: translateY(-1px);
+}
+
+
+/* Unblock */
+
+.unblock-btn {
+    background: #e8f8ed;
+    color: #16a34a;
+}
+
+.unblock-btn:hover {
+    background: #16a34a;
+    color: white;
+    transform: translateY(-1px);
+}
+
+
+/* Pagination */
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.pagination .page-link {
+    color: #339999;
+    border: 1px solid #e1e1e1;
+    margin: 0 3px;
+    border-radius: 7px !important;
+    padding: 8px 13px;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.pagination .page-link:hover {
+    background: #eef8f8;
+    color: #2d8787;
+}
+
+.pagination .page-item.active .page-link {
+    background: #339999;
+    border-color: #339999;
+    color: white;
+}
+
+
+/* Empty State */
+
+.empty-users {
+    text-align: center;
+    padding: 45px;
+    color: #999;
+    font-size: 14px;
+}
+
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .user-management {
+        padding: 30px 20px;
     }
 
-    .custom-btn:hover {
-        background-color: #2e8b8b;
+    .search-section {
+        flex-wrap: wrap;
     }
-    </style>
 
+    .search-input {
+        width: 100%;
+        flex: none;
+    }
+
+    .user-table-card {
+        overflow-x: auto;
+    }
+
+    .user-table {
+        min-width: 700px;
+    }
+
+}
+
+</style>
 
 
 <div class="main-content">
-    <h2>User Management</h2>
-<!-- Search Form -->
-<div class="mb-3 d-flex">
-    <input type="text" id="searchInput" class="form-control" placeholder="Search users by name or email..." 
-           value="<%= searchQuery || '' %>">
-    <!-- <button class="btn btn-primary ms-2" onclick="searchUsers()">Search</button> -->
-    <button class="btn custom-btn ms-2" onclick="searchUsers()">Search</button>
-    <button class="btn btn-secondary ms-2" onclick="clearSearch()">Clear</button>
-</div>
+
+    <div class="user-management">
+
+        <!-- Page Header -->
+
+        <div class="mb-4">
+
+            <h2 class="page-title">
+                User Management
+            </h2>
+
+            <p class="page-subtitle">
+                Manage customer accounts and access
+            </p>
+
+        </div>
 
 
-    <!-- //user table -->
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <!-- <th>ID</th> -->
-                <th>Name</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% users.forEach(user => { %>
-                <tr>
-                    <!-- <td><%= user._id %></td> -->
-                    <td><%= user.name %></td>
-                    <td><%= user.email %></td>
-                    <td>
-                        <% if (user.isBlocked) { %>
-                            <span class="badge bg-danger">Blocked</span>
+        <!-- Search -->
+
+        <div class="search-section">
+
+            <input
+                type="text"
+                id="searchInput"
+                class="search-input"
+                placeholder="Search users by name or email..."
+                value="<%= searchQuery || '' %>"
+            >
+
+            <button
+                class="btn-search"
+                onclick="searchUsers()">
+                Search
+            </button>
+
+            <button
+                class="btn-clear"
+                onclick="clearSearch()">
+                Clear
+            </button>
+
+        </div>
+
+
+        <!-- User Table -->
+
+        <div class="user-table-card">
+
+            <div class="table-responsive">
+
+                <table class="user-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <% if (users && users.length > 0) { %>
+
+                            <% users.forEach(user => { %>
+
+                                <tr>
+
+                                    <!-- Name -->
+
+                                    <td>
+
+                                        <span class="user-name">
+                                            <%= user.name %>
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- Email -->
+
+                                    <td>
+
+                                        <span class="user-email">
+                                            <%= user.email %>
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- Status -->
+
+                                    <td>
+
+                                        <% if (user.isBlocked) { %>
+
+                                            <span class="status-badge status-blocked">
+                                                Blocked
+                                            </span>
+
+                                        <% } else { %>
+
+                                            <span class="status-badge status-active">
+                                                Active
+                                            </span>
+
+                                        <% } %>
+
+                                    </td>
+
+
+                                    <!-- Action -->
+
+                                    <td>
+
+                                        <% if (user.isBlocked) { %>
+
+                                            <button
+                                                class="action-btn unblock-btn"
+                                                onclick="toggleUserStatus(
+                                                    '<%= user._id %>',
+                                                    true
+                                                )">
+
+                                                Unblock
+
+                                            </button>
+
+                                        <% } else { %>
+
+                                            <button
+                                                class="action-btn block-btn"
+                                                onclick="toggleUserStatus(
+                                                    '<%= user._id %>',
+                                                    false
+                                                )">
+
+                                                Block
+
+                                            </button>
+
+                                        <% } %>
+
+                                    </td>
+
+                                </tr>
+
+                            <% }) %>
+
                         <% } else { %>
-                            <span class="badge bg-success">Active</span>
+
+                            <tr>
+
+                                <td
+                                    colspan="4"
+                                    class="empty-users">
+
+                                    No users found.
+
+                                </td>
+
+                            </tr>
+
                         <% } %>
-                    </td>
-                    <td>
-                        <button class="btn btn-<%= user.isBlocked ? 'success' : 'warning' %> btn-sm"
-                                onclick="toggleUserStatus('<%= user._id %>', '<%= user.isBlocked %>')">
-                            <%= user.isBlocked ? 'Unblock' : 'Block' %>
-                        </button>
-                    </td>
-                    <!-- <td>
-                        <button class="btn btn-sm <%= user.isBlocked ? 'btn-success' : 'btn-danger' %> toggle-block-btn"
-                            data-user-id="<%= user._id %>" 
-                            data-status="<%= user.isBlocked ? 'unblock' : 'block' %>">
-                            <%= user.isBlocked ? 'Unblock' : 'Block' %>
-                        </button>
-                    </td> -->
-                    
-                </tr>
-            <% }); %>
-        </tbody>
-    </table>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- Pagination -->
+
+        <% if (totalPages > 1) { %>
+
+            <div class="pagination-wrapper">
+
+                <nav>
+
+                    <ul class="pagination mb-0">
+
+                        <% if (currentPage > 1) { %>
+
+                            <li class="page-item">
+
+                                <a
+                                    class="page-link"
+                                    href="?search=<%= encodeURIComponent(searchQuery || '') %>&page=<%= currentPage - 1 %>">
+
+                                    Previous
+
+                                </a>
+
+                            </li>
+
+                        <% } %>
+
+
+                        <% for (let i = 1; i <= totalPages; i++) { %>
+
+                            <li
+                                class="page-item <%= i === currentPage ? 'active' : '' %>">
+
+                                <a
+                                    class="page-link"
+                                    href="?search=<%= encodeURIComponent(searchQuery || '') %>&page=<%= i %>">
+
+                                    <%= i %>
+
+                                </a>
+
+                            </li>
+
+                        <% } %>
+
+
+                        <% if (currentPage < totalPages) { %>
+
+                            <li class="page-item">
+
+                                <a
+                                    class="page-link"
+                                    href="?search=<%= encodeURIComponent(searchQuery || '') %>&page=<%= currentPage + 1 %>">
+
+                                    Next
+
+                                </a>
+
+                            </li>
+
+                        <% } %>
+
+                    </ul>
+
+                </nav>
+
+            </div>
+
+        <% } %>
+
+    </div>
+
 </div>
-<!-- Pagination -->
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center mt-4">
-        <% if (currentPage > 1) { %>
-            <li class="page-item">
-                <a class="page-link" href="?search=<%= searchQuery %>&page=<%= currentPage - 1 %>">Previous</a>
-            </li>
-        <% } %>
 
-        <% for (let i = 1; i <= totalPages; i++) { %>
-            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                <a class="page-link" href="?search=<%= searchQuery %>&page=<%= i %>"><%= i %></a>
-            </li>
-        <% } %>
-
-        <% if (currentPage < totalPages) { %>
-            <li class="page-item">
-                <a class="page-link" href="?search=<%= searchQuery %>&page=<%= currentPage + 1 %>">Next</a>
-            </li>
-        <% } %>
-    </ul>
-</nav>
-
-<%- include("../../views/partials/admin/footer") %>
 
 <script>
-    function toggleUserStatus(userId, isBlocked) {
-        const action = isBlocked ? "unblock" : "block";
-        if (confirm(`Are you sure you want to ${action} this user?`)) {
-            fetch(`/admin/toggle-status/${userId}`, { method: "POST" })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload(); // Refresh page to update status
-                    } else {
-                        alert("Action failed. Please try again.");
-                    }
-                })
-                .catch(error => console.error("Error updating status:", error));
+
+    // ============================
+    // SEARCH
+    // ============================
+
+    function searchUsers() {
+
+        const query =
+            document.getElementById("searchInput").value.trim();
+
+        if (query) {
+
+            window.location.href =
+                `/admin/users?search=${encodeURIComponent(query)}`;
+
+        } else {
+
+            window.location.href =
+                "/admin/users";
+
         }
+
     }
 
-//searching user
-    function searchUsers() {
-        const query = document.getElementById("searchInput").value.trim();
-        window.location.href = query ? `/admin/users?search=${query}` : "/admin/users";
-    }
+
+    // ============================
+    // CLEAR SEARCH
+    // ============================
 
     function clearSearch() {
-        window.location.href = "/admin/users"; // Reload with no search query
+
+        window.location.href =
+            "/admin/users";
+
     }
 
 
-   
-    document.querySelectorAll('.toggle-block-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const userId = this.dataset.userId;
-            const action = this.dataset.status;
+    // ============================
+    // BLOCK / UNBLOCK USER
+    // ============================
 
-            Swal.fire({
-                title: `Are you sure you want to ${action} this user?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#339999',
-                cancelButtonColor: '#d33',
-                confirmButtonText: `Yes, ${action} user`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch(`/admin/users/${userId}/block`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire('Success', data.message, 'success')
-                                .then(() => window.location.reload());
-                        } else {
-                            Swal.fire('Error', data.message, 'error');
-                        }
-                    })
-                    .catch(err => Swal.fire('Error', 'Something went wrong', 'error'));
+    function toggleUserStatus(userId, isBlocked) {
+
+        const action =
+            isBlocked ? "unblock" : "block";
+
+
+        Swal.fire({
+
+            title: `Are you sure you want to ${action} this user?`,
+
+            text: isBlocked
+                ? "This user will be able to access their account again."
+                : "This user will no longer be able to access their account.",
+
+            icon: "warning",
+
+            showCancelButton: true,
+
+            confirmButtonColor: "#339999",
+
+            cancelButtonColor: "#dc3545",
+
+            confirmButtonText:
+                `Yes, ${action}`,
+
+            cancelButtonText:
+                "Cancel"
+
+        }).then((result) => {
+
+            if (!result.isConfirmed) {
+                return;
+            }
+
+
+            fetch(
+                `/admin/toggle-status/${userId}`,
+                {
+                    method: "POST"
                 }
-            });
-        });
-    });
+            )
 
+            .then(response => response.json())
+
+            .then(data => {
+
+                if (data.success) {
+
+                    Swal.fire({
+
+                        icon: "success",
+
+                        title: "Success",
+
+                        text: data.message,
+
+                        confirmButtonColor: "#339999"
+
+                    }).then(() => {
+
+                        window.location.reload();
+
+                    });
+
+                } else {
+
+                    Swal.fire({
+
+                        icon: "error",
+
+                        title: "Error",
+
+                        text:
+                            data.message ||
+                            "Action failed. Please try again.",
+
+                        confirmButtonColor: "#339999"
+
+                    });
+
+                }
+
+            })
+
+            .catch(error => {
+
+                console.error(
+                    "Error updating user status:",
+                    error
+                );
+
+                Swal.fire({
+
+                    icon: "error",
+
+                    title: "Error",
+
+                    text: "Something went wrong.",
+
+                    confirmButtonColor: "#339999"
+
+                });
+
+            });
+
+        });
+
+    }
+
+
+    // ============================
+    // ENTER KEY SEARCH
+    // ============================
+
+    document
+        .getElementById("searchInput")
+        .addEventListener("keypress", function(event) {
+
+            if (event.key === "Enter") {
+
+                searchUsers();
+
+            }
+
+        });
 
 </script>
 
+
+<%- include("../../views/partials/admin/footer") %>

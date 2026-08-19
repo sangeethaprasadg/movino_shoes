@@ -1,289 +1,1295 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-	<title>ORDER COMPLETE</title>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
 
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"> -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/bootstrap-icons.css" rel="stylesheet">
+    <title>ORDER COMPLETE</title>
 
+    <meta charset="utf-8">
 
-    
-	<link rel="stylesheet" href="/css/bootstrap-icons.css">
-
-<link rel="stylesheet" href="/css/animate.css">
-<link rel="stylesheet" href="/css/icomoon.css">
-<link rel="stylesheet" href="/css/ionicons.min.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/magnific-popup.css">
-<link rel="stylesheet" href="/css/flexslider.css">
-<link rel="stylesheet" href="/css/owl.carousel.min.css">
-<link rel="stylesheet" href="/css/owl.theme.default.min.css">
-<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
-<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
-<link rel="stylesheet" href="/css/style.css">
-
-	</head>
-	<body>
-		
-	<div class="colorlib-loader"></div>
-
-	<div id="page">
-		<nav class="colorlib-nav" role="navigation">
-			<div class="top-menu">
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="/">M O V I N O</a></div>
-						</div>
-						<div class="col-sm-5 col-md-3">
-			            <form action="#" class="search-wrap">
-			               <div class="form-group">
-			                  <input type="search" class="form-control search" placeholder="Search">
-			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
-			               </div>
-			            </form>
-			         </div>
-		         </div>
-					<div class="row">
-						<div class="col-sm-12 text-left menu-1">
-							<ul>
-								<li><a href="/">Home</a></li>
-								<li class="has-dropdown active">
-									<!-- <a href="men.html">Men</a> -->
-									<ul class="dropdown">
-										<li><a href="product-detail">Product Detail</a></li>
-										<li><a href="cart.html">Shopping Cart</a></li>
-										<li><a href="checkout.html">Checkout</a></li>
-										<li><a href="order-complete.html">Order Complete</a></li>
-										<li><a href="add-to-wishlist.html">Wishlist</a></li>
-									</ul>
-								</li>
-								<!-- <li><a href="women.html">Women</a></li> -->
-								<li><a href="about.html">About</a></li>
-								<li><a href="contact.html">Contact</a></li>
-								<li class="cart"><a href="/cart"><i class="icon-shopping-cart"></i> Cart</a></li>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 
-								<% if (user) { %>  
-									<!-- User Dropdown -->
-									<li class="has-dropdown">
-										<a href="javascript:void(0);" class="dropdown-link"><%= user.name %></a>  
-										<ul class="dropdown">
-											<li><a href="/profile">Profile</a></li>  
-											<li><a href="/logout">Logout</a></li>  
-										</ul>
-									</li>
-								<% } else { %>  
-									<li><a href="/login">Login</a></li>
-									<li><a href="/signup">Signup</a></li>
-								<% } %>
+    <!-- Google Fonts -->
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700"
+          rel="stylesheet">
 
 
+    <!-- Bootstrap Icons -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+        rel="stylesheet">
 
 
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="sale">
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-8 offset-sm-2 text-center">
-							<div class="row">
-								<div class="owl-carousel2">
-									<div class="item">
-										<div class="col">
-											<h3><a href="#">25% off (Almost) Everything! Use Code: Summer Sale</a></h3>
-										</div>
-									</div>
-									<div class="item">
-										<div class="col">
-											<h3><a href="#">Our biggest sale yet 50% off all summer shoes</a></h3>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</nav>
+    <!-- Existing CSS -->
 
-		<div class="breadcrumbs">
-			<div class="container">
-				<div class="row">
-					<div class="col">
-						<p class="bread"><span><a href="/">Home</a></span> /<span><a href="/checkout">checkout</a></span>/ <span>Order complete</span></p>
-					</div>
-				</div>
-			</div>
-		</div>
+    <link rel="stylesheet" href="/css/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="/css/animate.css">
+
+    <link rel="stylesheet" href="/css/icomoon.css">
+
+    <link rel="stylesheet" href="/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="/css/flexslider.css">
+
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+
+    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+
+    <link rel="stylesheet"
+          href="/fonts/flaticon/font/flaticon.css">
+
+    <link rel="stylesheet" href="/css/style.css">
 
 
-		<div class="colorlib-product">
-			<div class="container">
-				
-					<!-- </div> -->
-					<!-- <div class="col-sm-4"> -->
-						<!-- <div class="colorlib-product"> -->
-							<!-- <div class="container"> -->
-								<div class="row row-pb-lg">
-									<div class="col-md-10 offset-md-1">
-										<div class="process-wrap">
-											<div class="process text-center active">
-												<p><span>01</span></p>
-												<h3>Shopping Cart</h3>
-											</div>
-											<div class="process text-center">
-												<p><span>02</span></p>
-												<h3>Checkout</h3>
-											</div>
-											<div class="process text-center">
-												<p><span>03</span></p>
-												<h3>Order Complete</h3>
-											</div>
-										</div>
-									</div>
-								</div>
-					<!-- </div> -->
-				</div>
-<!-- here need to add template -->
-				
+    <!-- MOVINO ORDER COMPLETE CUSTOM CSS -->
 
-      
+    <style>
 
-                      <div style="text-align: center; margin-top: 50px;">
-                        <img src="/images/thank-you.png" alt="Thank You" style="width: 150px;" />
-                        <h2>Thank you for your order!</h2>
-                        <p>Your order has been placed successfully with Order ID: <strong><%= order.orderId %></strong></p>
-                      
-                        <div style="margin-top: 30px;">
-                         
+        /* =========================================
+           MOVINO THEME
+        ========================================= */
 
-                          <a href="/order/<%= order.orderId %>" style="text-decoration: none;">
-                            <button type="button">View Order Details</button>
-                          </a>
-                          
+        :root {
+            --movino-color: #339999;
+            --movino-dark: #2d8787;
+            --movino-light: #e8f8f5;
+            --movino-text: #222222;
+            --movino-muted: #777777;
+        }
 
-                          <a href="/shop">
-                            <button style="margin-left: 10px;">Continue Shopping</button>
-                          </a>
+
+        /* =========================================
+           ORDER SUCCESS SECTION
+        ========================================= */
+
+        .movino-success-section {
+
+            padding: 55px 15px 80px;
+
+        }
+
+
+        .movino-success-card {
+
+            max-width: 760px;
+
+            margin: 0 auto;
+
+            background: #ffffff;
+
+            border-radius: 18px;
+
+            padding: 55px 50px;
+
+            text-align: center;
+
+            border: 1px solid #eeeeee;
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.07);
+
+        }
+
+
+        /* =========================================
+           SUCCESS ICON
+        ========================================= */
+
+        .movino-success-icon {
+
+            width: 88px;
+
+            height: 88px;
+
+            margin: 0 auto 25px;
+
+            border-radius: 50%;
+
+            background: var(--movino-light);
+
+            color: var(--movino-color);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 42px;
+
+        }
+
+
+        .movino-success-icon i {
+
+            line-height: 1;
+
+        }
+
+
+        /* =========================================
+           TITLE
+        ========================================= */
+
+        .movino-success-card h2 {
+
+            font-family: 'Rokkitt', serif;
+
+            font-size: 34px;
+
+            font-weight: 500;
+
+            color: var(--movino-text);
+
+            margin-bottom: 12px;
+
+        }
+
+
+        /* =========================================
+           DESCRIPTION
+        ========================================= */
+
+        .movino-success-message {
+
+            max-width: 560px;
+
+            margin: 0 auto 28px;
+
+            color: var(--movino-muted);
+
+            font-family: 'Montserrat', sans-serif;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+
+        }
+
+
+        /* =========================================
+           ORDER ID
+        ========================================= */
+
+        .movino-order-id {
+
+            display: inline-block;
+
+            min-width: 250px;
+
+            background: #f7fbfb;
+
+            border: 1px solid #dceeee;
+
+            border-radius: 10px;
+
+            padding: 15px 25px;
+
+            margin-bottom: 32px;
+
+        }
+
+
+        .movino-order-id-label {
+
+            display: block;
+
+            font-family: 'Montserrat', sans-serif;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            color: #999999;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .movino-order-id-value {
+
+            display: block;
+
+            font-family: 'Montserrat', sans-serif;
+
+            font-size: 17px;
+
+            font-weight: 600;
+
+            color: var(--movino-color);
+
+        }
+
+
+        /* =========================================
+           BUTTON AREA
+        ========================================= */
+
+        .movino-success-actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        /* =========================================
+           PRIMARY BUTTON
+        ========================================= */
+
+        .movino-btn-primary {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            min-width: 185px;
+
+            padding: 13px 25px;
+
+            background: var(--movino-color);
+
+            color: #ffffff !important;
+
+            border: 1px solid var(--movino-color);
+
+            border-radius: 6px;
+
+            font-family: 'Montserrat', sans-serif;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            text-decoration: none !important;
+
+            transition: all 0.25s ease;
+
+        }
+
+
+        .movino-btn-primary:hover {
+
+            background: var(--movino-dark);
+
+            border-color: var(--movino-dark);
+
+            color: #ffffff !important;
+
+            transform: translateY(-1px);
+
+        }
+
+
+        /* =========================================
+           SECONDARY BUTTON
+        ========================================= */
+
+        .movino-btn-outline {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            min-width: 185px;
+
+            padding: 13px 25px;
+
+            background: #ffffff;
+
+            color: var(--movino-color) !important;
+
+            border: 1px solid var(--movino-color);
+
+            border-radius: 6px;
+
+            font-family: 'Montserrat', sans-serif;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            text-decoration: none !important;
+
+            transition: all 0.25s ease;
+
+        }
+
+
+        .movino-btn-outline:hover {
+
+            background: var(--movino-color);
+
+            color: #ffffff !important;
+
+            transform: translateY(-1px);
+
+        }
+
+
+        /* =========================================
+           BOTTOM MESSAGE
+        ========================================= */
+
+        .movino-success-note {
+
+            margin-top: 32px;
+
+            margin-bottom: 0;
+
+            color: #999999;
+
+            font-family: 'Montserrat', sans-serif;
+
+            font-size: 12px;
+
+        }
+
+
+        .movino-success-note strong {
+
+            color: var(--movino-color);
+
+            font-weight: 600;
+
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 767px) {
+
+            .movino-success-section {
+
+                padding: 35px 15px 60px;
+
+            }
+
+
+            .movino-success-card {
+
+                padding: 40px 20px;
+
+            }
+
+
+            .movino-success-card h2 {
+
+                font-size: 28px;
+
+            }
+
+
+            .movino-success-message {
+
+                font-size: 13px;
+
+            }
+
+
+            .movino-success-actions {
+
+                flex-direction: column;
+
+            }
+
+
+            .movino-btn-primary,
+            .movino-btn-outline {
+
+                width: 100%;
+
+                max-width: 260px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="colorlib-loader"></div>
+
+
+<div id="page">
+
+
+    <!-- =========================================
+         NAVBAR
+    ========================================= -->
+
+    <nav class="colorlib-nav" role="navigation">
+
+        <div class="top-menu">
+
+            <div class="container">
+
+
+                <!-- TOP ROW -->
+
+                <div class="row">
+
+
+                    <div class="col-sm-7 col-md-9">
+
+                        <div id="colorlib-logo">
+
+                            <a href="/">
+                                M O V I N O
+                            </a>
+
                         </div>
-                      </div>
+
+                    </div>
+
+
+                    <div class="col-sm-5 col-md-3">
+
+                        <form action="#"
+                              class="search-wrap">
+
+                            <div class="form-group">
+
+                                <input
+                                    type="search"
+                                    class="form-control search"
+                                    placeholder="Search">
+
+                                <button
+                                    class="btn btn-primary submit-search text-center"
+                                    type="submit">
+
+                                    <i class="icon-search"></i>
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- MENU -->
+
+                <div class="row">
+
+                    <div class="col-sm-12 text-left menu-1">
+
+                        <ul>
+
+
+                            <li>
+                                <a href="/">
+                                    Home
+                                </a>
+                            </li>
+
+
+                            <li class="has-dropdown">
+
+                                <a href="#">
+                                    Shop
+                                </a>
+
+                                <ul class="dropdown">
+
+                                    <li>
+                                        <a href="/shop">
+                                            Shop
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/cart">
+                                            Shopping Cart
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/checkout">
+                                            Checkout
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/wishlist">
+                                            Wishlist
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+
+
+                            <li>
+                                <a href="/about">
+                                    About
+                                </a>
+                            </li>
+
+
+                            <li>
+                                <a href="/contact">
+                                    Contact
+                                </a>
+                            </li>
+
+
+                            <li class="cart">
+
+                                <a href="/cart">
+
+                                    <i class="icon-shopping-cart"></i>
+
+                                    Cart
+
+                                </a>
+
+                            </li>
+
+
+                            <!-- USER -->
+
+                            <% if (user) { %>
+
+                                <li class="has-dropdown">
+
+                                    <a href="javascript:void(0);"
+                                       class="dropdown-link">
+
+                                        <%= user.name %>
+
+                                    </a>
+
+
+                                    <ul class="dropdown">
+
+                                        <li>
+                                            <a href="/profile">
+                                                Profile
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/logout">
+                                                Logout
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+
+                            <% } else { %>
+
+
+                                <li>
+                                    <a href="/login">
+                                        Login
+                                    </a>
+                                </li>
+
+
+                                <li>
+                                    <a href="/signup">
+                                        Signup
+                                    </a>
+                                </li>
+
+
+                            <% } %>
+
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- SALE BAR -->
+
+        <div class="sale">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-sm-8 offset-sm-2 text-center">
+
+                        <div class="row">
+
+                            <div class="owl-carousel2">
+
+
+                                <div class="item">
+
+                                    <div class="col">
+
+                                        <h3>
+
+                                            <a href="#">
+                                                25% off (Almost) Everything!
+                                                Use Code: Summer Sale
+                                            </a>
+
+                                        </h3>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="item">
+
+                                    <div class="col">
+
+                                        <h3>
+
+                                            <a href="#">
+                                                Our biggest sale yet
+                                                50% off all summer shoes
+                                            </a>
+
+                                        </h3>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
 
 
 
-<!-- ended -->
+    <!-- =========================================
+         BREADCRUMBS
+    ========================================= -->
 
-			</div>
-		</div>
+    <div class="breadcrumbs">
 
-		<footer id="colorlib-footer" role="contentinfo">
-			<div class="container">
-				<div class="row row-pb-md">
-					<div class="col footer-col colorlib-widget">
-						<h4>About Footwear</h4>
-						<p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life</p>
-						<p>
-							<ul class="colorlib-social-icons">
-								<li><a href="#"><i class="icon-twitter"></i></a></li>
-								<li><a href="#"><i class="icon-facebook"></i></a></li>
-								<li><a href="#"><i class="icon-linkedin"></i></a></li>
-								<li><a href="#"><i class="icon-dribbble"></i></a></li>
-							</ul>
-						</p>
-					</div>
-					<div class="col footer-col colorlib-widget">
-						<h4>Customer Care</h4>
-						<p>
-							<ul class="colorlib-footer-links">
-								<li><a href="#">Contact</a></li>
-								<li><a href="#">Returns/Exchange</a></li>
-								<li><a href="#">Gift Voucher</a></li>
-								<li><a href="#">Wishlist</a></li>
-								<li><a href="#">Special</a></li>
-								<li><a href="#">Customer Services</a></li>
-								<li><a href="#">Site maps</a></li>
-							</ul>
-						</p>
-					</div>
-					<div class="col footer-col colorlib-widget">
-						<h4>Information</h4>
-						<p>
-							<ul class="colorlib-footer-links">
-								<li><a href="#">About us</a></li>
-								<li><a href="#">Delivery Information</a></li>
-								<li><a href="#">Privacy Policy</a></li>
-								<li><a href="#">Support</a></li>
-								<li><a href="#">Order Tracking</a></li>
-							</ul>
-						</p>
-					</div>
+        <div class="container">
 
-					<div class="col footer-col">
-						<h4>News</h4>
-						<ul class="colorlib-footer-links">
-							<li><a href="blog.html">Blog</a></li>
-							<li><a href="#">Press</a></li>
-							<li><a href="#">Exhibitions</a></li>
-						</ul>
-					</div>
+            <div class="row">
 
-					<div class="col footer-col">
-						<h4>Contact Information</h4>
-						<ul class="colorlib-footer-links">
-							<li>291 South 21th Street, <br> Suite 721 New York NY 10016</li>
-							<li><a href="tel://1234567920">+ 1235 2355 98</a></li>
-							<li><a href="mailto:info@yoursite.com">info@yoursite.com</a></li>
-							<li><a href="#">yoursite.com</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="copy">
-				<div class="row">
-					<div class="col-sm-12 text-center">
-						<p>
-							<span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></span> 
-							<span class="block">Demo Images: <a href="http://unsplash.co/" target="_blank">Unsplash</a> , <a href="http://pexels.com/" target="_blank">Pexels.com</a></span>
-						</p>
-					</div>
-				</div>
-			</div>
-		</footer>
-	</div>
+                <div class="col">
 
-	<div class="gototop js-top">
-		<a href="#" class="js-gotop"><i class="ion-ios-arrow-up"></i></a>
-	</div>
-	
-	<script src="/js/jquery.min.js"></script>
-	<script src="/js/popper.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/jquery.easing.1.3.js"></script>
-	<script src="/js/jquery.waypoints.min.js"></script>
-	<script src="/js/jquery.flexslider-min.js"></script>
-	<script src="/js/owl.carousel.min.js"></script>
-	<script src="/js/jquery.magnific-popup.min.js"></script>
-	<script src="/js/magnific-popup-options.js"></script>
-	<script src="/js/bootstrap-datepicker.js"></script>
-	<script src="/js/jquery.stellar.min.js"></script>
-	<script src="/js/main.js"></script>
+                    <p class="bread">
+
+                        <span>
+                            <a href="/">
+                                Home
+                            </a>
+                        </span>
+
+                        /
+
+                        <span>
+                            <a href="/checkout">
+                                Checkout
+                            </a>
+                        </span>
+
+                        /
+
+                        <span>
+                            Order Complete
+                        </span>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
 
+    <!-- =========================================
+         MAIN PRODUCT AREA
+    ========================================= -->
+
+    <div class="colorlib-product">
+
+        <div class="container">
 
 
-	</body>
+            <!-- =====================================
+                 ORDER PROCESS
+            ===================================== -->
+
+            <div class="row row-pb-lg">
+
+                <div class="col-md-10 offset-md-1">
+
+                    <div class="process-wrap">
+
+
+                        <!-- STEP 01 -->
+
+                        <div class="process text-center active">
+
+                            <p>
+                                <span>01</span>
+                            </p>
+
+                            <h3>
+                                Shopping Cart
+                            </h3>
+
+                        </div>
+
+
+                        <!-- STEP 02 -->
+
+                        <div class="process text-center active">
+
+                            <p>
+                                <span>02</span>
+                            </p>
+
+                            <h3>
+                                Checkout
+                            </h3>
+
+                        </div>
+
+
+                        <!-- STEP 03 -->
+
+                        <div class="process text-center active">
+
+                            <p>
+                                <span>03</span>
+                            </p>
+
+                            <h3>
+                                Order Complete
+                            </h3>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =====================================
+                 SUCCESS CARD
+            ===================================== -->
+
+            <div class="movino-success-section">
+
+
+                <div class="movino-success-card">
+
+
+                    <!-- SUCCESS ICON -->
+
+                    <div class="movino-success-icon">
+
+                        <i class="bi bi-check-lg"></i>
+
+                    </div>
+
+
+                    <!-- TITLE -->
+
+                    <h2>
+
+                        Thank You for Your Order!
+
+                    </h2>
+
+
+                    <!-- MESSAGE -->
+
+                    <p class="movino-success-message">
+
+                        Your order has been placed successfully.
+                        We have received your order and will
+                        process it shortly.
+
+                    </p>
+
+
+                    <!-- ORDER ID -->
+
+                    <div class="movino-order-id">
+
+                        <span class="movino-order-id-label">
+
+                            Order ID
+
+                        </span>
+
+
+                        <span class="movino-order-id-value">
+
+                            <%= order.orderId %>
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- ACTION BUTTONS -->
+
+                    <div class="movino-success-actions">
+
+
+                        <!-- VIEW ORDER -->
+
+                        <a
+                            href="/order/<%= order.orderId %>"
+                            class="movino-btn-primary">
+
+                            <i class="bi bi-receipt"></i>
+
+                            View Order Details
+
+                        </a>
+
+
+                        <!-- CONTINUE SHOPPING -->
+
+                        <a
+                            href="/shop"
+                            class="movino-btn-outline">
+
+                            <i class="bi bi-bag"></i>
+
+                            Continue Shopping
+
+                        </a>
+
+
+                    </div>
+
+
+                    <!-- FOOTER NOTE -->
+
+                    <p class="movino-success-note">
+
+                        Thank you for shopping with
+
+                        <strong>
+                            MOVINO
+                        </strong>.
+
+                    </p>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================= -->
+
+    <footer id="colorlib-footer"
+            role="contentinfo">
+
+
+        <div class="container">
+
+
+            <div class="row row-pb-md">
+
+
+                <!-- ABOUT -->
+
+                <div class="col footer-col colorlib-widget">
+
+                    <h4>
+                        About MOVINO
+                    </h4>
+
+                    <p>
+                        Step into style and comfort with
+                        MOVINO footwear. Discover shoes
+                        designed for every journey.
+                    </p>
+
+
+                    <p>
+
+                        <ul class="colorlib-social-icons">
+
+                            <li>
+                                <a href="#">
+                                    <i class="icon-twitter"></i>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <i class="icon-facebook"></i>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <i class="icon-linkedin"></i>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <i class="icon-instagram"></i>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- CUSTOMER CARE -->
+
+                <div class="col footer-col colorlib-widget">
+
+                    <h4>
+                        Customer Care
+                    </h4>
+
+                    <p>
+
+                        <ul class="colorlib-footer-links">
+
+                            <li>
+                                <a href="/contact">
+                                    Contact
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    Returns / Exchange
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    Wishlist
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    Customer Services
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    Order Tracking
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- INFORMATION -->
+
+                <div class="col footer-col colorlib-widget">
+
+                    <h4>
+                        Information
+                    </h4>
+
+                    <p>
+
+                        <ul class="colorlib-footer-links">
+
+                            <li>
+                                <a href="/about">
+                                    About Us
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    Delivery Information
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    Privacy Policy
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    Support
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    Order Tracking
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- NEWS -->
+
+                <div class="col footer-col">
+
+                    <h4>
+                        News
+                    </h4>
+
+                    <ul class="colorlib-footer-links">
+
+                        <li>
+                            <a href="#">
+                                Blog
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                Press
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                Exhibitions
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+
+                <!-- CONTACT -->
+
+                <div class="col footer-col">
+
+                    <h4>
+                        Contact Information
+                    </h4>
+
+                    <ul class="colorlib-footer-links">
+
+                        <li>
+                            Thiruvananthapuram,
+                            Kerala, India
+                        </li>
+
+                        <li>
+                            <a href="tel:+918136990150">
+                                +91 81369 90150
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="mailto:info@movino.com">
+                                info@movino.com
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/">
+                                movino.com
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- COPYRIGHT -->
+
+        <div class="copy">
+
+            <div class="row">
+
+                <div class="col-sm-12 text-center">
+
+                    <p>
+
+                        <span>
+
+                            Copyright &copy;
+
+                            <script>
+                                document.write(
+                                    new Date().getFullYear()
+                                );
+                            </script>
+
+                            MOVINO.
+                            All rights reserved.
+
+                        </span>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- =========================================
+     GO TO TOP
+========================================= -->
+
+<div class="gototop js-top">
+
+    <a href="#" class="js-gotop">
+
+        <i class="ion-ios-arrow-up"></i>
+
+    </a>
+
+</div>
+
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script src="/js/jquery.min.js"></script>
+
+<script src="/js/popper.min.js"></script>
+
+<script src="/js/bootstrap.min.js"></script>
+
+<script src="/js/jquery.easing.1.3.js"></script>
+
+<script src="/js/jquery.waypoints.min.js"></script>
+
+<script src="/js/jquery.flexslider-min.js"></script>
+
+<script src="/js/owl.carousel.min.js"></script>
+
+<script src="/js/jquery.magnific-popup.min.js"></script>
+
+<script src="/js/magnific-popup-options.js"></script>
+
+<script src="/js/bootstrap-datepicker.js"></script>
+
+<script src="/js/jquery.stellar.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+</body>
+
 </html>
-  
-
-
-  

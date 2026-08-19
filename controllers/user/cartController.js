@@ -3,6 +3,7 @@ const Product = require("../../models/productSchema");
 const Cart = require("../../models/cartSchema");
 const Wishlist = require("../../models/wishlistSchema");
 const Category = require('../../models/categorySchema');
+const { validateCartItems } = require('../../helpers/cartValidation');
 
 
 
@@ -43,7 +44,7 @@ const addToCart = async (req, res) => {
 
     const { size, quantity } = req.body;
 
-    console.log(req.body);
+  
 
 
     const from = req.query.from;
@@ -51,10 +52,41 @@ const addToCart = async (req, res) => {
   
     const product = await Product.findById(productId).populate('category');
 
+    
+if (!product) {
+    return res.redirect(`/product-detail/${productId}?error=unavailable`);
+}
 
     if (!size) {
     return res.redirect(`/product-detail/${productId}?error=selectsize`);
 }
+
+const validationResult = await validateCartItems([
+    {
+        product: product._id,
+        size: size,
+        quantity: Number(quantity)
+    }
+]);
+
+if (!validationResult.valid) {
+
+    if (from === 'wishlist') {
+        return res.redirect('/wishlist?error=outofstock');
+    }
+
+    return res.redirect(
+        `/product-detail/${productId}?error=unavailable`
+    );
+}
+
+
+
+
+
+
+
+
 
 const selectedVariant = product.variants.find(
     variant => variant.size === size
@@ -123,12 +155,16 @@ if (item) {
    return res.redirect(`/product-detail/${productId}?error=maxlimit`);
 }
 
-    if (item.quantity > selectedVariant.stock) {
-        return res.status(400).json({
-            success: false,
-            message: "Exceeds stock availability."
-        });
+   if (item.quantity > selectedVariant.stock) {
+
+    if (from === 'wishlist') {
+        return res.redirect('/wishlist?error=outofstock');
     }
+
+    return res.redirect(
+        `/product-detail/${productId}?error=outofstock`
+    );
+}
 }
 
 

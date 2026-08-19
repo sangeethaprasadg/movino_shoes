@@ -42,7 +42,578 @@
     
 	</head>
 
+<style>
 
+
+
+
+
+/* home */
+
+
+
+#colorlib-logo{
+
+font-size:30px;
+
+font-weight:700;
+
+letter-spacing:3px;
+   
+
+}
+
+.main-nav{
+
+display:flex;
+
+align-items:center;
+
+
+
+gap:30px;
+
+margin:0;
+
+padding:0;
+
+list-style:none;
+
+
+justify-content: space-between;
+  
+
+}
+
+
+.main-nav li{
+
+list-style:none;
+
+}
+
+.main-nav a{
+
+text-decoration:none;
+
+font-size:15px;
+
+font-weight:600;
+
+color:#222;
+
+transition:.3s;
+
+}
+
+.main-nav a:hover{
+
+color:#339999;
+
+}
+
+.nav-icons a{
+
+font-size:20px;
+
+}
+
+
+
+/* product */
+
+
+.product-entry{
+    background:#fff;
+    border:none !important;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+    transition:all .35s ease;
+    position:relative;
+    margin-bottom:30px;
+}
+
+.product-entry:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 45px rgba(0,0,0,.15);
+}
+
+
+.prod-img{
+    display:block;
+    overflow:hidden;
+    background:#f8f9fa;
+}
+
+.prod-img img{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+}
+
+.product-entry:hover .prod-img img{
+    transform:scale(1.08);
+}
+
+.desc{
+    padding:20px;
+    text-align:left !important;
+}
+
+.desc h6{
+    margin-top:10px;
+    margin-bottom:8px;
+}
+
+.desc h6 a{
+    color:#222;
+    font-size:18px;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.desc h6 a:hover{
+    color:#339999;
+}
+
+.price{
+    font-size:22px;
+    color:#339999;
+    font-weight:700;
+}
+
+
+.desc{
+    padding:20px;
+}
+
+.desc h6{
+    margin-top:12px;
+    margin-bottom:10px;
+    line-height:1.4;
+}
+.wishlist-btn{
+    position:absolute;
+    top:15px;
+    right:15px;
+    z-index:5;
+}
+
+.wishlist-btn a{
+    width:42px;
+    height:42px;
+    background:#fff;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#339999;
+    text-decoration:none;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+    transition:.3s;
+}
+
+.wishlist-btn a:hover{
+    background:#339999;
+    color:#fff;
+}
+
+
+.view-btn{
+    display:block;
+    width:100%;
+    text-align:center;
+    margin-top:20px;
+    padding:14px;
+    background:#339999;
+    color:#fff;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+}
+
+.view-btn:hover{
+    background:#267373;
+    color:#fff;
+}
+
+
+
+/* ==========================
+   SHOP HERO
+========================== */
+
+
+.movino-shop-hero{
+    width:100vw;
+    margin-left:calc(50% - 50vw);
+    background:linear-gradient(135deg,#339999,#267373);
+    padding:5 px 0;
+	 margin-bottom:40px;
+}
+.hero-content{
+    text-align:center;
+}
+
+.hero-tag{
+    display:inline-block;
+    font-size:10px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:#ffffffcc;
+    margin-bottom:3px;           /* Reduced */
+}
+
+.hero-content h1{
+    font-size:24px;              /* Reduced from 28px */
+    font-weight:700;
+    margin-bottom:2px;
+    color:#fff;
+    line-height:1.2;
+}
+
+.hero-content p{
+    font-size:13px;              /* Reduced */
+    color:#ffffffcc;
+    margin:0;
+}
+
+
+/*==========================
+FILTER CARD
+==========================*/
+
+.filter-card{
+
+background:#fff;
+
+padding:35px;
+
+border-radius:24px;
+
+box-shadow:0 20px 45px rgba(0,0,0,.08);
+
+}
+
+.filter-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:flex-start;
+
+margin-bottom:30px;
+
+}
+
+.filter-header h4{
+
+font-size:28px;
+
+font-weight:700;
+
+margin:0;
+
+}
+
+.filter-header p{
+
+margin-top:6px;
+
+font-size:13px;
+
+color:#999;
+
+}
+
+.filter-header a{
+
+text-decoration:none;
+
+font-weight:600;
+
+color:#339999;
+
+}
+
+.form-select{
+
+height:58px;
+
+background:#fafafa;
+
+border:1px solid #e6e6e6;
+
+border-radius:16px;
+
+padding-left:18px;
+
+font-size:15px;
+
+font-weight:500;
+
+transition:.3s;
+
+}
+
+.form-select:hover{
+
+border-color:#339999;
+
+}
+
+.form-select:focus{
+
+background:white;
+
+border-color:#339999;
+
+box-shadow:0 0 0 5px rgba(51,153,153,.15);
+
+}
+
+.form-control{
+
+height:58px;
+
+background:#fafafa;
+
+border:1px solid #e6e6e6;
+
+border-radius:16px;
+
+padding-left:18px;
+
+transition:.3s;
+
+}
+
+.form-control:focus{
+
+background:white;
+
+border-color:#339999;
+
+box-shadow:0 0 0 5px rgba(51,153,153,.15);
+
+}
+
+.apply-filter-btn{
+
+width:100%;
+
+height:58px;
+
+border:none;
+
+border-radius:16px;
+
+background:linear-gradient(135deg,#339999,#267373);
+
+color:white;
+
+font-size:16px;
+
+font-weight:700;
+
+transition:.3s;
+
+cursor:pointer;
+
+}
+
+.apply-filter-btn:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 15px 30px rgba(51,153,153,.35);
+
+}
+.filter-title{
+
+display:block;
+
+font-size:15px;
+
+font-weight:700;
+
+margin-bottom:10px;
+
+color:#333;
+
+}
+
+/*==========================
+PRODUCT TOOLBAR
+==========================*/
+
+.product-toolbar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:35px;
+
+padding-bottom:20px;
+
+border-bottom:1px solid #ececec;
+
+}
+
+.shop-title{
+
+font-size:34px;
+
+font-weight:700;
+
+margin-bottom:5px;
+
+}
+
+.shop-count{
+
+font-size:15px;
+
+color:#777;
+
+margin:0;
+
+}
+
+.sort-select{
+
+width:220px;
+
+height:50px;
+
+border-radius:15px;
+
+padding:0 18px;
+
+border:1px solid #e5e7eb;
+
+background:#fafafa;
+
+font-size:15px;
+
+font-weight:500;
+
+transition:.3s;
+
+}
+
+.sort-select:hover{
+
+border-color:#339999;
+
+}
+
+.sort-select:focus{
+
+border-color:#339999;
+
+box-shadow:0 0 0 4px rgba(51,153,153,.15);
+
+}
+
+.colorlib-product{
+    margin-top:0 !important;
+    padding-top:0 !important;
+}
+
+.row-pb-md{
+    padding-bottom:0 !important;
+    margin-top:0 !important;
+}
+
+
+/* category  */
+
+.filter-item{
+    border-bottom:1px solid #ececec;
+    padding:15px 0;
+}
+
+.filter-toggle{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    font-weight:600;
+    font-size:17px;
+}
+
+.filter-content{
+    display:none;
+    margin-top:12px;
+}
+
+.filter-content label{
+    display:block;
+    padding:8px 0;
+    cursor:pointer;
+}
+
+.filter-content input{
+    margin-right:8px;
+}
+
+
+
+.main-navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:20px;
+}
+
+.nav-left,
+.nav-right{
+    display:flex;
+    align-items:center;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.nav-left{
+    gap:30px;
+}
+
+.nav-right{
+    gap:35px;
+}
+
+.nav-left a,
+.nav-right a{
+    text-decoration:none;
+    color:#222;
+    font-weight:600;
+    letter-spacing:1px;
+    transition:.3s;
+}
+
+.nav-left a:hover,
+.nav-right a:hover{
+    color:#339999;
+}
+
+.nav-icons a{
+    font-size:22px;
+}
+
+</style>
+
+
+
+
+	
     
 	<body>
 		
@@ -51,195 +622,377 @@
 	<div id="page">
 		<nav class="colorlib-nav" role="navigation">
 			<div class="top-menu">
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="/">M O V I N O</a></div>
-						</div>
-						<div class="col-sm-5 col-md-3">
-			            <form action="#" class="search-wrap">
-			               <!-- <div class="form-group">
-			                  <input type="search" class="form-control search" placeholder="Search">
-			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
-			               </div> -->
-<!-- Search Input -->
+				<div class="container-fluid px-4">
+					<div class="row align-items-center">
 
+    <div class="col-lg-3">
 
-			            </form>
-			         </div>
-		         </div>
-					<div class="row">
-						<div class="col-sm-12 text-left menu-1">
-							<ul>
-								<li><a href="/">Home</a></li>
-								
-							
-								
-								<!-- <li><a href="/login">Login</a></li> -->
-								<% if (user) { %>  
-									<!-- User Dropdown -->
-									<li class="has-dropdown">
-										<a href="javascript:void(0);" class="dropdown-link"><%= user.name %></a>  
-										<ul class="dropdown">
-											<li><a href="/profile">Profile</a></li>  
-											<li><a href="/logout">Logout</a></li>  
-										</ul>
-									</li>
-								<% } else { %>  
-									<li><a href="/login">Login</a></li>
-									<li><a href="/signup">Signup</a></li>
-								<% } %>
+        <div id="colorlib-logo">
+            <a href="/">MOVINO</a>
+        </div>
 
+    </div>
 
-	                            <!-- <li><a href="/signup">Signup</a></li> -->
-						
-								<li class="cart">
-									<a href="/cart"><i class="icon-shopping-cart"></i> Cart</a>
-								</li>
+    <div class="col-lg-9">
 
-								<li class="cart">
-									<a href="/wishlist">
-									  <i class="bi bi-heart"></i> Wishlist 
-									</a>
-								  </li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
+    </div>
+
+</div>
+				<div class="row">
+    <div class="col-sm-12">
+
+        <div class="main-navbar">
+
+            <!-- Left Side -->
+            <ul class="nav-left">
+
+                <li><a href="/">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+           <% if(user){ %>
+
+                <li class="has-dropdown">
+
+                    <a href="#">
+                        <i class="bi bi-person-circle"></i>
+                        <%= user.name %>
+                    </a>
+
+                    <ul class="dropdown">
+                        <li><a href="/profile">Profile</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+
+                </li>
+
+                <% } else { %>
+
+                <li>
+                    <a href="/login">Login</a>
+                </li>
+
+                <% } %>
+
+            </ul>
+
+            <!-- Right Side -->
+            <ul class="nav-right">
+
+                <li class="nav-icons">
+                    <a href="/wishlist">
+                        <i class="bi bi-heart"></i>
+                    </a>
+                </li>
+
+                <li class="nav-icons">
+                    <a href="/cart">
+                        <i class="bi bi-bag"></i>
+                    </a>
+                </li>
+
+               
+
+            </ul>
+
+        </div>
+
+    </div>
+</div>
+
+  <!-- ================= SHOP HERO ================= -->
+
+<section class="movino-shop-hero">
+
+    <div class="container">
+
+        <div class="hero-content">
+
+            <span class="hero-tag">
+                MOVINO COLLECTION
+            </span>
+
+            <h1>
+                Walk Beyond Limits
+            </h1>
+
+            <p>
+                Discover premium footwear crafted for comfort, performance and timeless style.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+	<div class="breadcrumbs">
 		
-<!-- 
-		<div class="breadcrumbs">
-			<div class="container">
 				<div class="row">
-					<div class="col">
-						<p class="bread"><span><a href="index.html">Home</a></span> / <span>Our Products</span></p>
+				
+						<p class="bread"><span><a href="/">Home</a></span> / <span>Our Products</span></p>
+						
+					
 					</div>
 				</div>
 			</div>
-		</div> -->
-
-		<div class="breadcrumbs-two">
-			<div class="container">
-				<div class="row">
-					<div class="col">
-						<!-- <div class="breadcrumbs-img" style="background-image: url(images/cover-img-1.jpg);">
-							<h2>Our Products</h2>
-						</div> -->
-						<!-- <div class="menu text-center">
-							<p><a href="#">New Arrivals</a> <a href="#">Best Sellers</a> <a href="#">Extended Widths</a> <a href="#">Sale</a></p>
-						</div> -->
-					</div>
-				</div>
-			</div>
-		</div>
-
-<!-- code search filter sort -->
-<form method="GET" action="/shop" class="mb-4">
-<!-- Header row: Our Products + Search + Sort -->
-<div class="container mb-4">
-	<div class="d-flex justify-content-between align-items-center flex-wrap">
-	  <!-- Left: Our Products Heading -->
 	
-  	<div class="breadcrumbs">
-		<div class="container">
-			<div class="row">
-				<div class="col">
-					<p class="bread"><span><a href="/">Home</a></span> / <span>Our Products</span></p>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	  <!-- Right: Search + Sort -->
-	  <div class="d-flex align-items-center gap-3">
-		<!-- Search input -->
-		<input
-		  type="text"
-		  name="query"
-		  placeholder="Search products..."
-		  value="<%= query %>"
-		  class="form-control"
-		  style="max-width: 220px;"
-		/>
-  
-		<!-- Sort dropdown -->
-	
-	  </div>
-	</div>
-  </div>
+
   
   <!-- Filters Section -->
-  <div class="container">
+
+ <form method="GET" action="/shop" class="mb-4">
+
+<div class="container-fluid px-5">
 <div class="row">
  <!-- Left Column: Filters -->
-	  <div class="col-md-4 col-lg-3">
-		<div class="d-flex justify-content-between align-items-center mb-2">
-		  <h5 class="mb-0">Filters</h5>
-		  <a href="/shop" class="text-decoration-none" style="color: #d6334e; font-size: 14px;font-family: Georgia, 'Times New Roman', Times, serif;">CLEAR ALL</a>
-		</div>
+
+
+<div class="col-lg-2 mb-4 pe-2">
+
+ <div class="filter-header">
+
+    <div>
+
+        <h4>Filters</h4>
+
+        <p>Find your perfect pair</p>
+
+    </div>
+
+    <a href="/shop">
+
+        Reset
+
+    </a>
+
+</div>
+
+
+
   
-		<!-- Category -->
-		<div class="mb-3">
-		  <label for="categorySelect" class="form-label">Category</label>
-		  <select id="categorySelect" name="category" class="form-select" onchange="updateSubcategories()">
-			<option value="">All Categories</option>
-			<option value="Men" <%= selectedCategory === 'Men' ? 'selected' : '' %>>Men</option>
-			<option value="Women" <%= selectedCategory === 'Women' ? 'selected' : '' %>>Women</option>
-		  </select>
-		</div>
-  
-		<!-- Subcategory -->
-		<div class="mb-3">
-		  <label for="subCategorySelect" class="form-label">Subcategory</label>
-		  <select id="subCategorySelect" name="subCategory" class="form-select">
-			<option value="">All Subcategories</option>
-			<option value="Casual" <%= selectedSubCategory === 'Casual' ? 'selected' : '' %>>Casual</option>
-			<option value="Sports" <%= selectedSubCategory === 'Sports' ? 'selected' : '' %>>Sports</option>
-			<option value="Formal" <%= selectedSubCategory === 'Formal' ? 'selected' : '' %>>Formal</option>
-		  </select>
-		</div>
+		<!-- ================= CATEGORY ================= -->
+
+<div class="filter-item">
+
+    <div class="filter-toggle" onclick="toggleFilter('categoryMenu')">
+
+        <span>Category</span>
+
+        <i class="bi bi-chevron-down"></i>
+
+    </div>
+
+    <div class="filter-content" id="categoryMenu">
+
+        <label>
+            <input
+                type="radio"
+                name="category"
+                value=""
+                <%= !selectedCategory ? 'checked' : '' %>
+            >
+            All Categories
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="category"
+                value="Men"
+                <%= selectedCategory === 'Men' ? 'checked' : '' %>
+            >
+            Men
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="category"
+                value="Women"
+                <%= selectedCategory === 'Women' ? 'checked' : '' %>
+            >
+            Women
+        </label>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================= SUBCATEGORY ================= -->
+
+<div class="filter-item">
+
+    <div class="filter-toggle" onclick="toggleFilter('subCategoryMenu')">
+
+        <span>Subcategory</span>
+
+        <i class="bi bi-chevron-down"></i>
+
+    </div>
+
+    <div class="filter-content" id="subCategoryMenu">
+
+        <label>
+            <input
+                type="radio"
+                name="subCategory"
+                value=""
+                <%= !selectedSubCategory ? 'checked' : '' %>
+            >
+            All Subcategories
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="subCategory"
+                value="Casual"
+                <%= selectedSubCategory === 'Casual' ? 'checked' : '' %>
+            >
+            Casual
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="subCategory"
+                value="Sports"
+                <%= selectedSubCategory === 'Sports' ? 'checked' : '' %>
+            >
+            Sports
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="subCategory"
+                value="Formal"
+                <%= selectedSubCategory === 'Formal' ? 'checked' : '' %>
+            >
+            Formal
+        </label>
+
+    </div>
+
+</div>
+
+
   
 		<!-- Price Range -->
 		<div class="mb-3">
-		  <label for="priceMin" class="form-label">Min Price (₹)</label>
+		  <label for="priceMin" class="filter-title">Min Price (₹)</label>
 		  <input type="number" id="priceMin" name="priceMin" placeholder="Min ₹" value="<%= priceMin || '' %>" class="form-control" />
 		</div>
   
 		<div class="mb-3">
-		  <label for="priceMax" class="form-label">Max Price (₹)</label>
+		  <label for="priceMax" class="filter-title">Max Price (₹)</label>
 		  <input type="number" id="priceMax" name="priceMax" placeholder="Max ₹" value="<%= priceMax || '' %>" class="form-control" />
 		</div>
   
-		<button type="submit" class="btn text-white w-100" style="background-color: #339999;">Apply</button>
-	  </div>
+		<button
+type="submit"
+class="apply-filter-btn">
+
+Apply Filters
+
+</button>
+
+</div>
+</form>
+
   
-	  <!-- Right Column: Products -->
-	  <div class="col-md-8 col-lg-9">
-		<div class="d-flex justify-content-end mt-3">
-			<select id="sort" name="sort" class="form-select" style="max-width: 180px;">
-			  <option value="">Sort By</option>
-			  <option value="low-to-high" <%= sort === 'low-to-high' ? 'selected' : '' %>>Price: Low to High</option>
-			  <option value="high-to-low" <%= sort === 'high-to-low' ? 'selected' : '' %>>Price: High to Low</option>
-			  <option value="a-z" <%= sort === 'a-z' ? 'selected' : '' %>>Name: A-Z</option>
-			  <option value="z-a" <%= sort === 'z-a' ? 'selected' : '' %>>Name: Z-A</option>
-			</select>
-		  </div>
+   
+
+	  
+	<!-- Right Column -->
+<div class="col-lg-10 ps-2">
+
+    <div class="product-toolbar">
+
+        <div>
+
+            <h3 class="shop-title">Our Collection</h3>
+
+            <p class="shop-count">
+                <%= products.length %> Products Available
+            </p>
+
+        </div>
+
+      <form method="GET" action="/shop" id="sortForm">
+
+    <select
+        id="sort"
+        name="sort"
+        class="sort-select"
+        onchange="this.form.submit()"
+    >
+
+        <option value="">Sort By</option>
+
+        <option value="low-to-high"
+            <%= sort === 'low-to-high' ? 'selected' : '' %>>
+            Price : Low to High
+        </option>
+
+        <option value="high-to-low"
+            <%= sort === 'high-to-low' ? 'selected' : '' %>>
+            Price : High to Low
+        </option>
+
+        <option value="a-z"
+            <%= sort === 'a-z' ? 'selected' : '' %>>
+            Name : A-Z
+        </option>
+
+        <option value="z-a"
+            <%= sort === 'z-a' ? 'selected' : '' %>>
+            Name : Z-A
+        </option>
+
+    </select>
+
+    <input type="hidden"
+           name="query"
+           value="<%= query || '' %>">
+
+    <input type="hidden"
+           name="category"
+           value="<%= selectedCategory || '' %>">
+
+    <input type="hidden"
+           name="subCategory"
+           value="<%= selectedSubCategory || '' %>">
+
+    <input type="hidden"
+           name="priceMin"
+           value="<%= priceMin || '' %>">
+
+    <input type="hidden"
+           name="priceMax"
+           value="<%= priceMax || '' %>">
+
+</form>
+
+
+    </div>
+
+
+
 		  
 		<!-- Your products will render here -->
 
-		<div class="colorlib-product">
-			<div class="container">
-				<!-- <div class="row">
-					<div class="col-sm-8 offset-sm-2 text-center colorlib-heading colorlib-heading-sm">
-						<h2>View All Products</h2>
-					</div>
-				</div> -->
-		
-				<div class="colorlib-product">
+	<div class="colorlib-product mt-0 pt-0">
+
+
+			
 					<div class="row row-pb-md">
+						
 						<% products.forEach(product => { %>
-							<div class="col-lg-3 mb-4 text-center">
+							<div class="col-xl-4 col-lg-6 col-md-6 mb-4  text-center">
 								<div class="product-entry border">
 									<a href="#" class="prod-img">
 										<% if (product.images && product.images.length > 0) { %>
@@ -265,11 +1018,21 @@
 										<!-- Action Buttons (Add to Wishlist) -->
 
 
-										<div class="text-center mt-2">
-											<a href="/wishlist/add/<%= product._id %>" class="btn btn-sm" style="border: 1px solid #339999;">
-												<i class="bi bi-heart-fill" style="color: #339999;"></i> 
-                                             </a>
-										</div>
+										<div class="wishlist-btn">
+
+<a href="/wishlist/add/<%= product._id %>">
+
+<i class="bi bi-heart"></i>
+
+</a>
+
+</div>
+
+
+
+
+
+
 
 
 										
@@ -296,7 +1059,9 @@
 
 
           
-        
+         </div>
+
+</div>
        
 
 
@@ -551,6 +1316,27 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			window.location.reload();
 		  }
 		});
+
+
+// category
+
+
+function toggleFilter(id){
+
+    const menu = document.getElementById(id);
+
+    if(menu.style.display === "block"){
+        menu.style.display = "none";
+    }else{
+        menu.style.display = "block";
+    }
+
+}
+
+
+
+
+
 	  </script>
 
 

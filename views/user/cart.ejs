@@ -128,7 +128,9 @@
 			<div class="container">
 				<div class="row">
 					<div class="col">
-						<p class="bread"><span><a href="/">Home</a></span> / <span>Shopping Cart</span></p>
+						<!-- <p class="bread"><span><a href="/">Home</a></span> / <span>Shopping Cart</span></p> -->
+						<p class="bread"><span><a href="/">Home</a></span> /<span><a href="/shop">Our Products</a></span>/ <span>Shopping Cart</span></p>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -340,7 +342,65 @@ body: JSON.stringify({ size })
   }
 
 
+
+
+
+
+
+
+
+
+
 </script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+const urlParams = new URLSearchParams(window.location.search);
+
+const error = urlParams.get('error');
+const message = urlParams.get('message');
+
+if (error === 'unavailable') {
+
+    let title = 'Product Unavailable';
+    let icon = 'error';
+
+    if (message && message.toLowerCase().includes('out of stock')) {
+        title = 'Out of Stock';
+        icon = 'warning';
+    }
+
+    else if (message && message.toLowerCase().includes('only')) {
+        title = 'Stock Updated';
+        icon = 'warning';
+    }
+
+    Swal.fire({
+        icon: icon,
+        title: title,
+        text: message || 'This product is currently unavailable.',
+        confirmButtonColor: '#339999',
+        confirmButtonText: 'OK'
+    });
+}
+
+
+if (error) {
+
+    window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+    );
+
+}
+
+</script>
+
 						
 
 

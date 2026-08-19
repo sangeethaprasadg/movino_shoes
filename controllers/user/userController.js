@@ -10,6 +10,11 @@ const Address = require('../../models/addressSchema');
 const Cart = require('../../models/cartSchema');
 const Wallet = require('../../models/walletSchema');
 
+const { validateCartItems } = require('../../helpers/cartValidation');
+
+const path = require("path");
+const fs = require("fs");
+
 
 
 
@@ -18,15 +23,14 @@ const loadHomepage = async (req, res) => {
     try {
         const user = req.session.user;
 
-        // Fetch 6 latest active products
-        // const products = await Product.find({ isDeleted: false }).limit(6);
+    
         const products = await Product.find({
             isDeleted: false,
             isListed: true,
             status: "Active"
           }).limit(4);
        
-          console.log('Homepage products fetched:', products.map(p => ({ id: p._id.toString(), isDeleted: p.isDeleted })));
+         
       if (user) {
             const userData = await User.findOne({ _id: user._id });
             return res.render("home", { user: userData, products }); // Pass products here
@@ -389,8 +393,7 @@ if (selectedSubCategory) {
         .limit(limit)
         // .populate('category')
         .lean();
-      
-        // console.log('Fetched Products:', products);
+
 
 
       // Fetch all listed categories for filters
@@ -474,8 +477,7 @@ if (!product.category) {
   console.warn("⚠️ Product has no valid categoryId or category not found.");
 }
 
-console.log(product);
-console.log(product.variants);
+
     res.render('product-detail', { 
       product ,
       user: req.session.user || null,
@@ -488,28 +490,6 @@ console.log(product.variants);
 };
 
 
-//PROFILE 
-
-const uploadProfileImage = async (req, res) => {
-  try {
-    const userId = req.session.user._id;
-    // const imagePath = "/uploads/users/" + req.file.filename;
-    const imagePath = `/uploads/users/${req.file.filename}`;
-
-    await User.findByIdAndUpdate(userId, {
-      profileImage: imagePath
-    });
-
-    // Update session image if you’re showing image from session
-    req.session.user.profileImage = imagePath;
-
-    res.redirect('/profile');
-  } catch (err) {
-    console.error("Profile image upload failed:", err);
-    res.status(500).send("Server error");
-   
-  }
-};
 
 //forgot password
 
@@ -547,8 +527,19 @@ const sendOtpMail = async (email, otp) => {
 
 
 
-const loadForgotPassword = (req, res) => {
-    res.render("forgotPassword"); 
+const loadForgotPassword = async (req, res) => {
+    try {
+
+        res.render("forgotPassword", {
+            user: req.session.user
+        });
+
+    } catch (error) {
+
+        console.log(error);
+        res.redirect("/");
+
+    }
 };
 
 const handleForgotPassword = async (req, res) => {
@@ -557,7 +548,10 @@ const handleForgotPassword = async (req, res) => {
     // Validate email and check if user exists
     const user = await User.findOne({ email: email });
     if (!user) {
-        return res.render("forgotPassword", { error: "Email not found" });
+        return res.render("forgotPassword", { error: "Email not found",
+              user: req.session.user
+         });
+        
     }
 
     // Generate OTP
@@ -575,7 +569,7 @@ const handleForgotPassword = async (req, res) => {
 
 
 const loadForgotOtp = (req, res) => {
-    res.render("verifyForgotOtp", { error: null });
+    res.render("verifyForgotOtp", { error: null, user: req.session.user });
 };
 
 const verifyForgotOtp = (req, res) => {
@@ -586,20 +580,20 @@ const verifyForgotOtp = (req, res) => {
         // OTP verified
         return res.redirect("/reset-password");
     } else {
-        return res.render("verifyForgotOtp", { error: "Invalid OTP" });
+        return res.render("verifyForgotOtp", { error: "Invalid OTP" ,  user: req.session.user });
     }
 };
 
 
 const loadResetPassword = (req, res) => {
-    res.render("resetPassword");
+    res.render("resetPassword",{user: req.session.user});
 };
 
 const handleResetPassword = async (req, res) => {
     const { password, confirmPassword } = req.body;
 
     if (password !== confirmPassword) {
-        return res.render("resetPassword", { error: "Passwords do not match" });
+        return res.render("resetPassword", { error: "Passwords do not match" ,user: req.session.user});
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -621,6 +615,93 @@ const handleResetPassword = async (req, res) => {
 
 
 //  Edit Profile page
+
+
+
+//PROFILE 
+
+const loadProfile = async (req, res) => {
+    try {
+
+        const user = await User.findById(req.session.user._id);
+
+        // Keep session updated
+        req.session.user = user;
+
+        res.render("profile", {
+            user
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.redirect("/");
+    }
+};
+
+
+
+
+const uploadProfileImage = async (req, res) => {
+  try {
+    const userId = req.session.user._id;
+    // const imagePath = "/uploads/users/" + req.file.filename;
+    const imagePath = `/uploads/users/${req.file.filename}`;
+
+    await User.findByIdAndUpdate(userId, {
+      profileImage: imagePath
+    });
+
+    // Update session image if you’re showing image from session
+    req.session.user.profileImage = imagePath;
+
+    res.redirect('/profile');
+  } catch (err) {
+    console.error("Profile image upload failed:", err);
+    res.status(500).send("Server error");
+   
+  }
+};
+
+
+
+const removeProfileImage = async (req, res) => {
+
+    try {
+
+        const user = await User.findById(req.session.user._id);
+
+
+
+        
+
+        if (user.profileImage) {
+
+        const imagePath = path.join(
+    process.cwd(),
+    "public",
+    user.profileImage.substring(1)
+);
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
+
+            user.profileImage = null;
+
+            await user.save();
+            req.session.user.profileImage = null;
+        }
+
+        res.redirect("/profile");
+
+    } catch (err) {
+
+        console.log(err);
+        res.redirect("/profile");
+    }
+
+};
+
+
 
 
 const getEditProfile = (req, res) => {
@@ -874,7 +955,7 @@ const viewAddress = async (req, res) => {
     const otherAddresses = addresses.filter(addr => addr.isDefault !== true);
   
 
-    // console.log('Default Address:', defaultAddress);
+
 
     res.render('address', {
       user: req.session.user,
@@ -938,9 +1019,35 @@ const checkoutPage = async (req, res) => {
       }
   
       // ✅ Use Cart model to fetch items
-      const cart = await Cart.findOne({ userId, status: 'active' }).populate('items.productId');
-  
-      if (!cart || cart.items.length === 0) {
+     
+const cart = await Cart.findOne({
+    userId,
+    status: 'active'
+}).populate('items.productId');
+
+
+// 🔴 Validate cart before allowing checkout
+const validationResult = await validateCartItems(
+    cart ? cart.items : []
+);
+
+if (!validationResult.valid) {
+
+    const errorMessage = encodeURIComponent(
+        validationResult.message
+    );
+
+    return res.redirect(
+        `/cart?error=unavailable&message=${errorMessage}`
+    );
+}
+
+
+
+
+if (!cart || cart.items.length === 0) {
+
+
         return res.render('checkout', {
           user: req.session.user,
           cartItems: [],
@@ -1064,25 +1171,6 @@ const deleteAddressCheckout = async (req, res) => {
 //wallet
 
 
-// const walletPage = async (req, res) => {
-//   try {
-
-//       const userId = req.session.user._id;
-//       const user = await User.findById(userId); 
-
-//       if (!user) {
-//         return res.redirect('/login'); // or any fallback
-//       }
-
-    
-
-//       res.render('wallet', { user });
-//   } catch (error) {
-//       console.error('Error loading wallet:', error);
-//       res.redirect('/profile'); // fallback
-//   }
-// };
-
 
 
 
@@ -1141,7 +1229,9 @@ module.exports = {
     editAddressCheckout,
     deleteAddressCheckout,
     uploadProfileImage,
-    walletPage
+    walletPage,
+    removeProfileImage,
+    loadProfile,
    
 
 

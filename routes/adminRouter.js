@@ -82,20 +82,6 @@ router.post(
 
 
 
-// Fetch deleted categories
-// router.get('/categories/deleted',adminAuth, async (req, res) => {
-//     const deletedCategories = await Category.find({ isDeleted: true });
-//     res.render('deletedCategories', { deletedCategories });
-//   });
-  
-
-
-
-
-
-
-
-
 
 
 
@@ -130,8 +116,8 @@ router.get('/products/list/:id', adminAuth, productController.listProduct);
 
 
 //add variants
-// router.get('/products/variants/:id',adminAuth, productController.getVariantForm);
-// router.post('/products/variants/:id',adminAuth, productController.addVariants);
+
+router.get('/products/variants/:id',adminAuth, productController.getProductVariants);
 
 
 
@@ -145,7 +131,10 @@ router.get('/products/list/:id', adminAuth, productController.listProduct);
 
 router.get('/orders', adminAuth, orderController.listOrders); // ✅ List all orders
 router.get('/orders/:orderId', adminAuth, orderController.viewOrderDetails); // ✅ View single order
-router.post('/orders/update-status/:orderId', adminAuth, orderController.updateOrderStatus); // ✅ Update status
+router.post(
+    "/orders/update-status/:orderId/:itemId",
+    orderController.updateOrderStatus
+); // ✅ Update status
 router.post('/orders/verify-return/:orderId/:itemId', adminAuth, orderController.verifyReturnRequest); // ✅ Verify return request
 
 

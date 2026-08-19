@@ -65,6 +65,331 @@ input[type="radio"]:checked + .size-btn{
     opacity: 0.6;
 }
 
+
+
+.zoom-container{
+    overflow: hidden;
+    cursor: zoom-in;
+    position: relative;
+}
+
+.zoom-image{
+    width:100%;
+    transition: transform .15s ease;
+    transform-origin:center center;
+}
+
+
+/* =========================
+   PRODUCT IMAGE GALLERY
+========================= */
+
+.product-gallery {
+    width: 100%;
+}
+
+.main-image-container {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #f8f8f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-in;
+}
+
+.main-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform .2s ease;
+}
+
+
+/* Thumbnails */
+
+.product-thumbnails {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    overflow-x: auto;
+}
+
+.thumbnail {
+    width: 85px;
+    height: 85px;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #f8f8f8;
+    transition: .25s ease;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.thumbnail:hover {
+    border-color: #339999;
+}
+
+.thumbnail.active {
+    border-color: #339999;
+}
+
+
+
+/* =========================
+   PRODUCT DETAIL LAYOUT
+========================= */
+
+.product-detail-wrap {
+    align-items: flex-start;
+}
+
+.product-gallery {
+    padding-right: 25px;
+}
+
+.main-image-container {
+    width: 100%;
+    height: 520px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #f8f8f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-in;
+}
+
+.main-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+
+/* =========================
+   THUMBNAILS
+========================= */
+
+.product-thumbnails {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #f8f8f8;
+    transition: all 0.25s ease;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.thumbnail:hover,
+.thumbnail.active {
+    border-color: #339999;
+}
+
+
+/* =========================
+   PRODUCT DETAILS
+========================= */
+
+.product-desc {
+    padding: 15px 20px;
+}
+
+.product-desc h3 {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.product-desc .price strong {
+    font-size: 25px;
+}
+
+.product-rating {
+    margin: 15px 0;
+}
+
+.product-description {
+    line-height: 1.8;
+    color: #666;
+}
+
+
+/* =========================
+   QUANTITY
+========================= */
+
+.quantity-wrapper {
+    display: flex;
+    align-items: center;
+    width: 150px;
+    margin: 20px 0;
+}
+
+.quantity-wrapper button {
+    width: 40px;
+    height: 42px;
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+}
+
+.quantity-wrapper input {
+    width: 60px;
+    height: 42px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+
+/* =========================
+   ADD TO CART
+========================= */
+
+.add-cart-btn {
+    padding: 12px 30px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.stock-message {
+    min-height: 22px;
+    font-weight: 600;
+}
+
+.product-unavailable {
+    color: #dc3545;
+    font-weight: 600;
+    margin-top: 15px;
+}
+
+
+/* =========================
+   PRODUCT DETAILS POLISH
+========================= */
+
+.product-desc {
+    padding: 10px 30px;
+}
+
+.product-desc h3 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    color: #222;
+}
+
+.product-desc .price {
+    margin-bottom: 15px;
+}
+
+.product-desc .price strong {
+    font-size: 28px;
+    font-weight: 500;
+    color: #333;
+}
+
+.product-rating {
+    margin-bottom: 22px;
+}
+
+.product-rating .rate {
+    font-size: 15px;
+}
+
+.product-description {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+
+/* SIZE */
+
+.product-desc h5 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.size-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.size-btn {
+    width: 48px;
+    height: 48px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.size-btn:hover {
+    border-color: #339999;
+    color: #339999;
+}
+
+input[type="radio"]:checked + .size-btn {
+    background: #339999;
+    color: white;
+    border-color: #339999;
+}
+
+
+/* QUANTITY */
+
+.quantity-wrapper {
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+
+
+/* ADD TO CART */
+
+.add-cart-btn {
+    width: 180px;
+    height: 48px;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.add-cart-btn:hover {
+    opacity: 0.9;
+}
+
+
 </style>
 
 
@@ -171,180 +496,232 @@ input[type="radio"]:checked + .size-btn{
 
 
 		<div class="colorlib-product">
-			<div class="container">
-				<div class="row row-pb-lg product-detail-wrap">
-					<div class="col-sm-8">
-						<div class="owl-carousel">
-							<div class="item">
-								<div class="product-entry border">
-									<a href="#" class="prod-img">
-										<!-- <img src="images/item-1.jpg" class="img-fluid" alt="Free html5 bootstrap 4 template"> -->
-										<img src="/uploads/products/<%= product.images[0] %>" class="img-fluid" alt="<%= product.name %>">
-									</a>
-								</div>
-							</div>
-							<div class="item">
-								<div class="product-entry border">
-									<a href="#" class="prod-img">
-										<!-- <img src="images/item-2.jpg" class="img-fluid" alt="Free html5 bootstrap 4 template"> -->
-										<img src="/uploads/products/<%= product.images[1] %>" class="img-fluid" alt="<%= product.name %>">
-									</a>
-								</div>
-							</div>
-							<div class="item">
-								<div class="product-entry border">
-									<a href="#" class="prod-img">
-										<!-- <img src="images/item-3.jpg" class="img-fluid" alt="Free html5 bootstrap 4 template"> -->
-										<img src="/uploads/products/<%= product.images[2] %>" class="img-fluid" alt="<%= product.name %>">
-									</a>
-								</div>
-							</div>
-							<div class="item">
-								<div class="product-entry border">
-									<a href="#" class="prod-img">
-										<!-- <img src="images/item-4.jpg" class="img-fluid" alt="Free html5 bootstrap 4 template"> -->
-										<img src="/uploads/products/<%= product.images[3] %>" class="img-fluid" alt="<%= product.name %>">
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="product-desc">
-							<!-- <h3>Women's Boots Shoes Maca</h3> -->
-							<h3><%= product.name %> - Product Details</h3>
-							<p class="price">
-								<p>Price: ₹<%= product.price %></p>
-								<!-- <span>$68.00</span>  -->
-								
-								<span class="rate">
-									<i class="icon-star-full"></i>
-									<i class="icon-star-full"></i>
-									<i class="icon-star-full"></i>
-									<i class="icon-star-full"></i>
-									<i class="icon-star-half"></i>
-									(74 Rating)
-								</span>
-							</p>
-							<p>Description: <%= product.description %></p>
-							
-							
-							
-							<!-- <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p> -->
-							
-							<form action="/cart/add/<%= product._id %>?from=product" method="POST">
-						<div class="size-container">
+    <div class="container">
 
-    <% if (product.variants && product.variants.length > 0) { %>
+        <div class="row row-pb-lg product-detail-wrap">
 
-       <% product.variants.forEach(function(variant){ %>
+            <!-- ================= PRODUCT IMAGE ================= -->
+            <div class="col-md-6">
 
-    <input
-        type="radio"
-        id="size-<%= variant.size %>"
-        name="size"
-        value="<%= variant.size %>"
-        data-stock="<%= variant.stock %>"
-        hidden
-        required
-        <%= variant.stock === 0 ? "disabled" : "" %>>
+                <div class="product-gallery">
 
-    <label
-        for="size-<%= variant.size %>"
-        class="size-btn <%= variant.stock === 0 ? 'disabled-size' : '' %>">
+                    <!-- Main Image -->
+                    <div class="main-image-container zoom-container">
 
-        <%= variant.size %>
+                        <img
+                            id="mainProductImage"
+                            src="/uploads/products/<%= product.images[0] %>"
+                            class="main-product-image zoom-image"
+                            alt="<%= product.name %>"
+                        >
 
-    </label>
+                    </div>
 
-<% }) %>
+                    <!-- Thumbnails -->
+                    <div class="product-thumbnails">
 
-    <% } else { %>
+                        <% product.images.forEach(function(image, index) { %>
 
-        <p>No sizes available</p>
+                            <div
+                                class="thumbnail <%= index === 0 ? 'active' : '' %>"
+                                onclick="changeProductImage('<%= image %>', this)"
+                            >
 
-    <% } %>
+                                <img
+                                    src="/uploads/products/<%= image %>"
+                                    alt="<%= product.name %>"
+                                >
 
-</div>
+                            </div>
 
-<p id="stockMessage" class="mt-2 fw-bold"></p>
+                        <% }) %>
+
+                    </div>
+
+                </div>
+
+            </div>
 
 
+            <!-- ================= PRODUCT DETAILS ================= -->
+            <div class="col-md-6">
 
-							<% if (product.stock > 0) { %>
-                     <div class="input-group mb-4">
-                     	<span class="input-group-btn">
-                        	<button type="button" class="quantity-left-minus btn"  data-type="minus" data-field="">
-                           <i class="icon-minus2"></i>
-                        	</button>
-                    		</span>
-                     	<input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
-                     	<span class="input-group-btn ml-1">
-                        	<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
-                             <i class="icon-plus2"></i>
-                         </button>
-                     	</span>
-                  	</div>
-                  	<div class="row">
-	                  	<div class="col-sm-12 text-center">
-									<% } %>
+                <div class="product-desc">
 
-									<% if (product.isBlocked || product.category?.isBlocked) { %>
-										<p style="color:red;">This product is currently unavailable.</p>
-									  <% } %>
+                    <h3>
+                        <%= product.name %>
+                    </h3>
 
-<% if (product.isBlocked || product.category?.isBlocked) { %>
-    <p style="color:red;">This product is currently unavailable.</p>
-<% } %>
+                    <p class="price">
+                        <strong>₹<%= product.price %></strong>
+                    </p>
 
+                    <p class="product-rating">
+                        <span class="rate">
+                            <i class="icon-star-full"></i>
+                            <i class="icon-star-full"></i>
+                            <i class="icon-star-full"></i>
+                            <i class="icon-star-full"></i>
+                            <i class="icon-star-half"></i>
+                            <span>(74 Ratings)</span>
+                        </span>
+                    </p>
 
-								
-									  
-								
-									
-										<button
-    type="submit"
-    class="btn btn-primary"
-    <% if (product.isBlocked || product.category?.isBlocked || product.stock <= 0) { %>
-        disabled
-    <% } %>
->
-    <% if (product.stock <= 0) { %>
-        Out of Stock
-    <% } else { %>
-        Add to Cart
-    <% } %>
-</button>
-
-									  </form>
-									  
-
-									  <% if (error === 'outofstock') { %>
-										<div class="alert alert-danger">
-										  Sorry, this product is currently <strong>Out of Stock</strong>.
-										</div>
-									  <% } %>
-
-									  <% if (error === 'maxlimit') { %>
-<script>
-Swal.fire({
-    icon: "warning",
-    title: "Purchase Limit Reached",
-    text: "Maximum 5 units are allowed per product.",
-    confirmButtonText: "OK"
-});
-</script>
-<% } %>
-									  
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+                    <p class="product-description">
+                        <%= product.description %>
+                    </p>
 
 
+                    <!-- ================= SIZE ================= -->
 
-		
+                    <h5 class="mt-4 mb-3">Select Size</h5>
+
+                    <form
+                        action="/cart/add/<%= product._id %>?from=product"
+                        method="POST"
+                    >
+
+                        <div class="size-container">
+
+                            <% if (product.variants && product.variants.length > 0) { %>
+
+                                <% product.variants.forEach(function(variant){ %>
+
+                                    <input
+                                        type="radio"
+                                        id="size-<%= variant.size %>"
+                                        name="size"
+                                        value="<%= variant.size %>"
+                                        data-stock="<%= variant.stock %>"
+                                        hidden
+                                        required
+                                        <%= variant.stock === 0 ? "disabled" : "" %>
+                                    >
+
+                                    <label
+                                        for="size-<%= variant.size %>"
+                                        class="size-btn <%= variant.stock === 0 ? 'disabled-size' : '' %>"
+                                    >
+                                        <%= variant.size %>
+                                    </label>
+
+                                <% }) %>
+
+                            <% } else { %>
+
+                                <p>No sizes available</p>
+
+                            <% } %>
+
+                        </div>
+
+
+                        <p id="stockMessage" class="stock-message"></p>
+
+
+                        <!-- ================= QUANTITY ================= -->
+
+                        <% if (product.stock > 0) { %>
+
+                            <div class="quantity-wrapper">
+
+                                <button
+                                    type="button"
+                                    class="quantity-left-minus btn"
+                                >
+                                    <i class="icon-minus2"></i>
+                                </button>
+
+                                <input
+                                    type="text"
+                                    id="quantity"
+                                    name="quantity"
+                                    class="form-control input-number"
+                                    value="1"
+                                    min="1"
+                                    max="100"
+                                >
+
+                                <button
+                                    type="button"
+                                    class="quantity-right-plus btn"
+                                >
+                                    <i class="icon-plus2"></i>
+                                </button>
+
+                            </div>
+
+                        <% } %>
+
+
+                        <!-- ================= AVAILABILITY ================= -->
+
+                        <% if (product.isBlocked || product.category?.isBlocked) { %>
+
+                            <p class="product-unavailable">
+                                This product is currently unavailable.
+                            </p>
+
+                        <% } %>
+
+
+                        <!-- ================= ADD TO CART ================= -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary add-cart-btn"
+                            <% if (
+                                product.isBlocked ||
+                                product.category?.isBlocked ||
+                                product.stock <= 0
+                            ) { %>
+                                disabled
+                            <% } %>
+                        >
+
+                            <% if (product.stock <= 0) { %>
+
+                                Out of Stock
+
+                            <% } else { %>
+
+                                Add to Cart
+
+                            <% } %>
+
+                        </button>
+
+                    </form>
+
+
+                    <% if (error === 'outofstock') { %>
+
+                        <div class="alert alert-danger mt-3">
+                            Sorry, this product is currently
+                            <strong>Out of Stock</strong>.
+                        </div>
+
+                    <% } %>
+
+
+                    <% if (error === 'maxlimit') { %>
+
+                        <script>
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Purchase Limit Reached",
+                                text: "Maximum 5 units are allowed per product.",
+                                confirmButtonText: "OK"
+                            });
+                        </script>
+
+                    <% } %>
+
+                </div>
+
+            </div>
+
+        </div>
 
 
 				
@@ -632,101 +1009,314 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 
 
-		$(document).ready(function(){
 
-		var quantitiy=0;
 
-let selectedStock = 5;
+
+
+
+
+
+const quantityInput = document.getElementById("quantity");
+const minusButton = document.querySelector(".quantity-left-minus");
+const plusButton = document.querySelector(".quantity-right-plus");
 
 const sizeRadios = document.querySelectorAll('input[name="size"]');
+const stockMessage = document.getElementById("stockMessage");
+
+// Maximum 5 units per product
+const purchaseLimit = 5;
+
+// Current selected size stock
+let selectedStock = 5;
+
+
+// =========================
+// UPDATE BUTTONS
+// =========================
+
+function updateQuantityButtons() {
+
+    if (!quantityInput) return;
+
+    let quantity = parseInt(quantityInput.value) || 1;
+
+    // Never allow quantity below 1
+    if (quantity < 1) {
+        quantity = 1;
+        quantityInput.value = 1;
+    }
+
+    // Maximum allowed = minimum of stock and purchase limit
+    const maxAllowed = Math.min(selectedStock, purchaseLimit);
+
+    // Minus disabled at 1
+    if (minusButton) {
+        minusButton.disabled = quantity <= 1;
+    }
+
+   
+	    // Only disable plus when product is completely out of stock
+   if (plusButton) {
+    plusButton.disabled = selectedStock === 0;
+}
+}
+
+
+// =========================
+// SIZE SELECTION
+// =========================
 
 sizeRadios.forEach((radio) => {
 
     radio.addEventListener("change", function () {
 
-        selectedStock = Math.min(Number(this.dataset.stock), 5);
+        selectedStock = Number(this.dataset.stock) || 0;
 
-        $("#quantity").val(1);
+        // Reset quantity whenever size changes
+        quantityInput.value = 1;
 
-        console.log("Selected Stock:", selectedStock);
-
-    });
-
-});
-
-
-
-
-		  $('.quantity-right-plus').click(function(e){
-
-    e.preventDefault();
-
-    let quantity = parseInt($("#quantity").val());
-
-    if (quantity < selectedStock) {
-
-        $("#quantity").val(quantity + 1);
-
-    } else {
-
-      Swal.fire({
-    icon: "warning",
-    title: "Maximum Purchase Limit",
-    text: "You cannot add more than the available stock.",
-    confirmButtonText: "OK"
-});
-
-    }
-
-});
-
-		     $('.quantity-left-minus').click(function(e){
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		      
-		            // Increment
-		            if(quantity>0){
-		            $('#quantity').val(quantity - 1);
-		            }
-		    });
-		    
-		});
-
-
-const sizeRadios = document.querySelectorAll('input[name="size"]');
-const stockMessage = document.getElementById('stockMessage');
-
-sizeRadios.forEach(radio => {
-
-    radio.addEventListener('change', function () {
-
-        const stock = Number(this.dataset.stock);
-
-        if (stock === 0) {
+        // Stock message
+        if (selectedStock === 0) {
 
             stockMessage.innerHTML =
                 '<span style="color:red;">Out of Stock</span>';
 
-        } else if (stock <= 3) {
+        } else if (selectedStock <= 3) {
 
             stockMessage.innerHTML =
-                `<span style="color:orange;">Limited stock </span>`;
+                '<span style="color:orange;">Limited stock</span>';
 
         } else {
 
-    stockMessage.innerHTML = '';
+            stockMessage.innerHTML = "";
 
-}
+        }
+
+        updateQuantityButtons();
 
     });
 
 });
 
 
+// =========================
+// MINUS BUTTON
+// =========================
+
+if (minusButton) {
+
+    minusButton.addEventListener("click", function (e) {
+
+        e.preventDefault();
+
+        let quantity = parseInt(quantityInput.value) || 1;
+
+        // NEVER allow 0
+        if (quantity > 1) {
+
+            quantity--;
+
+            quantityInput.value = quantity;
+
+        }
+
+        updateQuantityButtons();
+
+    });
+
+}
+
+
+// =========================
+// PLUS BUTTON
+// =========================
+
+if (plusButton) {
+
+    plusButton.addEventListener("click", function (e) {
+
+        e.preventDefault();
+
+        let quantity = parseInt(quantityInput.value) || 1;
+
+        const maxAllowed = Math.min(
+            selectedStock,
+            purchaseLimit
+        );
+
+
+        // Already reached maximum
+        if (quantity >= maxAllowed) {
+
+            Swal.fire({
+                icon: "warning",
+                title: "Maximum Purchase Limit",
+                text: `You can purchase maximum ${purchaseLimit} units of this product.`,
+                confirmButtonText: "OK"
+            });
+
+            return;
+        }
+
+
+        // Increase quantity
+        quantity++;
+
+        quantityInput.value = quantity;
+
+        updateQuantityButtons();
+
+    });
+
+}
+
+
+// =========================
+// MANUAL QUANTITY INPUT
+// =========================
+
+if (quantityInput) {
+
+    quantityInput.addEventListener("input", function () {
+
+        let quantity = parseInt(this.value);
+
+        const maxAllowed = Math.min(
+            selectedStock,
+            purchaseLimit
+        );
+
+
+        // Empty / invalid / below 1
+        if (isNaN(quantity) || quantity < 1) {
+
+            this.value = 1;
+
+            updateQuantityButtons();
+
+            return;
+        }
+
+
+        // User entered more than allowed
+        if (quantity > maxAllowed) {
+
+            this.value = maxAllowed;
+
+            Swal.fire({
+                icon: "warning",
+                title: "Maximum Purchase Limit",
+                text: `You can purchase maximum ${purchaseLimit} units of this product.`,
+                confirmButtonText: "OK"
+            });
+
+        }
+
+        updateQuantityButtons();
+
+    });
+
+}
+
+
+// =========================
+// INITIAL STATE
+// =========================
+
+if (quantityInput) {
+
+    quantityInput.value = 1;
+
+    updateQuantityButtons();
+
+}
+
+
+
+
+
+
+
+
+function changeProductImage(image, thumbnail) {
+
+    const mainImage = document.getElementById("mainProductImage");
+
+    mainImage.src = "/uploads/products/" + image;
+
+    document.querySelectorAll(".thumbnail").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    thumbnail.classList.add("active");
+
+}
+
+
+
+document.querySelectorAll(".zoom-container").forEach(container => {
+
+    const image = container.querySelector(".zoom-image");
+
+    if (!image) return;
+
+    container.addEventListener("mousemove", (e) => {
+
+        const rect = container.getBoundingClientRect();
+
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+        image.style.transformOrigin = `${x}% ${y}%`;
+        image.style.transform = "scale(1.8)";
+
+    });
+
+    container.addEventListener("mouseleave", () => {
+
+        image.style.transformOrigin = "center center";
+        image.style.transform = "scale(1)";
+
+    });
+
+});
+
+
+const urlParams = new URLSearchParams(window.location.search);
+const error = urlParams.get('error');
+
+if (error === 'unavailable') {
+
+    Swal.fire({
+        icon: 'error',
+        title: 'Product Unavailable',
+        text: 'This product is currently unavailable.',
+        confirmButtonColor: '#339999',
+        confirmButtonText: 'OK'
+    });
+
+}
+
+if (error === 'outofstock') {
+
+    Swal.fire({
+        icon: 'warning',
+        title: 'Out of Stock',
+        text: 'This product is currently out of stock.',
+        confirmButtonColor: '#339999',
+        confirmButtonText: 'OK'
+    });
+
+}
+
+// Remove error from URL
+if (error) {
+    window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+    );
+}
 
 
 

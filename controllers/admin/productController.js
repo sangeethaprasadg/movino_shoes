@@ -38,13 +38,13 @@ const query = {
       .limit(limit);
 
 
-
     res.render('products/productList', {
       products,
       totalPages,
       currentPage: page,
       searchQuery,
-      limit
+      limit,
+      error: req.query.error
     });
 
   } catch (err) {
@@ -340,15 +340,28 @@ const viewDeletedProducts = async (req, res) => {
 // Makes an unlisted product visible again on the user side.
 const listProduct = async (req, res) => {
   try {
+
     const productId = req.params.id;
 
-    await Product.findByIdAndUpdate(productId, {
-      isListed: true,
-    });
+    const product = await Product.findById(productId).populate("category");
+
+
+
+    if (!product) {
+      return res.status(404).send("Product not found");
+    }
+
+    if (!product.category.isListed) {
+      return res.redirect("/admin/products?error=category-unlisted");
+    }
+
+    product.isListed = true;
+    await product.save();
 
     res.redirect("/admin/products");
+
   } catch (error) {
-    console.error("Error listing product:", error);
+    console.error(error);
     res.status(500).send("Internal Server Error");
   }
 };
@@ -377,7 +390,43 @@ const searchProducts = async (req, res) => {
 
 
 
+// add variants 
 
+const getProductVariants = async (req, res) => {
+
+    try {
+
+        const product = await Product.findById(req.params.id);
+
+        if (!product) {
+
+            return res.status(404).json({
+                success: false,
+                message: "Product not found"
+            });
+
+        }
+
+        res.json({
+
+            success: true,
+            productName: product.name,
+            totalStock: product.stock,
+            variants: product.variants
+
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            success: false
+        });
+
+    }
+
+};
 
    
 
@@ -392,6 +441,7 @@ module.exports = {
   viewDeletedProducts,
   listProduct,
   searchProducts,
+  getProductVariants,
   
 
   

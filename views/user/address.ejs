@@ -56,6 +56,59 @@
     .btn-sm {
         margin-right: 10px;
     }
+
+
+.profile-image{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #fff;
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.profile-image-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px;
+    width: 120px;
+}
+.profile-image-actions form{
+    margin:0;
+}
+
+.edit-photo-btn,
+.delete-photo-btn{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    border:1px solid #ddd;
+    background:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.edit-photo-btn{
+    color:#0d6efd;
+}
+
+.delete-photo-btn{
+    color:#dc3545;
+}
+.edit-photo-btn:hover,
+.delete-photo-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+
+
+
+
 </style>
 	</head>
 
@@ -148,7 +201,53 @@
     <!-- Sidebar (same as profile) -->
     <div class="col-md-3">
       <div class="mb-3">
-        <img src="/images/default-user.png" alt="User Image" class="img-fluid rounded-circle" style="width: 120px; height: 120px;">
+        <!-- <img src="/images/default-user.png" alt="User Image" class="img-fluid rounded-circle" style="width: 120px; height: 120px;"> -->
+
+
+<!-- Profile Image -->
+   <img
+src="<%= user.profileImage && user.profileImage.trim() !== '' ? user.profileImage : '/images/default-profile.png' %>"
+class="profile-image">
+
+    <!-- Action Buttons -->
+    <div class="profile-image-actions">
+
+        <!-- Edit Button -->
+        <form action="/upload-profile-image" method="POST" enctype="multipart/form-data">
+
+            <label for="profileImage" class="edit-photo-btn">
+                <i class="fas fa-edit"></i>
+            </label>
+
+            <input
+                type="file"
+                name="profileImage"
+                id="profileImage"
+                hidden
+                onchange="this.form.submit()"
+            >
+
+        </form>
+
+        <!-- Delete Button -->
+        <% if(user.profileImage){ %>
+
+<form id="deleteProfileForm" action="/remove-profile-image" method="POST">
+
+           <button
+    type="button"
+    class="delete-photo-btn"
+    onclick="deleteProfileImage()">
+
+    <i class="fas fa-trash"></i>
+
+</button>
+
+        </form>
+
+        <% } %>
+
+    </div>
       </div>
       <div class="list-group mt-4">
         <a href="/profile" class="list-group-item list-group-item-action">
